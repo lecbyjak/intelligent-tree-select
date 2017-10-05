@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style>
+        #root, #root2 {
+            width: 500px;
+            margin: 10px
+        }
+
+        .box {
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+
+    <section id="root">
+        <div class="container">
+            <div>
+                <input type="text" class="form-control box border-secondary" placeholder="Search for..."
+                       aria-label="Search for...">
+            </div>
+
+            <div class="container-fluid border border-secondary border-top-0 pt-2 box">
+                <div>
+
+                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                        <div class="col">Result 1</div>
+                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
+                             data-placement="bottom"
+                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
+                             title="This is new term, that should not be verified.">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                <g class="nc-icon-wrapper" fill="#f67d12">
+                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col-auto badge badge-secondary mr-2">new</div>
+                        <div class="w-100">
+                            <small class="pl-4 text-muted font-italic">Providers</small>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start align-items-center m-0 mb-2">
+                        <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                            <div class="col">Result 2</div>
+                            <!--             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="Tooltip on bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>
+                            </div> -->
+                            <!--             <div class="col-auto badge badge-info mr-2">external</div> -->
+                            <div class="w-100">
+                                <small class="pl-4 text-muted font-italic">Providers or some info</small>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper" fill="#b2b2b2">
+                                    <path d="M-31 29l-12 12-2.83-2.83 7.17-7.17H-61V7h4v20h18.34l-7.17-7.17L-43 17l12 12zm71 1L28 42l-2.83-2.83L32.34 32H8V6h4v22h20.34l-7.17-7.17L28 18l12 12z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col p-0 border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                            <div class="col">Sub Result 2</div>
+                            <!--             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="Tooltip on bottom">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>
+                            </div> -->
+                            <!--             <div class="col-auto badge badge-info mr-2">external</div> -->
+                            <div class="w-100">
+                                <small class="pl-4 text-muted font-italic">Providers or some info</small>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="ml-5 col-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+                                <g class="nc-icon-wrapper" fill="#b2b2b2">
+                                    <path d="M-31 29l-12 12-2.83-2.83 7.17-7.17H-61V7h4v20h18.34l-7.17-7.17L-43 17l12 12zm71 1L28 42l-2.83-2.83L32.34 32H8V6h4v22h20.34l-7.17-7.17L28 18l12 12z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col p-0 border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                            <div class="col">Sub Sub Result 2</div>
+                            <!--             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>
+                            </div> -->
+                            <div class="col-auto badge badge-info mr-2">external</div>
+                            <div class="w-100">
+                                <small class="pl-4 text-muted font-italic">Providers</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                        <div class="col">Result 3</div>
+                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
+                             data-placement="bottom"
+                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
+                             title="This term is result of merging terms from provider: 'provider1' and 'provider2'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                <g class="nc-icon-wrapper" fill="#f67d12">
+                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col-auto badge badge-warning mr-2">merged</div>
+                        <div class="w-100">
+                            <small class="pl-4 text-muted font-italic">Providers</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Result area bottom -->
+                <div class="justify-content-center align-items-center border p-2 mb-2 box">
+                    <small class="text-muted font-italic">Didn´t find your term?</small>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block" data-toggle="modal"
+                            data-target="#formModal">Add new term
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add new Term</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="root2">
+        <div class="container">
+            <div>
+                <input type="text" class="form-control box border-secondary" placeholder="Search for..."
+                       aria-label="Search for...">
+            </div>
+
+            <div class="container-fluid border border-secondary border-top-0 pt-2 box">
+                <div>
+
+                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                        <div class="col">Result 1</div>
+                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
+                             data-placement="bottom"
+                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
+                             title="This is new term, that should not be verified.">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                <g class="nc-icon-wrapper" fill="#f67d12">
+                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col-auto badge badge-secondary mr-2">new</div>
+                        <div class="w-100">
+                            <small class="pl-4 text-muted font-italic">Providers</small>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start align-items-center m-0 mb-2">
+                        <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                            <div class="col">Result 2</div>
+                            <!--             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="Tooltip on bottom">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>
+                                        </div> -->
+                            <div class="col-auto badge badge-info mr-2">external</div>
+                            <div class="col-12 d-flex justify-content-start align-items-center" style="font-size: 75%">
+                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                    <g class="nc-icon-wrapper" fill="#868e96">
+                                        <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+                                    </g>
+                                </svg>
+                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
+                                    2
+                                </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+                                    <g class="nc-icon-wrapper" fill="#868e96">
+                                        <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
+                                    </g>
+                                </svg>
+                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
+                                    3
+                                </button>
+                            </div>
+                            <div class="w-100">
+                                <small class="pl-4 text-muted font-italic">Providers or some info</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
+                        <div class="col">Result 3</div>
+                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
+                             data-placement="bottom"
+                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
+                             title="This term is result of merging terms from provider: 'provider1' and 'provider2'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                <g class="nc-icon-wrapper" fill="#f67d12">
+                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="col-auto badge badge-warning mr-2">merged</div>
+                        <div class="w-100">
+                            <small class="pl-4 text-muted font-italic">Providers</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Result area bottom -->
+                <div class="justify-content-center align-items-center border p-2 mb-2 box">
+                    <small class="text-muted font-italic">Didn´t find your term?</small>
+                    <button type="button" class="btn btn-outline-info btn-sm btn-block" data-toggle="modal"
+                            data-target="#formModal2">Add new term
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="formModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">Add new Term 2</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+        integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+        crossorigin="anonymous"></script>
+<!--Custom JS-->
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+</script>
+</body>
+</html>
