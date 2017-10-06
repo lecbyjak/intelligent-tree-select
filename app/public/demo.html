@@ -26,12 +26,46 @@
 <div class="d-flex">
 
     <section id="root">
+
         <div class="container">
-            <div>
-                <input type="text" class="form-control box border-secondary" placeholder="Search for..."
-                       aria-label="Search for...">
+
+            <a class="d-flex flex-row-reverse" data-toggle="collapse" href="#collapseExample"
+               aria-expanded="false"
+               aria-controls="collapseExample">
+                Show filter
+            </a>
+            <!--FILTER-->
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body d-block">
+                    <input type="checkbox" id="showProviders" name="show" value="providers" checked>
+                    <label for="showProviders">Show providers/info</label>
+                </div>
             </div>
 
+            <!--FORM INPUT-->
+            <div class="input-group box border-secondary">
+                <input type="text" class="form-control" placeholder="Search for..."
+                       aria-label="Search for...">
+                <span class="input-group-btn">
+                    <div data-delay='{ "show": 500, "hide": 100 }' data-toggle="tooltip"
+                         data-placement="right"
+                         data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-info"></div><div class="tooltip-inner bg-info"></div></div>'
+                         title="Didn´t find your term? Add new one.">
+                        <button type="button" class="btn btn-primary d-flex justify-content-center align-items-center"
+                                data-toggle="modal" data-target="#formModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                <g class="nc-icon-wrapper" fill="#ffffff">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </span>
+
+
+            </div>
+
+            <!--RESULTS-->
             <div class="container-fluid border border-secondary border-top-0 pt-2 box">
                 <div>
 
@@ -121,15 +155,8 @@
                     </div>
 
                 </div>
-
-                <!-- Result area bottom -->
-                <div class="justify-content-center align-items-center border p-2 mb-2 box">
-                    <small class="text-muted font-italic">Didn´t find your term?</small>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block" data-toggle="modal"
-                            data-target="#formModal">Add new term
-                    </button>
-                </div>
             </div>
+
         </div>
 
         <!-- Modal -->
@@ -156,122 +183,122 @@
 
     </section>
 
-    <section id="root2">
-        <div class="container">
-            <div>
-                <input type="text" class="form-control box border-secondary" placeholder="Search for..."
-                       aria-label="Search for...">
-            </div>
+    <!--<section id="root2">-->
+    <!--<div class="container">-->
+    <!--<div>-->
+    <!--<input type="text" class="form-control box border-secondary" placeholder="Search for..."-->
+    <!--aria-label="Search for...">-->
+    <!--</div>-->
 
-            <div class="container-fluid border border-secondary border-top-0 pt-2 box">
-                <div>
+    <!--<div class="container-fluid border border-secondary border-top-0 pt-2 box">-->
+    <!--<div>-->
 
-                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
-                        <div class="col">Result 1</div>
-                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
-                             data-placement="bottom"
-                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
-                             title="This is new term, that should not be verified.">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
-                                <g class="nc-icon-wrapper" fill="#f67d12">
-                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div class="col-auto badge badge-secondary mr-2">new</div>
-                        <div class="w-100">
-                            <small class="pl-4 text-muted font-italic">Providers</small>
-                        </div>
-                    </div>
+    <!--<div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">-->
+    <!--<div class="col">Result 1</div>-->
+    <!--<div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"-->
+    <!--data-placement="bottom"-->
+    <!--data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'-->
+    <!--title="This is new term, that should not be verified.">-->
+    <!--<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">-->
+    <!--<g class="nc-icon-wrapper" fill="#f67d12">-->
+    <!--<path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>-->
+    <!--</g>-->
+    <!--</svg>-->
+    <!--</div>-->
+    <!--<div class="col-auto badge badge-secondary mr-2">new</div>-->
+    <!--<div class="w-100">-->
+    <!--<small class="pl-4 text-muted font-italic">Providers</small>-->
+    <!--</div>-->
+    <!--</div>-->
 
-                    <div class="row justify-content-start align-items-center m-0 mb-2">
-                        <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
-                            <div class="col">Result 2</div>
-                            <!--             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="Tooltip on bottom">
-                                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>
-                                        </div> -->
-                            <div class="col-auto badge badge-info mr-2">external</div>
-                            <div class="col-12 d-flex justify-content-start align-items-center" style="font-size: 75%">
-                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
-                                </button>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                    <g class="nc-icon-wrapper" fill="#868e96">
-                                        <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
-                                    </g>
-                                </svg>
-                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
-                                    2
-                                </button>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-                                    <g class="nc-icon-wrapper" fill="#868e96">
-                                        <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>
-                                    </g>
-                                </svg>
-                                <button type="button" class="btn btn-light badge badge-light text-muted">Parent
-                                    3
-                                </button>
-                            </div>
-                            <div class="w-100">
-                                <small class="pl-4 text-muted font-italic">Providers or some info</small>
-                            </div>
-                        </div>
+    <!--<div class="row justify-content-start align-items-center m-0 mb-2">-->
+    <!--<div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">-->
+    <!--<div class="col">Result 2</div>-->
+    <!--&lt;!&ndash;             <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark"></div></div>' title="Tooltip on bottom">-->
+    <!--<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"> <g class="nc-icon-wrapper" fill="#f67d12"> <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path> </g> </svg>-->
+    <!--</div> &ndash;&gt;-->
+    <!--<div class="col-auto badge badge-info mr-2">external</div>-->
+    <!--<div class="col-12 d-flex justify-content-start align-items-center" style="font-size: 75%">-->
+    <!--<button type="button" class="btn btn-light badge badge-light text-muted">Parent-->
+    <!--</button>-->
+    <!--<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">-->
+    <!--<g class="nc-icon-wrapper" fill="#868e96">-->
+    <!--<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>-->
+    <!--</g>-->
+    <!--</svg>-->
+    <!--<button type="button" class="btn btn-light badge badge-light text-muted">Parent-->
+    <!--2-->
+    <!--</button>-->
+    <!--<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">-->
+    <!--<g class="nc-icon-wrapper" fill="#868e96">-->
+    <!--<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path>-->
+    <!--</g>-->
+    <!--</svg>-->
+    <!--<button type="button" class="btn btn-light badge badge-light text-muted">Parent-->
+    <!--3-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="w-100">-->
+    <!--<small class="pl-4 text-muted font-italic">Providers or some info</small>-->
+    <!--</div>-->
+    <!--</div>-->
 
-                    </div>
+    <!--</div>-->
 
 
-                    <div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">
-                        <div class="col">Result 3</div>
-                        <div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"
-                             data-placement="bottom"
-                             data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'
-                             title="This term is result of merging terms from provider: 'provider1' and 'provider2'">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
-                                <g class="nc-icon-wrapper" fill="#f67d12">
-                                    <path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>
-                                </g>
-                            </svg>
-                        </div>
-                        <div class="col-auto badge badge-warning mr-2">merged</div>
-                        <div class="w-100">
-                            <small class="pl-4 text-muted font-italic">Providers</small>
-                        </div>
-                    </div>
+    <!--<div class="border list-group-item-action row justify-content-start align-items-center m-0 mb-2 box">-->
+    <!--<div class="col">Result 3</div>-->
+    <!--<div class="col-auto" data-delay='{ "show": 200, "hide": 100 }' data-toggle="tooltip"-->
+    <!--data-placement="bottom"-->
+    <!--data-template='<div class="tooltip" role="tooltip"><div class="arrow bg-warning"></div><div class="tooltip-inner bg-warning text-dark border border-dark"></div></div>'-->
+    <!--title="This term is result of merging terms from provider: 'provider1' and 'provider2'">-->
+    <!--<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">-->
+    <!--<g class="nc-icon-wrapper" fill="#f67d12">-->
+    <!--<path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path>-->
+    <!--</g>-->
+    <!--</svg>-->
+    <!--</div>-->
+    <!--<div class="col-auto badge badge-warning mr-2">merged</div>-->
+    <!--<div class="w-100">-->
+    <!--<small class="pl-4 text-muted font-italic">Providers</small>-->
+    <!--</div>-->
+    <!--</div>-->
 
-                </div>
+    <!--</div>-->
 
-                <!-- Result area bottom -->
-                <div class="justify-content-center align-items-center border p-2 mb-2 box">
-                    <small class="text-muted font-italic">Didn´t find your term?</small>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-block" data-toggle="modal"
-                            data-target="#formModal2">Add new term
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!--&lt;!&ndash; Result area bottom &ndash;&gt;-->
+    <!--<div class="justify-content-center align-items-center border p-2 mb-2 box">-->
+    <!--<small class="text-muted font-italic">Didn´t find your term?</small>-->
+    <!--<button type="button" class="btn btn-outline-info btn-sm btn-block" data-toggle="modal"-->
+    <!--data-target="#formModal2">Add new term-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-        <!-- Modal -->
-        <div class="modal fade" id="formModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel2">Add new Term 2</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!--&lt;!&ndash; Modal &ndash;&gt;-->
+    <!--<div class="modal fade" id="formModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"-->
+    <!--aria-hidden="true">-->
+    <!--<div class="modal-dialog" role="document">-->
+    <!--<div class="modal-content">-->
+    <!--<div class="modal-header">-->
+    <!--<h5 class="modal-title" id="exampleModalLabel2">Add new Term 2</h5>-->
+    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--<span aria-hidden="true">&times;</span>-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+    <!--...-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
 
-    </section>
+    <!--</section>-->
 
 </div>
 
