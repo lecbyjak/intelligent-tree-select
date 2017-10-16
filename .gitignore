@@ -2,3 +2,4 @@
 .idea
 app/public/ResizeSensor.js
 app/node_modules/
+app/npm-debug.log
