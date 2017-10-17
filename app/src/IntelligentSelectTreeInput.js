@@ -55,7 +55,7 @@ class IntelligentSelectTreeInput extends Component {
                  role="listbox">
                 <div className="container">
 
-                    <!--RESULT 1-->
+                    {/*<!--RESULT 1-->*/}
                     <div className="row">
                         <div className="empty d-flex justify-content-center align-items-center"
                              style="width: 26px">
@@ -86,7 +86,7 @@ class IntelligentSelectTreeInput extends Component {
                         </div>
                     </div>
 
-                    <!--RESULT 2-->
+                    {/*<!--RESULT 2-->*/}
                     <div className="row">
                         <div className="empty d-flex justify-content-center align-items-center"
                              style="width: 26px">
@@ -115,7 +115,7 @@ class IntelligentSelectTreeInput extends Component {
                     </div>
 
                     <div className="sub-results collapse ml-3" id="sub_result-id">
-                        <!--SUB RESULT 2-->
+                        {/*<!--SUB RESULT 2-->*/}
                         <div className="row">
                             <div className="empty d-flex justify-content-center align-items-center"
                                  style="width: 26px">
@@ -144,7 +144,7 @@ class IntelligentSelectTreeInput extends Component {
                         </div>
 
                         <div className="sub-results collapse ml-3" id="sub_sub_result2-id">
-                            <!--SUB SUB RESULT 2-->
+                            {/*<!--SUB SUB RESULT 2-->*/}
                             <div className="row">
                                 <div className="empty d-flex justify-content-center align-items-center"
                                      style="width: 26px">
@@ -167,7 +167,7 @@ class IntelligentSelectTreeInput extends Component {
                             </div>
                         </div>
 
-                        <!--SUB RESULT 2.1-->
+                        {/*<!--SUB RESULT 2.1-->*/}
                         <div className="row">
                             <div className="empty d-flex justify-content-center align-items-center"
                                  style="width: 26px">
@@ -196,7 +196,7 @@ class IntelligentSelectTreeInput extends Component {
                         </div>
 
                         <div className="sub-results collapse ml-3" id="sub_sub_result21-id">
-                            <!--SUB SUB RESULT 2-->
+                            {/*<!--SUB SUB RESULT 2-->*/}
                             <div className="row">
                                 <div className="empty d-flex justify-content-center align-items-center"
                                      style="width: 26px">
