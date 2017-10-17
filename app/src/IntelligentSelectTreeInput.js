@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import './css/App.css';
-import {Button, Checkbox, Collapse, FormGroup, Well} from "react-bootstrap";
+import {Button, Card, CardBody, Collapse, Form, FormGroup, Input, Label} from "reactstrap";
 
 class IntelligentSelectTreeInput extends Component {
-
 
     constructor(props) {
         super(props);
@@ -11,57 +10,85 @@ class IntelligentSelectTreeInput extends Component {
         this.state = {}
     }
 
+    getInitialState() {
+        return {show: false};
+    }
+
+
     getFilter() {
         return (
-            <div>
-                <Button bsStyle="link" onClick={() => this.setState({filterOpened: !this.state.filterOpened})}>Show
+            <div className="d-flex flex-column align-items-end">
+                <Button color="link" onClick={() => this.setState({filterOpened: !this.state.filterOpened})}>Show
                     filter</Button>
-                <Collapse in={this.state.filterOpened}>
-                    <div>
-                        <Well>
-                            <FormGroup>
-                                <Checkbox inline inputRef={ref => { this.state.providersVisible = ref; }}>
-                                    Show providers/info
-                                </Checkbox>
-                                {' '}
-                                <Checkbox inline inputRef={ref => { this.state.collapseAll = ref; }}>
-                                    Collapse all
-                                </Checkbox>
-                            </FormGroup>
-                        </Well>
-                    </div>
+                <Collapse className="w-100" isOpen={this.state.filterOpened}>
+                    <Card>
+                        <CardBody>
+                            <Form>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input type="checkbox" innerRef={ref => { this.state.providersVisible = ref; }}/>{' '}
+                                        Show providers/info
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check inline>
+                                    <Label check>
+                                        <Input type="checkbox" innerRef={ref => { this.state.showAll = ref; }}/>{' '}
+                                        Show all
+                                    </Label>
+                                </FormGroup>
+                            </Form>
+                        </CardBody>
+                    </Card>
                 </Collapse>
             </div>
         )
     }
 
     getInput() {
-        return (
-            <div className="input-group box border-secondary" id="autocomplete-inputbox-0">
-                <input type="text" className="form-control" placeholder="Search for..."
-                       autoComplete="off" spellCheck="false" role="combobox"
-                       aria-autocomplete="list" aria-expanded="false"
-                       aria-labelledby="search-input" aria-owns="autocomplete-listbox-0" dir="auto"/>
-                <span className="input-group-btn">
-                    <div data-delay='{ "show": 400, "hide": 100 }' data-toggle="tooltip"
-                         data-placement="right"
-                         data-template='<div class="tooltip" role="tooltip"><div class="arrow d-flex bg-info"></div><div class="tooltip-inner bg-info"></div></div>'
-                         title="Didn´t find your term? Add new one.">
-                        <button type="button"
-                                className="btn btn-primary d-flex justify-content-center align-items-center"
-                                data-toggle="modal" data-target="#formModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
-                                <g className="nc-icon-wrapper" fill="#ffffff">
-                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-                                </g>
-                            </svg>
-                        </button>
-                    </div>
-                </span>
+        // const tooltip = (
+        //     <Tooltip id="addNewTerm">Didn´t find your term? Add new one.</Tooltip>
+        // );
+        // return (
+        //     <form id="autocomplete-inputbox-0">
+        //
+        //         <FormGroup>
+        //             <InputGroup>
+        //                 <FormControl type="text"/>
+        //                 <InputGroup.Addon className={"p-0"}>
+        //                     <OverlayTrigger placement="right" overlay={tooltip} delayShow={400} delayHide={100}
+        //                                     onEntering={this.entering} trigger={["hover"]}>
+        //                         <Button bsStyle="primary" onClick={() => this.setState({show: true})}>
+        //                             <Glyphicon glyph="plus"/>
+        //                         </Button>
+        //                     </OverlayTrigger>
+        //                 </InputGroup.Addon>
+        //             </InputGroup>
+        //         </FormGroup>
+        //     </form>
+        // )
+    }
 
+    entering = (e) => {
+        e.children[1].className += " bg-info text-dark font-weight-bold";
+    };
 
-            </div>
-        )
+    getModal() {
+        // return (
+        //     <Modal backdrop={"static"} show={this.state.show} onHide={() => this.setState({show: false})}>
+        //         <Modal.Header>
+        //             <Modal.Title>Create new term</Modal.Title>
+        //         </Modal.Header>
+        //         <Modal.Body>
+        //             <h4>Text in a modal</h4>
+        //             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+        //
+        //         </Modal.Body>
+        //         <Modal.Footer>
+        //             <Button onClick={() => this.setState({show: false})}>Close</Button>
+        //             <Button bsStyle="primary" onClick={() => this.setState({show: false})}>Save changes</Button>
+        //         </Modal.Footer>
+        //     </Modal>
+        // )
     }
 
     getResults() {
@@ -81,6 +108,7 @@ class IntelligentSelectTreeInput extends Component {
                 {this.getFilter()}
                 {this.getInput()}
                 {this.getResults()}
+                {this.getModal()}
             </div>
         )
     }
