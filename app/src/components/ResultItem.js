@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Badge, Button, Col, Collapse, Row} from "reactstrap";
 import TooltipItem from "./TooltipItem";
+import PropTypes from "prop-types";
 
 
 class ResultItem extends Component {
@@ -17,18 +18,10 @@ class ResultItem extends Component {
     }
 
     toggle() {
+        document.getElementById('searchInput').focus();
         this.setState({collapse: !this.state.collapse});
     }
 
-    static defaultProps = {
-        label: 'label',
-        tooltipPlacement: 'bottom',
-        tooltipLabel: 'tooltip',
-        tooltipDelay: {"show": 50, "hide": 50},
-        termCategory: 'term category',
-        badgeLabel: 'external',
-        badgeColor: 'primary',
-    }
 
     getWarningIcon() {
         return (
@@ -73,7 +66,7 @@ class ResultItem extends Component {
             button = this.getTogglePlusIcon()
         }
         return (
-            <Button color="link" onClick={this.toggle} className={"p-0"}>
+            <Button color="link" onClick={() => {this.toggle(); this.props.onClickCollapseButtonFnc}} className={"p-0"}>
                 {button}
             </Button>
         )
@@ -104,21 +97,34 @@ class ResultItem extends Component {
                     <div className={"empty d-flex justify-content-center align-items-center"} style={{width: 26}}>
                         {button}
                     </div>
-                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center"}>
+                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center"} onClick={this.props.onClickFnc}>
+
                         <TooltipItem id={this.props.id + '-1'} label={this.props.label}
                                      tooltipLabel={this.props.tooltipLabel}
                                      tooltipClassName={this.props.tooltipClassName}
                                      tooltipInnerClassName={this.props.tooltipInnerClassName}
                                      tooltipPlacement={"bottom"}/>
+
+                        {this.props.tooltipLabelWarning &&
                         <TooltipItem id={this.props.id + '-2'} colAttribute={"auto"} label={this.getWarningIcon()}
-                                     tooltipLabel={this.props.tooltipLabel} tooltipClassName={this.props.className}
-                                     tooltipInnerClassName={this.props.innerClassName} tooltipPlacement={"bottom"}
+                                     tooltipLabel={this.props.tooltipLabelWarning}
+                                     tooltipClassName={this.props.className}
+                                     tooltipInnerClassName={this.props.innerClassNameWarning}
+                                     tooltipPlacement={"bottom"}
                                      tooltipDelay={{"show": 200, "hide": 100}}/>
-                        <Col xs="auto"><Badge color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
+                        }
+
+                        {this.props.badgeLabel &&
+                        <Col className={"p-0 pl-1 pr-1"} xs="auto"><Badge
+                            color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
+                        }
+                        {this.props.termCategory &&
                         <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} label={this.props.termCategory}
                                      tooltipLabel={this.props.termCategory} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}
                                      tooltipPlacement={"right"}/>
+                        }
+
                     </Col>
                 </Row>
                 {child}
@@ -126,5 +132,29 @@ class ResultItem extends Component {
         )
     }
 }
+
+ResultItem.propTypes = {
+    label: PropTypes.string,
+    tooltipPlacement: PropTypes.oneOf(["bottom", "right", "top", "left"]),
+    tooltipLabel: PropTypes.string,
+    tooltipDelay: PropTypes.oneOfType([
+        PropTypes.shape({show: PropTypes.number, hide: PropTypes.number}),
+        PropTypes.number
+    ]),
+    termCategory: PropTypes.string,
+    badgeLabel: PropTypes.string,
+    badgeColor: PropTypes.string,
+};
+
+
+ResultItem.defaultProps = {
+    label: 'label',
+    tooltipPlacement: 'bottom',
+    tooltipLabel: 'tooltip',
+    tooltipDelay: {"show": 50, "hide": 50},
+    // termCategory: 'term category',
+    // badgeLabel: 'external',
+    badgeColor: 'primary',
+};
 
 export default ResultItem

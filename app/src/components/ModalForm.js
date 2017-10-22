@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Tooltip} from "reactstrap";
+import {Button, InputGroupButton, Modal, ModalBody, ModalFooter, ModalHeader, Tooltip} from "reactstrap";
 
 class ModalForm extends Component {
 
@@ -14,11 +14,6 @@ class ModalForm extends Component {
     }
 
 
-    static defaultProps = {
-            buttonColor: 'primary',
-            tooltipLabel: 'Didn´t find your term? Add new one.'
-    };
-
     getButtonLabel() {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
@@ -31,7 +26,7 @@ class ModalForm extends Component {
 
     render() {
         return (
-            <div>
+            <InputGroupButton>
                 <Button color={this.props.buttonColor} className={"d-flex justify-content-center  align-items-center"}
                         onClick={() => {this.setState({modal: true}); this.setState({tooltipOpen: false})}} id={this.state.id}>{this.getButtonLabel()}</Button>
                 <Tooltip innerClassName={"bg-light text-dark border border-dark"} delay={{show: 300, hide: 100}} placement="right" isOpen={this.state.tooltipOpen}
@@ -52,10 +47,14 @@ class ModalForm extends Component {
                         <Button color="secondary" onClick={() => {this.setState({modal: false})}}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
-            </div>
+            </InputGroupButton>
         )
     }
 }
 
+ModalForm.defaultProps = {
+    buttonColor: 'primary',
+    tooltipLabel: 'Didn´t find your term? Add new one.'
+};
 
 export default ModalForm;

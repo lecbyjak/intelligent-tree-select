@@ -5,3 +5,7 @@ body {
 
 body #intelligent-select-tree-root {
   width: 500px; }
+
+#intelligent-select-tree-root button{
+  cursor: pointer
+}
