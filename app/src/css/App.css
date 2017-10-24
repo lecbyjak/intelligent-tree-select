@@ -22,3 +22,9 @@
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.5); }
+
+.result-item{
+      overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

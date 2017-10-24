@@ -26,7 +26,7 @@ class IntelligentSelectTreeInput extends Component {
             options: [],
             focused: false,
         };
-        this.clicked=false;
+        this.clicked = false;
         console.log('IntelligentSelectTreeInput state: ', this.state)
     }
 
@@ -37,8 +37,14 @@ class IntelligentSelectTreeInput extends Component {
             () => {
                 console.log('local options: ', this.state.options)
             });
-        this.autocompleteDropdown.addEventListener('mouseenter', (e)=> {console.log(e); this.clicked=true});
-        this.autocompleteDropdown.addEventListener('mouseleave', (e)=> {console.log(e); this.clicked=false});
+        this.autocompleteDropdown.addEventListener('mouseenter', (e) => {
+            //console.log(e);
+            this.clicked = true
+        });
+        this.autocompleteDropdown.addEventListener('mouseleave', (e) => {
+            //console.log(e);
+            this.clicked = false
+        });
 
     }
 
@@ -57,6 +63,11 @@ class IntelligentSelectTreeInput extends Component {
         return this.state.options.filter(option => option.name.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
     }
 
+    setCurrentSearch(newSearch) {
+        this.setState({currentSearch: newSearch});
+        this.handleFocus()
+    }
+
     getRelevantResults() {
         /*TODO all logic here*/
         if (this.state.focused) {
@@ -67,12 +78,11 @@ class IntelligentSelectTreeInput extends Component {
                 let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
                 resultItems.push(
                     <ResultItem hasChild={true} tooltipLabel={resultOption.name}
-                                label={labelName} termCategory={resultOption.category}
-                                id={resultOption.id} key={i}
-                                onClickFnc={() => {
-                                    this.setState({currentSearch: resultOption.name});
-                                    this.handleFocus()
-                                }}
+                                label={resultOption.name} termCategory={resultOption.category}
+                                id={i} key={i}
+                                badgeLabel={"external"} badgeColor={"primary"}
+                                tooltipLabelWarning={"not verified"} innerClassNameWarning={"text-dark bg-warning"}
+                                onClickFnc={this.setCurrentSearch.bind(this)}
                     />
                 )
             }
@@ -85,15 +95,12 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     handleFocus() {
-        console.log('handle focus')
         this.setState({focused: true});
         this.autocompleteInput.focus()
     }
 
     handleBlur() {
-        console.log('handle blur')
-        if (!this.clicked){
-            console.log('close dropdown')
+        if (!this.clicked) {
             this.setState({focused: false})
         }
 
@@ -108,7 +115,7 @@ class IntelligentSelectTreeInput extends Component {
         let clearButton = () => {
             if (this.state.currentSearch.length > 0 && this.state.currentSearch !== " ") {
                 return (
-                    <Button color={'link'} className={'text-secondary'} onClick={()=>this.clearInput()}>
+                    <Button color={'link'} className={'text-secondary'} onClick={() => this.clearInput()}>
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
                              x="0px" y="0px" viewBox="0 0 16 16" xmlSpace="preserve" width="16" height="16">
                             <g className="nc-icon-wrapper" fill="#444444">
@@ -124,7 +131,9 @@ class IntelligentSelectTreeInput extends Component {
         };
 
         return (
-            <div className="container-fluid" ref={(div) => { this.autocompleteComponent = div; }}>
+            <div className="container-fluid" ref={(div) => {
+                this.autocompleteComponent = div;
+            }}>
                 <Filter/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
@@ -135,14 +144,18 @@ class IntelligentSelectTreeInput extends Component {
                            }}
                            onFocus={() => this.handleFocus()}
                            onBlur={() => this.handleBlur()}
-                           innerRef={(input) => { this.autocompleteInput = input}}
+                           innerRef={(input) => {
+                               this.autocompleteInput = input
+                           }}
                     />
                     {clearButton()}
                     <ModalForm/>
                 </InputGroup>
 
 
-                <div className="border border-secondary border-top-0 box result-area" ref={(div) => { this.autocompleteDropdown = div}}  id={"autocomplete-listbox-0"}
+                <div className="border border-secondary border-top-0 box result-area" ref={(div) => {
+                    this.autocompleteDropdown = div
+                }} id={"autocomplete-listbox-0"}
                      role="listbox">
                     {this.getRelevantResults()}
                 </div>

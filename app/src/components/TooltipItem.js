@@ -20,7 +20,7 @@ class TooltipItem extends React.Component {
 
     render() {
         return (
-            <Col className={"p-0 pl-1 pr-1"} xs={this.props.colAttribute} id={'Tooltip-' + this.props.id}>
+            <Col className={"p-0 pl-1 pr-1 "+this.props.className} xs={this.props.colAttribute} id={'Tooltip-' + this.props.id}  style={this.props.style}>
                 {this.props.label}
                 <Tooltip className={this.props.tooltipClassName} innerClassName={this.props.tooltipInnerClassName}
                          placement={this.props.tooltipPlacement} isOpen={this.state.tooltipOpen}

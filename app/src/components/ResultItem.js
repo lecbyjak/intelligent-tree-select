@@ -60,7 +60,7 @@ class ResultItem extends Component {
             button = this.getTogglePlusIcon()
         }
         return (
-            <Button color="link" onClick={() =>{this.toggle()} } className={"p-0"}>
+            <Button color="link" onClick={() =>{this.toggle()} } className={"p-0 m-auto"}>
                 {button}
             </Button>
         )
@@ -98,7 +98,7 @@ class ResultItem extends Component {
             let resultOption = allChilds[i];
             let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
             resultItems.push(
-                <ResultItem hasChild={true} tooltipLabel={resultOption.name}
+                <ResultItem hasChild={false} tooltipLabel={resultOption.name}
                             label={labelName}
                             id={this.props.id +"-"+i} key={this.props.id +"-"+i}
                             onClickFnc={this.props.onClickFnc}
@@ -126,16 +126,17 @@ class ResultItem extends Component {
         return (
             <div>
                 <Row>
-                    <div className={"empty d-flex justify-content-center align-items-center"} style={{width: 26}}>
+                    <div className={"empty d-flex"} style={{width: 26}}>
                         {button}
                     </div>
-                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center"} onClick={this.props.onClickFnc}>
+                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center p-0"} onClick={()=>this.props.onClickFnc(this.props.label)}>
 
                         <TooltipItem id={this.props.id + '-1'} label={this.props.label}
+                                     className={"result-item"}
                                      tooltipLabel={this.props.tooltipLabel}
                                      tooltipClassName={this.props.tooltipClassName}
                                      tooltipInnerClassName={this.props.tooltipInnerClassName}
-                                     tooltipPlacement={"bottom"}/>
+                                     tooltipPlacement={"bottom"} style={{maxWidth : 420}} />
 
                         {this.props.tooltipLabelWarning &&
                         <TooltipItem id={this.props.id + '-2'} colAttribute={"auto"} label={this.getWarningIcon()}
@@ -151,9 +152,10 @@ class ResultItem extends Component {
                             color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
                         }
                         {this.props.termCategory &&
-                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{'max-width' : 100+'px'}} label={this.props.termCategory.toString()}
+                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{maxWidth : 150}} label={this.props.termCategory.toString()}
                                      tooltipLabel={this.props.termCategory.toString()} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}
+                                     className={"result-item"}
                                      tooltipPlacement={"right"}/>
                         }
 
