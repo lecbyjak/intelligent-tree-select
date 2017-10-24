@@ -18,6 +18,7 @@ class ResultItem extends Component {
     }
 
     toggle() {
+        this.props.onClickCollapseButtonFnc
         document.getElementById('searchInput').focus();
         this.setState({collapse: !this.state.collapse});
     }
@@ -66,7 +67,7 @@ class ResultItem extends Component {
             button = this.getTogglePlusIcon()
         }
         return (
-            <Button color="link" onClick={() => {this.toggle(); this.props.onClickCollapseButtonFnc}} className={"p-0"}>
+            <Button color="link" onClick={() =>{this.toggle()} } className={"p-0"}>
                 {button}
             </Button>
         )

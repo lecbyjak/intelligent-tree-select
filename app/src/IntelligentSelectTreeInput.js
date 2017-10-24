@@ -26,10 +26,7 @@ class IntelligentSelectTreeInput extends Component {
             options: [],
             focused: false,
         };
-        this.handleBlue = this.handleBlue.bind(this);
-        this.handleFocus = this.handleFocus.bind(this);
-        this.clearInput = this.clearInput.bind(this),
-            console.log('IntelligentSelectTreeInput state: ', this.state)
+        console.log('IntelligentSelectTreeInput state: ', this.state)
     }
 
     componentDidMount() {
@@ -39,6 +36,8 @@ class IntelligentSelectTreeInput extends Component {
             () => {
                 console.log('local options: ', this.state.options)
             });
+        this.autocompleteComponent.addEventListener('click', (e)=> e.preventDefault());
+        //document.addEventListener('click', ()=>{this.handleBlur()});
 
     }
 
@@ -69,10 +68,9 @@ class IntelligentSelectTreeInput extends Component {
                                 label={labelName}
                                 id={i} key={i}
                                 onClickFnc={() => {
-                                    this.setState({currentSearch: resultOption.name})
-                                    //this.handleFocus()
+                                    this.setState({currentSearch: resultOption.name});
                                 }}
-                                onClickCollapseButtonFnc={//this.handleFocus()}
+                                onClickCollapseButtonFnc={()=>this.handleFocus()}
                     />
                 )
             }
@@ -85,11 +83,14 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     handleFocus() {
+        console.log('handle focus')
         this.setState({focused: true});
     }
 
-    handleBlue() {
-        setTimeout(() => this.setState({focused: false}), 200)
+    handleBlur() {
+        console.log('handle blur')
+        // setTimeout(() => this.setState({focused: false}), 200)
+        this.setState({focused: false})
 
     }
 
@@ -101,7 +102,7 @@ class IntelligentSelectTreeInput extends Component {
         let clearButton = () => {
             if (this.state.currentSearch.length > 0 && this.state.currentSearch !== " ") {
                 return (
-                    <Button color={'link'} className={'text-secondary'} onClick={this.clearInput}>
+                    <Button color={'link'} className={'text-secondary'} onClick={()=>this.clearInput()}>
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
                              x="0px" y="0px" viewBox="0 0 16 16" xmlSpace="preserve" width="16" height="16">
                             <g className="nc-icon-wrapper" fill="#444444">
@@ -117,24 +118,24 @@ class IntelligentSelectTreeInput extends Component {
         };
 
         return (
-            <div className="container-fluid">
+            <div className="container-fluid" ref={(input) => { this.autocompleteComponent = input; }}>
                 <Filter/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
                     <Input placeholder="Search ..." type="text" name="search" id="searchInput"
-                           value={this.state.currentSearch}
+                           value={this.state.currentSearch} autoComplete={"off"}
                            onChange={e => {
                                this.setState({currentSearch: e.target.value.trim()})
-
                            }}
-                           onFocus={this.handleFocus} onBlur={this.handleBlue}
+                           onFocus={() => this.handleFocus()}
+
                     />
                     {clearButton()}
                     <ModalForm/>
                 </InputGroup>
 
 
-                <div className="border border-secondary border-top-0 box result-area" id={"autocomplete-listbox-0"}
+                <div className="border border-secondary border-top-0 box result-area" ref={(div) => { this.autocompleteDropdown = div}}  id={"autocomplete-listbox-0"}
                      role="listbox">
                     {this.getRelevantResults()}
                 </div>
