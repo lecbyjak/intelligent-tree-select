@@ -5,11 +5,11 @@
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
     "node-sass-chokidar": "0.0.3",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.14",
-    "reactstrap": "^5.0.0-alpha.3",
-    "prop-types": "latest"
+    "reactstrap": "^5.0.0-alpha.3"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/css/ -o src/css/",

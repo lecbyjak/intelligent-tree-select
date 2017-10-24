@@ -26,6 +26,7 @@ class IntelligentSelectTreeInput extends Component {
             options: [],
             focused: false,
         };
+        this.clicked=false;
         console.log('IntelligentSelectTreeInput state: ', this.state)
     }
 
@@ -36,8 +37,8 @@ class IntelligentSelectTreeInput extends Component {
             () => {
                 console.log('local options: ', this.state.options)
             });
-        this.autocompleteComponent.addEventListener('click', (e)=> e.preventDefault());
-        //document.addEventListener('click', ()=>{this.handleBlur()});
+        this.autocompleteDropdown.addEventListener('mouseenter', (e)=> {console.log(e); this.clicked=true});
+        this.autocompleteDropdown.addEventListener('mouseleave', (e)=> {console.log(e); this.clicked=false});
 
     }
 
@@ -46,7 +47,8 @@ class IntelligentSelectTreeInput extends Component {
             return {
                 id: option['@id'],
                 name: option[RDFS_LABEL][0]['@value'],
-                description: option[RDFS_COMMENT][0]['@value']
+                description: option[RDFS_COMMENT][0]['@value'],
+                category: option['@type']
             };
         });
     }
@@ -57,7 +59,7 @@ class IntelligentSelectTreeInput extends Component {
 
     getRelevantResults() {
         /*TODO all logic here*/
-        if (this.state.currentSearch.length > 0 || this.state.focused) {
+        if (this.state.focused) {
             let filteredResults = this.filterResults();
             let resultItems = [];
             for (let i = 0; i < filteredResults.length; i++) {
@@ -65,12 +67,12 @@ class IntelligentSelectTreeInput extends Component {
                 let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
                 resultItems.push(
                     <ResultItem hasChild={true} tooltipLabel={resultOption.name}
-                                label={labelName}
-                                id={i} key={i}
+                                label={labelName} termCategory={resultOption.category}
+                                id={resultOption.id} key={i}
                                 onClickFnc={() => {
                                     this.setState({currentSearch: resultOption.name});
+                                    this.handleFocus()
                                 }}
-                                onClickCollapseButtonFnc={()=>this.handleFocus()}
                     />
                 )
             }
@@ -85,12 +87,16 @@ class IntelligentSelectTreeInput extends Component {
     handleFocus() {
         console.log('handle focus')
         this.setState({focused: true});
+        this.autocompleteInput.focus()
     }
 
     handleBlur() {
         console.log('handle blur')
-        // setTimeout(() => this.setState({focused: false}), 200)
-        this.setState({focused: false})
+        if (!this.clicked){
+            console.log('close dropdown')
+            this.setState({focused: false})
+        }
+
 
     }
 
@@ -118,7 +124,7 @@ class IntelligentSelectTreeInput extends Component {
         };
 
         return (
-            <div className="container-fluid" ref={(input) => { this.autocompleteComponent = input; }}>
+            <div className="container-fluid" ref={(div) => { this.autocompleteComponent = div; }}>
                 <Filter/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
@@ -128,7 +134,8 @@ class IntelligentSelectTreeInput extends Component {
                                this.setState({currentSearch: e.target.value.trim()})
                            }}
                            onFocus={() => this.handleFocus()}
-
+                           onBlur={() => this.handleBlur()}
+                           innerRef={(input) => { this.autocompleteInput = input}}
                     />
                     {clearButton()}
                     <ModalForm/>
@@ -143,8 +150,8 @@ class IntelligentSelectTreeInput extends Component {
 
                 <Jumbotron className={"fixed-bottom"}>
                     <h3>DEBUG:</h3>
-                    <b>current input: </b> {this.state.currentSearch}
-                    <br/>
+                    <b>current input: </b> {this.state.currentSearch}<br/>
+                    <b>clicked : </b> {this.clicked}<br/>
                 </Jumbotron>
 
             </div>

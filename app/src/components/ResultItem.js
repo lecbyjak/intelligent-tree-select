@@ -8,17 +8,10 @@ class ResultItem extends Component {
 
     constructor(props) {
         super(props);
-        this.toggle = this.toggle.bind(this);
-        this.getCollapseButton = this.getCollapseButton.bind(this);
-        this.getChildRowElem = this.getChildRowElem.bind(this);
-        this.getTogglePlusIcon = this.getTogglePlusIcon.bind(this);
-        this.getToggleMinusIcon = this.getToggleMinusIcon.bind(this);
-        this.getWarningIcon = this.getWarningIcon.bind(this);
         this.state = {collapse: false};
     }
 
     toggle() {
-        this.props.onClickCollapseButtonFnc
         document.getElementById('searchInput').focus();
         this.setState({collapse: !this.state.collapse});
     }
@@ -73,11 +66,49 @@ class ResultItem extends Component {
         )
     }
 
+    getAllChilds(){
+        //TODO implement this method
+        return (
+            [
+                {
+                    id: "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104-child",
+                    type: [
+                        "http://onto.fel.cvut.cz/ontologies/eccairs/occurrence-category"
+                    ],
+                    comment: "Usage Notes:\r\n• Applicable both to aircraft under tow by winch or by another aircraft or to aircraft executing towing.\r\n• To be used in events only after reaching airborne phase.\r\n• Includes loss of control because of entering the towing aircraft's wake turbulence and events where of airspeed is out of limits during tow.",
+                    name: "104 - GTOW: Glider towing related events - child",
+                },
+                {
+                    id: "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105 - child",
+                    type: [
+                        "http://onto.fel.cvut.cz/ontologies/eccairs/occurrence-category"
+                    ],
+                    comment: "Usage notes:  \r\n\r\nIncludes: \r\n- Crewmembers unable to perform duties due to illness. \r\n- Medical emergencies due to illness involving any person on board an aircraft, including passengers and crew. \r\n\r\nDoes NOT include: \r\n- Injuries sustained during flight operations. Injuries are coded as— \r\no WSTRW for injuries sustained as a result of thunderstorms or wind shear, \r\no TURB for injuries sustained as a result of turbulence (excluding turbulence caused by wind shear and/or thunderstorms), \r\no SEC for injuries resulting from intentional acts (suicide, homicide, acts of violence, or self-inflicted injury), \r\no CABIN for any injury sustained on an aircraft not occurring as a result of any events above, such as sprains, cuts, or burns resulting from normal cabin operations (handling bags, operating galley equipment, etc.) \r\n- Injuries, temporary blindness, or other incapacitation resulting from laser attacks, which are coded as SEC. \r\n\r\n\r\nCrossover to/from other occurrence categories: \r\n- Medical emergencies involving persons other than crew members or a medical evacuation patient were coded as CABIN before October 2013. All medical emergencies are now coded as MED. \r\n",
+                    name: "105 - MED: Medical - child",
+
+                }
+            ]
+        )
+    }
+
     getChildRowElem() {
+        let allChilds = this.getAllChilds();
+        let resultItems = [];
+        for (let i = 0; i < allChilds.length; i++) {
+            let resultOption = allChilds[i];
+            let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
+            resultItems.push(
+                <ResultItem hasChild={true} tooltipLabel={resultOption.name}
+                            label={labelName}
+                            id={this.props.id +"-"+i} key={this.props.id +"-"+i}
+                            onClickFnc={this.props.onClickFnc}
+                />
+            )
+        }
         return (
             <Collapse isOpen={this.state.collapse}>
                 <div className="sub-results ml-3">
-                    <ResultItem id={this.props.id + '-0'}/>
+                    {resultItems}
                 </div>
             </Collapse>
         )
@@ -120,8 +151,8 @@ class ResultItem extends Component {
                             color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
                         }
                         {this.props.termCategory &&
-                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} label={this.props.termCategory}
-                                     tooltipLabel={this.props.termCategory} tooltipClassName={"bg-light"}
+                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{'max-width' : 100+'px'}} label={this.props.termCategory.toString()}
+                                     tooltipLabel={this.props.termCategory.toString()} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}
                                      tooltipPlacement={"right"}/>
                         }
@@ -142,7 +173,7 @@ ResultItem.propTypes = {
         PropTypes.shape({show: PropTypes.number, hide: PropTypes.number}),
         PropTypes.number
     ]),
-    termCategory: PropTypes.string,
+    termCategory: PropTypes.array,
     badgeLabel: PropTypes.string,
     badgeColor: PropTypes.string,
 };
