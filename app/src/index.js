@@ -2,8 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import IntelligentSelectTreeInput from './IntelligentSelectTreeInput';
+import {IntelligentSelectTreeInput, ProviderTypeEnum} from  "./IntelligentSelectTreeInput";
+
 import myJSON from './options.json'
+import myJSON2 from './options2.json'
+
 
 ReactDOM.render(<IntelligentSelectTreeInput filterBy={"test2"}
                                             displayValue={"test"}
@@ -11,8 +14,8 @@ ReactDOM.render(<IntelligentSelectTreeInput filterBy={"test2"}
                                             displayParent={true}
                                             compactMode={true}
                                             providers={[
-                                                {'type':"file", 'destination':myJSON},
-                                                {'type':"rawData", 'value':[{'tst':"tse"}, {'asdfsas':'dasfas'}]}
+                                                {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON},
+                                                {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON2}
                                             ]}
 
 

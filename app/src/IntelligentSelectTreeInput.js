@@ -33,10 +33,19 @@ class IntelligentSelectTreeInput extends Component {
     componentDidMount() {
         let width = document.getElementById("autocomplete-inputbox-0").offsetWidth;
         document.getElementById("autocomplete-listbox-0").style.minWidth = width + 'px';
-        this.setState({options: this.processOptions(this.state.providers[0].destination)},
+
+        let options=[];
+        for (let i=0; i<this.state.providers.length; i++){
+            if (this.state.providers[i].type === ProviderTypeEnum.OPTIONS){
+                options = options.concat(this.processOptions(this.state.providers[i].value));
+            }
+        }
+        options = this.mergeOptions(options);
+        this.setState({options: options},
             () => {
-                console.log('local options: ', this.state.options)
+                console.log('local options: ', this.state.options);
             });
+
         this.autocompleteDropdown.addEventListener('mouseenter', (e) => {
             //console.log(e);
             this.clicked = true
@@ -48,6 +57,23 @@ class IntelligentSelectTreeInput extends Component {
 
     }
 
+    mergeOptions(options){
+        console.log('all', options)
+        for (let i = 0; i<options.length; i++){
+            let conflicts = options.filter(x => x.id === options[i].id);
+            if (conflicts.length > 1){
+                let res = Object.assign(conflicts[0], ...conflicts);
+                console.log(conflicts)
+                console.log(res)
+                for (let j = 1; j<conflicts.length;j++){
+                    options = options.filter(conflicts[j]);
+                }
+
+                console.log(res);
+            }
+        }
+        return options
+    }
     processOptions(options) {
         return options.map(option => {
             return {
@@ -56,7 +82,7 @@ class IntelligentSelectTreeInput extends Component {
                 description: option[RDFS_COMMENT][0]['@value'],
                 category: option['@type']
             };
-        });
+        })
     }
 
     filterResults() {
@@ -173,5 +199,11 @@ class IntelligentSelectTreeInput extends Component {
 
 }
 
+const ProviderTypeEnum = {
+    OPTIONS: Symbol('OPTIONS'),
+    GET_ALL: Symbol('GET_ALL'),
+    SEARCH: Symbol('SEARCH'),
+};
 
-export default IntelligentSelectTreeInput;
+
+export {IntelligentSelectTreeInput, ProviderTypeEnum};
