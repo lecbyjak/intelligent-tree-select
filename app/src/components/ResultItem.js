@@ -8,7 +8,7 @@ class ResultItem extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {collapse: false};
+        this.state = {collapse: this.props.compactMode};
     }
 
     toggle() {
@@ -96,10 +96,9 @@ class ResultItem extends Component {
         let resultItems = [];
         for (let i = 0; i < allChilds.length; i++) {
             let resultOption = allChilds[i];
-            let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
             resultItems.push(
-                <ResultItem hasChild={false} tooltipLabel={resultOption.name}
-                            label={labelName}
+                <ResultItem hasChild={false} tooltipLabel={resultOption.label}
+                            label={resultOption.label}
                             id={this.props.id +"-"+i} key={this.props.id +"-"+i}
                             onClickFnc={this.props.onClickFnc}
                 />
@@ -147,11 +146,11 @@ class ResultItem extends Component {
                                      tooltipDelay={{"show": 200, "hide": 100}}/>
                         }
 
-                        {this.props.badgeLabel &&
+                        {this.props.badgeLabel && this.props.displayTermState &&
                         <Col className={"p-0 pl-1 pr-1"} xs="auto"><Badge
                             color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
                         }
-                        {this.props.termCategory &&
+                        {this.props.termCategory && this.props.displayTermCategory &&
                         <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{maxWidth : 150}} label={this.props.termCategory.toString()}
                                      tooltipLabel={this.props.termCategory.toString()} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}

@@ -20,14 +20,20 @@ class Filter extends Component {
                             <Form >
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" />{' '}
-                                        Show providers/info
+                                        <Input type="checkbox" name="displayTermState" onChange={this.props.handleInputChange} checked={this.props.displayTermState}/>{' '}
+                                        Display Term State
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" />{' '}
+                                        <Input type="checkbox" name="compactMode" onChange={this.props.handleInputChange} checked={this.props.compactMode}/>{' '}
                                         Show all
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="checkbox" name="displayTermCategory" onChange={this.props.handleInputChange} checked={this.props.displayTermCategory}/>{' '}
+                                        Display Term Category
                                     </Label>
                                 </FormGroup>
                             </Form>

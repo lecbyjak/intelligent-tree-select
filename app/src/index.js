@@ -8,11 +8,8 @@ import myJSON from './options.json'
 import myJSON2 from './options2.json'
 
 
-ReactDOM.render(<IntelligentSelectTreeInput filterBy={"test2"}
-                                            displayValue={"test"}
-                                            displayTermState={true}
+ReactDOM.render(<IntelligentSelectTreeInput filterBy={"http://www.w3.org/2000/01/rdf-schema#label"}
                                             displayParent={true}
-                                            compactMode={true}
                                             providers={[
                                                 {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON},
                                                 {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON2}

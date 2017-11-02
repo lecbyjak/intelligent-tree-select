@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import './css/App.css';
 import Filter from "./components/Filter";
-import {Button, Container, Input, InputGroup, Jumbotron} from "reactstrap";
+import {Button, Container, Input, InputGroup} from "reactstrap";
 import ModalForm from "./components/ModalForm";
 import ResultItem from "./components/ResultItem";
-
-const RDFS_LABEL = 'http://www.w3.org/2000/01/rdf-schema#label';
-const RDFS_COMMENT = 'http://www.w3.org/2000/01/rdf-schema#comment';
-
 
 class IntelligentSelectTreeInput extends Component {
 
@@ -16,9 +12,9 @@ class IntelligentSelectTreeInput extends Component {
         this.state = {
             currentSearch: "",
             providers: props.providers,
-            filterBy: props.filterBy,
             displayValue: props.displayValue,
             displayTermState: props.displayTermState,
+            displayTermCategory: props.displayTermCategory,
             displayParent: props.displayParent,
             compactMode: props.compactMode,
             searchHistory: [],
@@ -27,21 +23,27 @@ class IntelligentSelectTreeInput extends Component {
             focused: false,
         };
         this.clicked = false;
-        console.log('IntelligentSelectTreeInput state: ', this.state)
+        //console.log('IntelligentSelectTreeInput state: ', this.state)
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        // console.log("========UPDATE=========");
+        // console.log('nextProps', nextProps);
+        // console.log('nextState', nextState)
     }
 
     componentDidMount() {
         let width = document.getElementById("autocomplete-inputbox-0").offsetWidth;
         document.getElementById("autocomplete-listbox-0").style.minWidth = width + 'px';
 
-        let options=[];
-        for (let i=0; i<this.state.providers.length; i++){
-            if (this.state.providers[i].type === ProviderTypeEnum.OPTIONS){
-                options = options.concat(this.processOptions(this.state.providers[i].value));
+        let options = [];
+        for (let i = 0; i < this.state.providers.length; i++) {
+            if (this.state.providers[i].type === ProviderTypeEnum.OPTIONS) {
+                options = options.concat(this.state.providers[i].value);
             }
         }
         options = this.mergeOptions(options);
-        this.setState({options: options},
+        this.setState({options: this.processOptions(options)},
             () => {
                 console.log('local options: ', this.state.options);
             });
@@ -57,41 +59,40 @@ class IntelligentSelectTreeInput extends Component {
 
     }
 
-    mergeOptions(options){
-        console.log('all', options)
-        for (let i = 0; i<options.length; i++){
-            let conflicts = options.filter(x => x.id === options[i].id);
-            if (conflicts.length > 1){
-                let res = Object.assign(conflicts[0], ...conflicts);
-                console.log(conflicts)
-                console.log(res)
-                for (let j = 1; j<conflicts.length;j++){
-                    options = options.filter(conflicts[j]);
-                }
+    mergeOptions(options) {
+        let mergedArr = [];
+        while (options.length > 0) {
+            let currOption = options.shift();
+            let conflicts = options.filter(object => object['@id'] === currOption['@id']);
 
-                console.log(res);
-            }
+            mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
+            conflicts.forEach(conflict => options.splice(
+                options.findIndex(el => el['@id'] === conflict['@id']), 1)
+            );
         }
-        return options
+        return mergedArr
     }
+
     processOptions(options) {
         return options.map(option => {
+            let category = option['@type'];
+            let label = option[this.props.filterBy][0]['@value'];
             return {
                 id: option['@id'],
-                name: option[RDFS_LABEL][0]['@value'],
-                description: option[RDFS_COMMENT][0]['@value'],
-                category: option['@type']
+                label: label,
+                category: category
             };
         })
     }
 
     filterResults() {
-        return this.state.options.filter(option => option.name.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
+        return this.state.options.filter(option => option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
     }
 
     setCurrentSearch(newSearch) {
         this.setState({currentSearch: newSearch});
         this.handleFocus()
+        console.log(this.state.options)
     }
 
     getRelevantResults() {
@@ -101,17 +102,20 @@ class IntelligentSelectTreeInput extends Component {
             let resultItems = [];
             for (let i = 0; i < filteredResults.length; i++) {
                 let resultOption = filteredResults[i];
-                let labelName = (resultOption.name.length > 60 ? resultOption.name.substring(0, 60) + '... ' : resultOption.name);
                 resultItems.push(
-                    <ResultItem hasChild={true} tooltipLabel={resultOption.name}
-                                label={resultOption.name} termCategory={resultOption.category}
+                    <ResultItem hasChild={true} tooltipLabel={resultOption.label}
+                                label={resultOption.label} termCategory={resultOption.category}
                                 id={i} key={i}
                                 badgeLabel={"external"} badgeColor={"primary"}
                                 tooltipLabelWarning={"not verified"} innerClassNameWarning={"text-dark bg-warning"}
                                 onClickFnc={this.setCurrentSearch.bind(this)}
+                                displayTermState={this.state.displayTermState}
+                                displayTermCategory={this.state.displayTermCategory}
+                                compactMode={this.state.compactMode}
                     />
                 )
             }
+            //this.setState({relevantResults: resultItems});
             return (
                 <Container>
                     {resultItems}
@@ -129,8 +133,16 @@ class IntelligentSelectTreeInput extends Component {
         if (!this.clicked) {
             this.setState({focused: false})
         }
+    }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
+        this.setState({
+            [name]: value
+        });
     }
 
     clearInput() {
@@ -160,7 +172,10 @@ class IntelligentSelectTreeInput extends Component {
             <div className="container-fluid" ref={(div) => {
                 this.autocompleteComponent = div;
             }}>
-                <Filter/>
+                <Filter handleInputChange={(e) => this.handleInputChange(e)}
+                        compactMode={this.state.compactMode}
+                        displayTermState={this.state.displayTermState}
+                        displayTermCategory={this.state.displayTermCategory}/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
                     <Input placeholder="Search ..." type="text" name="search" id="searchInput"
@@ -185,14 +200,6 @@ class IntelligentSelectTreeInput extends Component {
                      role="listbox">
                     {this.getRelevantResults()}
                 </div>
-
-
-                <Jumbotron className={"fixed-bottom"}>
-                    <h3>DEBUG:</h3>
-                    <b>current input: </b> {this.state.currentSearch}<br/>
-                    <b>clicked : </b> {this.clicked}<br/>
-                </Jumbotron>
-
             </div>
         )
     }
