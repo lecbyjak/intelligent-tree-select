@@ -4,13 +4,7 @@
     "@type": [
       "http://onto.fel.cvut.cz/ontologies/eccairs/occurrence-category"
     ],
-    "http://www.w3.org/2000/01/rdf-schema#comment": [
-      {
-        "@language": "en",
-        "@value": "Usage Notes:\r\n• This category includes the intentional maneuvering of the aircraft to avoid a collision with terrain, objects/obstacles, weather or other aircraft (Note: The effect of intentional maneuvering is the key consideration).\r\n• Abrupt maneuvering may also result in a loss of control or system/component failure or malfunction. In this case, the event is coded under both categories (e.g., AMAN and Loss of Control–Inflight (LOC–I), AMAN and System/Component Failure or Malfunction (Non- Powerplant) (SCF–NP), or AMAN and System/Component Failure or Malfunction\r\n(Powerplant) (SCF–PP)).\r\n• Abrupt maneuvering may also occur on ground; examples include hard braking maneuver, rapid change of direction to avoid collisions, etc.\r\n"
-      }
-    ],
-      "http://www.w3.org/2000/01/rdf-schema#label": [
+     "http://www.w3.org/2000/01/rdf-schema#label": [
       {
         "@language": "en",
         "@value": "1 - AMAN: Abrupt maneuvre"
