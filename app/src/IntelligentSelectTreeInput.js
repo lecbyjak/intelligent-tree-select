@@ -4,6 +4,9 @@ import Filter from "./components/Filter";
 import {Button, Container, Input, InputGroup} from "reactstrap";
 import ModalForm from "./components/ModalForm";
 import ResultItem from "./components/ResultItem";
+import OptionsUtils from "./utils/OptionsUtils";
+import SearchHistory from "./utils/SearchHistory";
+import Settings from "./utils/Settings";
 
 class IntelligentSelectTreeInput extends Component {
 
@@ -11,25 +14,20 @@ class IntelligentSelectTreeInput extends Component {
         super(props);
         this.state = {
             currentSearch: "",
-            providers: props.providers,
             displayValue: props.displayValue,
             displayTermState: props.displayTermState,
             displayTermCategory: props.displayTermCategory,
             displayParent: props.displayParent,
             compactMode: props.compactMode,
-            searchHistory: [],
             relevantResults: [],
             options: [],
             focused: false,
         };
         this.clicked = false;
-        //console.log('IntelligentSelectTreeInput state: ', this.state)
-    }
 
-    componentWillUpdate(nextProps, nextState) {
-        // console.log("========UPDATE=========");
-        // console.log('nextProps', nextProps);
-        // console.log('nextState', nextState)
+        this.settings = new Settings(this.props.filterBy, this.props.termLifetime);
+        this.optionsUtils = new OptionsUtils(this.settings);
+        this.searchHistory = new SearchHistory(this.settings)
     }
 
     componentDidMount() {
@@ -37,68 +35,34 @@ class IntelligentSelectTreeInput extends Component {
         document.getElementById("autocomplete-listbox-0").style.minWidth = width + 'px';
 
         let options = [];
-        for (let i = 0; i < this.state.providers.length; i++) {
-            if (this.state.providers[i].type === ProviderTypeEnum.OPTIONS) {
-                options = options.concat(this.state.providers[i].value);
+        for (let i = 0; i < this.props.providers.length; i++) {
+            if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS) {
+                options = options.concat(this.props.providers[i].value);
             }
         }
-        options = this.mergeOptions(options);
-        this.setState({options: this.processOptions(options)},
-            () => {
-                console.log('local options: ', this.state.options);
-            });
+        this.optionsUtils.processOptions(this.optionsUtils.mergeOptions(options));
 
-        this.autocompleteDropdown.addEventListener('mouseenter', (e) => {
-            //console.log(e);
-            this.clicked = true
-        });
-        this.autocompleteDropdown.addEventListener('mouseleave', (e) => {
-            //console.log(e);
-            this.clicked = false
-        });
+        this.autocompleteDropdown.addEventListener('mouseenter', () => this.clicked = true);
+        this.autocompleteDropdown.addEventListener('mouseleave', () => this.clicked = false);
 
     }
 
-    mergeOptions(options) {
-        let mergedArr = [];
-        while (options.length > 0) {
-            let currOption = options.shift();
-            let conflicts = options.filter(object => object['@id'] === currOption['@id']);
-
-            mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
-            conflicts.forEach(conflict => options.splice(
-                options.findIndex(el => el['@id'] === conflict['@id']), 1)
-            );
-        }
-        return mergedArr
-    }
-
-    processOptions(options) {
-        return options.map(option => {
-            let category = option['@type'];
-            let label = option[this.props.filterBy][0]['@value'];
-            return {
-                id: option['@id'],
-                label: label,
-                category: category
-            };
-        })
-    }
-
-    filterResults() {
-        return this.state.options.filter(option => option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
+    filterResults(options) {
+        return options.filter(option => option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
     }
 
     setCurrentSearch(newSearch) {
         this.setState({currentSearch: newSearch});
-        this.handleFocus()
-        console.log(this.state.options)
+        this.handleFocus();
     }
 
     getRelevantResults() {
-        /*TODO all logic here*/
+        //TODO get data from providers
         if (this.state.focused) {
-            let filteredResults = this.filterResults();
+            let fromHistory = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
+            let data = (fromHistory.length > 0? fromHistory : this.optionsUtils.getAllProcessedOptions());
+            let filteredResults = this.filterResults(data);
+            this.searchHistory.addToHistory(this.state.currentSearch, filteredResults);
             let resultItems = [];
             for (let i = 0; i < filteredResults.length; i++) {
                 let resultOption = filteredResults[i];
@@ -115,7 +79,7 @@ class IntelligentSelectTreeInput extends Component {
                     />
                 )
             }
-            //this.setState({relevantResults: resultItems});
+
             return (
                 <Container>
                     {resultItems}
@@ -178,26 +142,20 @@ class IntelligentSelectTreeInput extends Component {
                         displayTermCategory={this.state.displayTermCategory}/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
-                    <Input placeholder="Search ..." type="text" name="search" id="searchInput"
-                           value={this.state.currentSearch} autoComplete={"off"}
-                           onChange={e => {
-                               this.setState({currentSearch: e.target.value.trim()})
-                           }}
+                    <Input placeholder="Search ..." type="text" name="search" id="searchInput" autoComplete={"off"}
+                           value={this.state.currentSearch}
+                           onChange={e => this.setState({currentSearch: e.target.value.trim()})}
                            onFocus={() => this.handleFocus()}
                            onBlur={() => this.handleBlur()}
-                           innerRef={(input) => {
-                               this.autocompleteInput = input
-                           }}
+                           innerRef={(input) => this.autocompleteInput = input}
                     />
                     {clearButton()}
                     <ModalForm/>
                 </InputGroup>
 
-
                 <div className="border border-secondary border-top-0 box result-area" ref={(div) => {
                     this.autocompleteDropdown = div
-                }} id={"autocomplete-listbox-0"}
-                     role="listbox">
+                }} id={"autocomplete-listbox-0"}>
                     {this.getRelevantResults()}
                 </div>
             </div>
