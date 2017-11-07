@@ -4,11 +4,8 @@ Download [Node.js](https://nodejs.org/en/) ver 6.0+ if you don not have it yet.
 Open your terminal and type following:
 ```
 git clone https://lecbyjak@kbss.felk.cvut.cz/gitblit/r/students/2017-bachelor-thesis-lecbyjak.git
-
 cd 2017-bachelor-thesis-lecbyjak
-
 npm install
-
 npm run start
 ```
 
