@@ -6,7 +6,7 @@ class Filter extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {filterOpened: false}
+        this.state = {filterOpened: false, lastChange: Date.now()}
     }
 
     render() {
@@ -20,19 +20,19 @@ class Filter extends Component {
                             <Form >
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" name="displayTermState" onChange={this.props.handleInputChange} checked={this.props.displayTermState}/>{' '}
+                                        <Input type="checkbox" name="displayTermState" onChange={() => {this.props.settings.displayTermState = !this.props.settings.displayTermState; this.setState({lastChange: Date.now()})}} checked={this.props.settings.displayTermState}/>{' '}
                                         Display Term State
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" name="compactMode" onChange={this.props.handleInputChange} checked={this.props.compactMode}/>{' '}
+                                        <Input type="checkbox" name="compactMode" onChange={() => {this.props.settings.compactMode = !this.props.settings.compactMode; this.setState({lastChange: Date.now()})}} checked={this.props.settings.compactMode}/>{' '}
                                         Show all
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" name="displayTermCategory" onChange={this.props.handleInputChange} checked={this.props.displayTermCategory}/>{' '}
+                                        <Input type="checkbox" name="displayTermCategory" onChange={() => {this.props.settings.displayTermCategory = !this.props.settings.displayTermCategory; this.setState({lastChange: Date.now()})}} checked={this.props.settings.displayTermCategory}/>{' '}
                                         Display Term Category
                                     </Label>
                                 </FormGroup>

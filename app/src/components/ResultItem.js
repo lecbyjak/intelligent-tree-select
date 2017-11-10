@@ -8,7 +8,8 @@ class ResultItem extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {collapse: this.props.compactMode};
+        let mode = this.props.settings.compactMode;
+        this.state = {collapse: mode};
     }
 
     toggle() {
@@ -101,6 +102,7 @@ class ResultItem extends Component {
                             label={resultOption.label}
                             id={this.props.id +"-"+i} key={this.props.id +"-"+i}
                             onClickFnc={this.props.onClickFnc}
+                            settings={this.props.settings}
                 />
             )
         }
@@ -146,11 +148,11 @@ class ResultItem extends Component {
                                      tooltipDelay={{"show": 200, "hide": 100}}/>
                         }
 
-                        {this.props.badgeLabel && this.props.displayTermState &&
+                        {this.props.badgeLabel && this.props.settings.displayTermState &&
                         <Col className={"p-0 pl-1 pr-1"} xs="auto"><Badge
                             color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
                         }
-                        {this.props.termCategory && this.props.displayTermCategory &&
+                        {this.props.termCategory && this.props.settings.displayTermCategory &&
                         <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{maxWidth : 150}} label={this.props.termCategory.toString()}
                                      tooltipLabel={this.props.termCategory.toString()} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}
@@ -185,8 +187,8 @@ ResultItem.defaultProps = {
     tooltipPlacement: 'bottom',
     tooltipLabel: 'tooltip',
     tooltipDelay: {"show": 50, "hide": 50},
-    // termCategory: 'term category',
-    // badgeLabel: 'external',
+    termCategory: [],
+    badgeLabel: '',
     badgeColor: 'primary',
 };
 

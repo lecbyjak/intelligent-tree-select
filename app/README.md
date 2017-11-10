@@ -21,6 +21,5 @@ P.S. app is still in development.
 * all childes nodes are hardcoded
 * "add new term" is not implemented
 * more options in filter
-* term lifetime in history - check does not work yet
 * get data from external providers is not implemented
 * minimalistic design is not implemented

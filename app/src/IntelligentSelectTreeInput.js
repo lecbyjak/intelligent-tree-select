@@ -14,18 +14,20 @@ class IntelligentSelectTreeInput extends Component {
         super(props);
         this.state = {
             currentSearch: "",
-            displayValue: props.displayValue,
-            displayTermState: props.displayTermState,
-            displayTermCategory: props.displayTermCategory,
-            displayParent: props.displayParent,
-            compactMode: props.compactMode,
             relevantResults: [],
             options: [],
             focused: false,
         };
         this.clicked = false;
 
-        this.settings = new Settings(this.props.filterBy, this.props.termLifetime);
+        this.settings = new Settings(this.props.filterBy,
+            this.props.termLifetime,
+            this.props.displayValue,
+            this.props.displayTermState,
+            this.props.displayTermCategory,
+            this.props.displayParent,
+            this.props.compactMode,
+        );
         this.optionsUtils = new OptionsUtils(this.settings);
         this.searchHistory = new SearchHistory(this.settings)
     }
@@ -60,7 +62,7 @@ class IntelligentSelectTreeInput extends Component {
         //TODO get data from providers
         if (this.state.focused) {
             let fromHistory = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
-            let data = (fromHistory.length > 0? fromHistory : this.optionsUtils.getAllProcessedOptions());
+            let data = (fromHistory.length > 0 ? fromHistory : this.optionsUtils.getAllProcessedOptions());
             let filteredResults = this.filterResults(data);
             this.searchHistory.addToHistory(this.state.currentSearch, filteredResults);
             let resultItems = [];
@@ -73,9 +75,7 @@ class IntelligentSelectTreeInput extends Component {
                                 badgeLabel={"external"} badgeColor={"primary"}
                                 tooltipLabelWarning={"not verified"} innerClassNameWarning={"text-dark bg-warning"}
                                 onClickFnc={this.setCurrentSearch.bind(this)}
-                                displayTermState={this.state.displayTermState}
-                                displayTermCategory={this.state.displayTermCategory}
-                                compactMode={this.state.compactMode}
+                                settings={this.settings}
                     />
                 )
             }
@@ -97,16 +97,6 @@ class IntelligentSelectTreeInput extends Component {
         if (!this.clicked) {
             this.setState({focused: false})
         }
-    }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
     }
 
     clearInput() {
@@ -136,10 +126,7 @@ class IntelligentSelectTreeInput extends Component {
             <div className="container-fluid" ref={(div) => {
                 this.autocompleteComponent = div;
             }}>
-                <Filter handleInputChange={(e) => this.handleInputChange(e)}
-                        compactMode={this.state.compactMode}
-                        displayTermState={this.state.displayTermState}
-                        displayTermCategory={this.state.displayTermCategory}/>
+                <Filter settings={this.settings}/>
 
                 <InputGroup id={"autocomplete-inputbox-0"}>
                     <Input placeholder="Search ..." type="text" name="search" id="searchInput" autoComplete={"off"}
@@ -170,5 +157,13 @@ const ProviderTypeEnum = {
     SEARCH: Symbol('SEARCH'),
 };
 
+IntelligentSelectTreeInput.defaultProps = {
+            termLifetime: "5m",
+            displayValue: false,
+            displayTermState: false,
+            displayTermCategory: false,
+            displayParent: false,
+            compactMode: false,
+}
 
 export {IntelligentSelectTreeInput, ProviderTypeEnum};
