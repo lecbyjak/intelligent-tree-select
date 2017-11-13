@@ -34,6 +34,11 @@ class OptionsUtils{
         return this.processedOptions
     }
 
+    addNewOptions(newOptions){
+        this.options.concat(newOptions);
+        this.processOptions(this.mergeOptions(this.options));
+    }
+
     getAllOptions(){
         return this.options
     }

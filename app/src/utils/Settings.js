@@ -1,14 +1,15 @@
 class Settings {
 
-    constructor(filterBy, termLifetime, displayValue, displayTermState, displayTermCategory, displayParent, compactMode) {
-
+    constructor(filterBy, termLifetime, displayTermState, displayTermCategory, displayParent, compactMode) {
         this._filterBy = filterBy;
         this._termLifetime = termLifetime;
-        this._displayValue = displayValue;
         this._displayTermState = displayTermState;
         this._displayTermCategory = displayTermCategory;
         this._displayParent = displayParent;
         this._compactMode = compactMode;
+
+        //calling setter for termLifetime
+        this.termLifetime = termLifetime
     }
 
     get filterBy() {

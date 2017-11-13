@@ -7,6 +7,7 @@ import ResultItem from "./components/ResultItem";
 import OptionsUtils from "./utils/OptionsUtils";
 import SearchHistory from "./utils/SearchHistory";
 import Settings from "./utils/Settings";
+import PropTypes from "prop-types";
 
 class IntelligentSelectTreeInput extends Component {
 
@@ -22,7 +23,6 @@ class IntelligentSelectTreeInput extends Component {
 
         this.settings = new Settings(this.props.filterBy,
             this.props.termLifetime,
-            this.props.displayValue,
             this.props.displayTermState,
             this.props.displayTermCategory,
             this.props.displayParent,
@@ -61,13 +61,20 @@ class IntelligentSelectTreeInput extends Component {
     getRelevantResults() {
         //TODO get data from providers
         if (this.state.focused) {
-            let fromHistory = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
-            let data = (fromHistory.length > 0 ? fromHistory : this.optionsUtils.getAllProcessedOptions());
-            let filteredResults = this.filterResults(data);
-            this.searchHistory.addToHistory(this.state.currentSearch, filteredResults);
+
+            let data = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
+            if (data.length === 0){
+                data = this.searchHistory.getResultsFromHistory(this.state.currentSearch.slice(0, -1));
+                if (data.length === 0){
+                    data = this.optionsUtils.getAllProcessedOptions()
+                }
+                 data = this.filterResults(data);
+                 this.searchHistory.addToHistory(this.state.currentSearch, data);
+            }
+
             let resultItems = [];
-            for (let i = 0; i < filteredResults.length; i++) {
-                let resultOption = filteredResults[i];
+            for (let i = 0; i < data.length; i++) {
+                let resultOption = data[i];
                 resultItems.push(
                     <ResultItem hasChild={true} tooltipLabel={resultOption.label}
                                 label={resultOption.label} termCategory={resultOption.category}
@@ -137,7 +144,7 @@ class IntelligentSelectTreeInput extends Component {
                            innerRef={(input) => this.autocompleteInput = input}
                     />
                     {clearButton()}
-                    <ModalForm/>
+                    <ModalForm optionsUtils={this.optionsUtils}/>
                 </InputGroup>
 
                 <div className="border border-secondary border-top-0 box result-area" ref={(div) => {
@@ -158,12 +165,30 @@ const ProviderTypeEnum = {
 };
 
 IntelligentSelectTreeInput.defaultProps = {
-            termLifetime: "5m",
-            displayValue: false,
-            displayTermState: false,
-            displayTermCategory: false,
-            displayParent: false,
-            compactMode: false,
-}
+    termLifetime: "0d0h5m0s",
+    displayTermState: false,
+    displayTermCategory: false,
+    displayParent: false,
+    compactMode: false,
+};
+
+IntelligentSelectTreeInput.propTypes = {
+    filterBy: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.func.isRequired,
+    ]).isRequired,
+    providers: PropTypes.arrayOf(PropTypes.shape({
+        type: ProviderTypeEnum.isRequired,
+        value: PropTypes.oneOfType([
+            PropTypes.string.isRequired,
+            PropTypes.array.isRequired,
+        ]),
+    })).isRequired,
+    termLifetime: PropTypes.string,
+    displayTermState: PropTypes.bool,
+    displayTermCategory: PropTypes.bool,
+    displayParent: PropTypes.bool,
+    compactMode: PropTypes.bool,
+};
 
 export {IntelligentSelectTreeInput, ProviderTypeEnum};

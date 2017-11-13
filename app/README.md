@@ -20,6 +20,6 @@ P.S. app is still in development.
 #### Known bugs and unfinished features
 * all childes nodes are hardcoded
 * "add new term" is not implemented
-* more options in filter
+* more options in filter (???)
 * get data from external providers is not implemented
 * minimalistic design is not implemented

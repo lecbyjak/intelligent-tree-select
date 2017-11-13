@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {Button, InputGroupButton, Modal, ModalBody, ModalFooter, ModalHeader, Tooltip} from "reactstrap";
+import {
+    Button, Collapse, Form, FormGroup, Input, InputGroupButton, Label, Modal, ModalBody, ModalFooter, ModalHeader,
+    Tooltip
+} from "reactstrap";
 
 class ModalForm extends Component {
 
@@ -9,12 +12,13 @@ class ModalForm extends Component {
         this.state = {
             modal: false,
             tooltipOpen: false,
+            collapse: false,
+            selectedParent: '',
             id: 'ModalFormButton_' + time,
         };
     }
 
-
-    getButtonLabel() {
+    static _getButtonLabel() {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
                 <g className="nc-icon-wrapper" fill="#ffffff">
@@ -24,27 +28,93 @@ class ModalForm extends Component {
         )
     }
 
+    _getParents() {
+        let resultOptons = this.props.optionsUtils.getAllOptions().map(option => {
+            return (
+                <option key={option['@id']}>{option['@id']}</option>
+            )
+        });
+        return (
+            <Input type="select" name="termParent" id="termParent"  value={this.state.selectedParent} onChange={e => this.setState({selectedParent: e.target.value})}>
+                {resultOptons}
+            </Input>
+        )
+    }
+
+    _getChildren() {
+        let resultOptons = this.props.optionsUtils.getAllOptions().map(option => {
+            if (this.state.selectedParent === option['@id']) return null;
+            return (
+                <option key={option['@id']}>{option['@id']}</option>
+            )
+        });
+        return (
+            <Input type="select" name="termChildren" id="termChildren" multiple onChange={e => console.log('changed', e)}>
+                 {resultOptons}
+            </Input>
+        )
+    }
+
     render() {
         return (
             <InputGroupButton>
                 <Button color={this.props.buttonColor} className={"d-flex justify-content-center  align-items-center"}
-                        onClick={() => {this.setState({modal: true}); this.setState({tooltipOpen: false})}} id={this.state.id}>{this.getButtonLabel()}</Button>
-                <Tooltip innerClassName={"bg-light text-dark border border-dark"} delay={{show: 300, hide: 100}} placement="right" isOpen={this.state.tooltipOpen}
-                         target={this.state.id} toggle={() => {this.setState({tooltipOpen: !this.state.tooltipOpen});}}>
+                        onClick={() => {
+                            this.setState({modal: true});
+                            this.setState({tooltipOpen: false})
+                        }} id={this.state.id}>{ModalForm._getButtonLabel()}</Button>
+                <Tooltip innerClassName={"bg-light text-dark border border-dark"} delay={{show: 300, hide: 100}}
+                         placement="right" isOpen={this.state.tooltipOpen}
+                         target={this.state.id} toggle={() => {
+                    this.setState({tooltipOpen: !this.state.tooltipOpen});
+                }}>
                     {this.props.tooltipLabel}
                 </Tooltip>
-                <Modal backdrop={"static"} isOpen={this.state.modal} toggle={() => {this.setState({modal: false});}}>
-                    <ModalHeader toggle={() => {this.setState({modal: false})}}>Modal title</ModalHeader>
+                <Modal backdrop={"static"} isOpen={this.state.modal} toggle={() => {
+                    this.setState({modal: false});
+                }}>
+                    <ModalHeader toggle={() => {
+                        this.setState({modal: false})
+                    }}>Modal title</ModalHeader>
                     <ModalBody>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        <Form>
+                            <FormGroup>
+                                <Label for="termLabel">Term label</Label>
+                                <Input type="text" name="termLabel" id="termLabel" placeholder="Term label"/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="termID">Term ID</Label>
+                                <Input type="text" name="termID" id="termID" placeholder="Term ID"/>
+                            </FormGroup>
+
+                            <Button color="link" onClick={() => this.setState({collapse: !this.state.collapse})}>
+                                Show advanced options
+                            </Button>
+                            <Collapse isOpen={this.state.collapse}>
+                                <FormGroup>
+                                    <Label for="termDesc">Term description</Label>
+                                    <Input type="textarea" name="termDesc" id="termDesc"
+                                           placeholder="Term description"/>
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <Label for="termParent">Term parent</Label>
+                                    {this._getParents()}
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="termChildren">Term children</Label>
+                                    {this._getChildren()}
+                                </FormGroup>
+                            </Collapse>
+                        </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={() => {this.setState({modal: false})}}>Do Something</Button>{' '}
-                        <Button color="secondary" onClick={() => {this.setState({modal: false})}}>Cancel</Button>
+                        <Button color="primary" onClick={() => {
+                            this.setState({modal: false})
+                        }}>Do Something</Button>{' '}
+                        <Button color="secondary" onClick={() => {
+                            this.setState({modal: false})
+                        }}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
             </InputGroupButton>
