@@ -12,8 +12,9 @@ class Filter extends Component {
     render() {
         return (
             <div className="d-flex flex-column align-items-end">
-                <Button color="link" onClick={() => this.setState({filterOpened: !this.state.filterOpened})}>Show
-                    filter</Button>
+                <Button color="link" onClick={() => this.setState({filterOpened: !this.state.filterOpened})}>
+                    {(this.state.filterOpened? "Hide filter":"Show filter")}
+                </Button>
                 <Collapse className="w-100" isOpen={this.state.filterOpened}>
                     <Card>
                         <CardBody>

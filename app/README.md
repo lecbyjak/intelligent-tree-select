@@ -23,3 +23,4 @@ P.S. app is still in development.
 * more options in filter (???)
 * get data from external providers is not implemented
 * minimalistic design is not implemented
+* multiselect options

@@ -29,30 +29,53 @@ class ModalForm extends Component {
     }
 
     _getParents() {
-        let resultOptons = this.props.optionsUtils.getAllOptions().map(option => {
+        let resultOptons = [];
+        resultOptons.push(<option key={"default"}></option>);
+        resultOptons.push(this.props.optionsUtils.getAllProcessedOptions().map(option => {
             return (
-                <option key={option['@id']}>{option['@id']}</option>
+                <option key={option['id']} title={option['id']}>{option['label']}</option>
             )
-        });
+        }))
         return (
-            <Input type="select" name="termParent" id="termParent"  value={this.state.selectedParent} onChange={e => this.setState({selectedParent: e.target.value})}>
+            <Input type="select" name="termParent" id="termParent"
+                   onChange={() => {
+                       let selectBox = document.getElementById("termParent");
+                       let selectedValue = selectBox.options[selectBox.selectedIndex].title;
+                       this.setState({selectedParent: selectedValue})
+                   }
+                   }>
                 {resultOptons}
             </Input>
         )
     }
 
     _getChildren() {
-        let resultOptons = this.props.optionsUtils.getAllOptions().map(option => {
-            if (this.state.selectedParent === option['@id']) return null;
+        let resultOptons = [];
+        resultOptons.push(<option key={"default"}></option>);
+        resultOptons.push(this.props.optionsUtils.getAllProcessedOptions().map(option => {
+            if (this.state.selectedParent === option['id']) return null;
             return (
-                <option key={option['@id']}>{option['@id']}</option>
+                <option key={option['id']} title={option['id']}>{option['label']}</option>
             )
-        });
+        }));
         return (
-            <Input type="select" name="termChildren" id="termChildren" multiple onChange={e => console.log('changed', e)}>
-                 {resultOptons}
+            <Input type="select" name="termChildren" id="termChildren" multiple>
+                {resultOptons}
             </Input>
         )
+    }
+
+    _getSelectedChildren() {
+        let select1 = document.getElementById("termChildren");
+        let selected1 = [];
+        for (let i = 0; i < select1.length; i++) {
+            if (select1.options[i].selected) selected1.push(select1.options[i].value);
+        }
+        return selected1
+    }
+
+    _createNewTerm() {
+
     }
 
     render() {
@@ -88,7 +111,7 @@ class ModalForm extends Component {
                             </FormGroup>
 
                             <Button color="link" onClick={() => this.setState({collapse: !this.state.collapse})}>
-                                Show advanced options
+                                {(this.state.collapse ? "Hide advanced options" : "Show advanced options")}
                             </Button>
                             <Collapse isOpen={this.state.collapse}>
                                 <FormGroup>
@@ -110,6 +133,7 @@ class ModalForm extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={() => {
+                            this._createNewTerm();
                             this.setState({modal: false})
                         }}>Do Something</Button>{' '}
                         <Button color="secondary" onClick={() => {
