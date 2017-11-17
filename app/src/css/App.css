@@ -28,3 +28,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+svg:hover .trashIcon{
+  fill: #990000;
+}

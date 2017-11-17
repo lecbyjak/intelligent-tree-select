@@ -15,8 +15,6 @@ class IntelligentSelectTreeInput extends Component {
         super(props);
         this.state = {
             currentSearch: "",
-            relevantResults: [],
-            options: [],
             focused: false,
         };
         this.clicked = false;
@@ -33,8 +31,7 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     componentDidMount() {
-        let width = document.getElementById("autocomplete-inputbox-0").offsetWidth;
-        document.getElementById("autocomplete-listbox-0").style.minWidth = width + 'px';
+        this.autocompleteDropdown.style.minWidth = this.autocompleteInput.offsetWidth + 'px';
 
         let options = [];
         for (let i = 0; i < this.props.providers.length; i++) {
@@ -101,9 +98,7 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     handleBlur() {
-        if (!this.clicked) {
-            this.setState({focused: false})
-        }
+        if (!this.clicked) {this.setState({focused: false})}
     }
 
     clearInput() {
@@ -130,12 +125,10 @@ class IntelligentSelectTreeInput extends Component {
         };
 
         return (
-            <div className="container-fluid" ref={(div) => {
-                this.autocompleteComponent = div;
-            }}>
+            <div className="container-fluid">
                 <Filter settings={this.settings}/>
 
-                <InputGroup id={"autocomplete-inputbox-0"}>
+                <InputGroup>
                     <Input placeholder="Search ..." type="text" name="search" id="searchInput" autoComplete={"off"}
                            value={this.state.currentSearch}
                            onChange={e => this.setState({currentSearch: e.target.value.trim()})}
@@ -147,9 +140,7 @@ class IntelligentSelectTreeInput extends Component {
                     <ModalForm optionsUtils={this.optionsUtils}/>
                 </InputGroup>
 
-                <div className="border border-secondary border-top-0 box result-area" ref={(div) => {
-                    this.autocompleteDropdown = div
-                }} id={"autocomplete-listbox-0"}>
+                <div className="border border-secondary border-top-0 box result-area" ref={(div) => this.autocompleteDropdown = div}>
                     {this.getRelevantResults()}
                 </div>
             </div>
