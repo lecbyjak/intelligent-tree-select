@@ -15,6 +15,7 @@ import {
     ModalHeader,
     Tooltip
 } from "reactstrap";
+import {optionStateEnum} from "../utils/OptionsUtils";
 
 class ModalForm extends Component {
 
@@ -135,7 +136,9 @@ class ModalForm extends Component {
     _getSelectedChildren() {
         let selected1 = [];
         for (let i = 0; i < this.termChild.length; i++) {
-            if (this.termChild.options[i].selected) selected1.push(this.termChild.options[i].value);
+            if (this.termChild.options[i].selected && this.termChild.options[i].value.length>0) {
+                selected1.push(this.termChild.options[i].title);
+            }
         }
         return selected1
     }
@@ -159,7 +162,7 @@ class ModalForm extends Component {
         }
     }
 
-    _removeTermProperties(){
+    _removeTermProperties() {
         this.setState({termProperties: []});
         this.termPropertiesValid = []
     }
@@ -167,14 +170,27 @@ class ModalForm extends Component {
     _validateClose() {
         if (this.termID.value.length !== 0 || this.termLabel.value.length !== 0) this.toggleNested();
         else {
-            this.setState({modal: false})
+            this.setState({modal: false});
             this._removeTermProperties()
         }
     }
 
     _createNewTerm() {
         // TODO
+        console.log("term properties: ", this.state.termProperties);
+        let newTerm = {
+            "@id": this.termID.value,
+            [this.props.optionsUtils.settings.filterBy]: [{
+                "@language": "en",
+                "@value": this.termLabel.value
+            }],
+            "@type": this.termCategories.value.split(","),
+            "@parent": this.state.selectedParent,
+            "@children": this._getSelectedChildren(),
+            "state": optionStateEnum.NEW,
+        };
 
+        this.props.optionsUtils.addNewOptions([newTerm], "local data");
         console.log('create new term')
     }
 
@@ -184,7 +200,7 @@ class ModalForm extends Component {
             let keyText = this.properties.childNodes[i].childNodes[0].value;
             let valueText = this.properties.childNodes[i].childNodes[2].value;
 
-            if (valueText.length === 0 || keyText.length === 0 ) {
+            if (valueText.length === 0 || keyText.length === 0) {
                 status = false
             }
         }
@@ -239,6 +255,12 @@ class ModalForm extends Component {
                                 }
                             </FormGroup>
 
+                            <FormGroup>
+                                <Label for="termID">Term Categories</Label>
+                                <Input type="text" name="termID" innerRef={(el) => this.termCategories = el}
+                                       placeholder="Term ID" autoComplete={"off"}/>
+                            </FormGroup>
+
                             <Button color="link" onClick={() => this.setState({collapse: !this.state.collapse})}>
                                 {(this.state.collapse ? "Hide advanced options" : "Show advanced options")}
                             </Button>
@@ -256,7 +278,8 @@ class ModalForm extends Component {
 
                                 <div ref={el => this.properties = el}>
                                     {this.state.termProperties.map((termProperty, idx) => (
-                                        <FormGroup key={idx} className={"d-flex justify-content-between align-items-center m-1"}>
+                                        <FormGroup key={idx}
+                                                   className={"d-flex justify-content-between align-items-center m-1"}>
                                             <Input
                                                 type="text"
                                                 placeholder={`Term property key ${idx + 1}`}
@@ -281,9 +304,11 @@ class ModalForm extends Component {
                                                      x="0px" y="0px" viewBox="0 0 16 16" xmlSpace="preserve" width="20"
                                                      height="20">
                                                     <g className="nc-icon-wrapper trashIcon" fill="#cc0000">
-                                                        <rect className={"trashIcon"} data-color="color-2" x="5" y="7" fill="#cc0000" width="2"
+                                                        <rect className={"trashIcon"} data-color="color-2" x="5" y="7"
+                                                              fill="#cc0000" width="2"
                                                               height="6"/>
-                                                        <rect className={"trashIcon"} data-color="color-2" x="9" y="7" fill="#cc0000" width="2"
+                                                        <rect className={"trashIcon"} data-color="color-2" x="9" y="7"
+                                                              fill="#cc0000" width="2"
                                                               height="6"/>
                                                         <path className={"trashIcon"} fill="#cc0000"
                                                               d="M12,1c0-0.6-0.4-1-1-1H5C4.4,0,4,0.4,4,1v2H0v2h1v10c0,0.6,0.4,1,1,1h12c0.6,0,1-0.4,1-1V5h1V3h-4V1z M6,2h4 v1H6V2z M13,5v9H3V5H13z"/>
@@ -303,7 +328,8 @@ class ModalForm extends Component {
                             if (this.state.closeAll) {
                                 this.setState({modal: false});
                                 this._removeTermProperties()
-                            }}}>
+                            }
+                        }}>
                             <ModalHeader>Confirm</ModalHeader>
                             <ModalBody>Do you really want to close?</ModalBody>
                             <ModalFooter>

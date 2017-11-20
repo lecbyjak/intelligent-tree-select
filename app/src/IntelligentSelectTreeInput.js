@@ -4,7 +4,7 @@ import Filter from "./components/Filter";
 import {Button, Container, Input, InputGroup} from "reactstrap";
 import ModalForm from "./components/ModalForm";
 import ResultItem from "./components/ResultItem";
-import OptionsUtils from "./utils/OptionsUtils";
+import {OptionsUtils} from "./utils/OptionsUtils";
 import SearchHistory from "./utils/SearchHistory";
 import Settings from "./utils/Settings";
 import PropTypes from "prop-types";
@@ -33,13 +33,11 @@ class IntelligentSelectTreeInput extends Component {
     componentDidMount() {
         this.autocompleteDropdown.style.minWidth = this.autocompleteInput.offsetWidth + 'px';
 
-        let options = [];
         for (let i = 0; i < this.props.providers.length; i++) {
-            if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS) {
-                options = options.concat(this.props.providers[i].value);
+            if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS){
+                this.optionsUtils.addNewOptions(this.props.providers[i].value, "local data")
             }
         }
-        this.optionsUtils.processOptions(this.optionsUtils.mergeOptions(options));
 
         this.autocompleteDropdown.addEventListener('mouseenter', () => this.clicked = true);
         this.autocompleteDropdown.addEventListener('mouseleave', () => this.clicked = false);
