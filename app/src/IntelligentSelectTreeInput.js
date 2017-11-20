@@ -76,8 +76,8 @@ class IntelligentSelectTreeInput extends Component {
                     <ResultItem hasChild={true} tooltipLabel={resultOption.label}
                                 label={resultOption.label} termCategory={resultOption.category}
                                 id={i} key={i}
-                                badgeLabel={"external"} badgeColor={"primary"}
-                                tooltipLabelWarning={"not verified"} innerClassNameWarning={"text-dark bg-warning"}
+                                badgeLabel={resultOption.state.label} badgeColor={resultOption.state.color}
+                                tooltipLabelWarning={resultOption.state.tooltip} innerClassNameWarning={"text-dark bg-warning"}
                                 onClickFnc={this.setCurrentSearch.bind(this)}
                                 settings={this.settings}
                     />

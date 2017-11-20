@@ -1,5 +1,5 @@
 ## **Instalation**
-Download [Node.js](https://nodejs.org/en/) ver 6.0+ if you don not have it yet.
+Download [Node.js](https://nodejs.org/en/) ver 6.0+ if you do not have it yet.
 
 Open your terminal and type following:
 ```

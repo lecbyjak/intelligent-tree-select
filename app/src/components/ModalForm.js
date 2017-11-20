@@ -174,6 +174,7 @@ class ModalForm extends Component {
 
     _createNewTerm() {
         // TODO
+
         console.log('create new term')
     }
 
@@ -211,11 +212,11 @@ class ModalForm extends Component {
                 </Tooltip>
 
                 <Modal backdrop={"static"} isOpen={this.state.modal} toggle={() => {
-                    this.setState({modal: false})
+                    this.setState({modal: false});
                     this._removeTermProperties()
                 }}>
                     <ModalHeader toggle={() => {
-                        this.setState({modal: false})
+                        this.setState({modal: false});
                         this._removeTermProperties()
                     }}>New term</ModalHeader>
                     <ModalBody>
