@@ -25,6 +25,7 @@ class IntelligentSelectTreeInput extends Component {
             this.props.displayTermCategory,
             this.props.displayParent,
             this.props.compactMode,
+            this.props.forceAdding,
         );
         this.optionsUtils = new OptionsUtils(this.settings);
         this.searchHistory = new SearchHistory(this.settings)
@@ -135,7 +136,7 @@ class IntelligentSelectTreeInput extends Component {
                            innerRef={(input) => this.autocompleteInput = input}
                     />
                     {clearButton()}
-                    <ModalForm optionsUtils={this.optionsUtils}/>
+                    <ModalForm optionsUtils={this.optionsUtils} history={this.searchHistory}/>
                 </InputGroup>
 
                 <div className="border border-secondary border-top-0 box result-area" ref={(div) => this.autocompleteDropdown = div}>
@@ -159,6 +160,7 @@ IntelligentSelectTreeInput.defaultProps = {
     displayTermCategory: false,
     displayParent: false,
     compactMode: false,
+    forceAdding: false,
 };
 
 IntelligentSelectTreeInput.propTypes = {
@@ -178,6 +180,7 @@ IntelligentSelectTreeInput.propTypes = {
     displayTermCategory: PropTypes.bool,
     displayParent: PropTypes.bool,
     compactMode: PropTypes.bool,
+    forceAdding: PropTypes.bool,
 };
 
 export {IntelligentSelectTreeInput, ProviderTypeEnum};

@@ -136,7 +136,7 @@ class ModalForm extends Component {
     _getSelectedChildren() {
         let selected1 = [];
         for (let i = 0; i < this.termChild.length; i++) {
-            if (this.termChild.options[i].selected && this.termChild.options[i].value.length>0) {
+            if (this.termChild.options[i].selected && this.termChild.options[i].value.length > 0) {
                 selected1.push(this.termChild.options[i].title);
             }
         }
@@ -153,6 +153,8 @@ class ModalForm extends Component {
         if (invalidID) {
             this.setState({invalidID: true});
         }
+
+        this.validation = true;
 
         if (this._validatePropertiesInputs() && !invalidLabel && !invalidID) {
             this._createNewTerm();
@@ -176,8 +178,11 @@ class ModalForm extends Component {
     }
 
     _createNewTerm() {
-        // TODO
-        console.log("term properties: ", this.state.termProperties);
+        let newTerm2 = this.state.termProperties.reduce(function (result, elem) {
+            result[elem.key] = elem.value;
+            return result;
+        }, {});
+
         let newTerm = {
             "@id": this.termID.value,
             [this.props.optionsUtils.settings.filterBy]: [{
@@ -189,9 +194,14 @@ class ModalForm extends Component {
             "@children": this._getSelectedChildren(),
             "state": optionStateEnum.NEW,
         };
+        newTerm = Object.assign(newTerm, newTerm2);
+        //console.log(newTerm);
 
         this.props.optionsUtils.addNewOptions([newTerm], "local data");
-        console.log('create new term')
+        if (this.props.optionsUtils.settings.forceAdding){
+            this.props.history.invalidateHistory()
+        }
+        console.log('term created')
     }
 
     _validatePropertiesInputs() {
@@ -240,25 +250,22 @@ class ModalForm extends Component {
                             <FormGroup>
                                 <Label for="termLabel">Term label</Label>
                                 <Input type="text" name="termLabel" innerRef={(el) => this.termLabel = el}
-                                       placeholder="Term label" autoComplete={"off"} valid={!this.state.invalidLabel}/>
-                                {this.state.invalidLabel &&
-                                <FormFeedback>Label have to be entered with minimum length of 4
-                                    characters</FormFeedback>
-                                }
+                                       placeholder="Term label" autoComplete={"off"} defaultValue={""}
+                                       valid={(this.state.invalidLabel || this.value)? !this.state.invalidLabel: undefined}/>
+                                <FormFeedback>Label have to be entered with minimum length of 4 characters</FormFeedback>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="termID">Term ID</Label>
                                 <Input type="text" name="termID" innerRef={(el) => this.termID = el}
-                                       placeholder="Term ID" autoComplete={"off"} valid={!this.state.invalidID}/>
-                                {this.state.invalidID &&
+                                       placeholder="Term ID" autoComplete={"off"} defaultValue={""}
+                                       valid={(this.state.invalidID || this.value)? !this.state.invalidID : undefined}/>
                                 <FormFeedback>ID have to be entered with minimum length of 3 characters</FormFeedback>
-                                }
                             </FormGroup>
 
                             <FormGroup>
                                 <Label for="termID">Term Categories</Label>
-                                <Input type="text" name="termID" innerRef={(el) => this.termCategories = el}
-                                       placeholder="Term ID" autoComplete={"off"}/>
+                                <Input type="text" name="termCategories" innerRef={(el) => this.termCategories = el}
+                                       placeholder="Term Categories" autoComplete={"off"}/>
                             </FormGroup>
 
                             <Button color="link" onClick={() => this.setState({collapse: !this.state.collapse})}>
@@ -298,19 +305,19 @@ class ModalForm extends Component {
                                             />
                                             <Col/>
                                             <Button type="button" onClick={this._removeTermProperty(idx)}
-                                                    color="link" size={"sm"}>
+                                                    color="link" size={"sm"} className={"d-flex m-auto"}>
                                                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                                                      xmlnsXlink="http://www.w3.org/1999/xlink"
                                                      x="0px" y="0px" viewBox="0 0 16 16" xmlSpace="preserve" width="20"
                                                      height="20">
                                                     <g className="nc-icon-wrapper trashIcon" fill="#cc0000">
                                                         <rect className={"trashIcon"} data-color="color-2" x="5" y="7"
-                                                              fill="#cc0000" width="2"
+                                                              fill="#dc3545" width="2"
                                                               height="6"/>
                                                         <rect className={"trashIcon"} data-color="color-2" x="9" y="7"
-                                                              fill="#cc0000" width="2"
+                                                              fill="#dc3545" width="2"
                                                               height="6"/>
-                                                        <path className={"trashIcon"} fill="#cc0000"
+                                                        <path className={"trashIcon"} fill="#dc3545"
                                                               d="M12,1c0-0.6-0.4-1-1-1H5C4.4,0,4,0.4,4,1v2H0v2h1v10c0,0.6,0.4,1,1,1h12c0.6,0,1-0.4,1-1V5h1V3h-4V1z M6,2h4 v1H6V2z M13,5v9H3V5H13z"/>
                                                     </g>
                                                 </svg>

@@ -15,6 +15,12 @@ class SearchHistory {
         }
     }
 
+    invalidateHistory(){
+        for (let i =  0; i<this.history.length;i++){
+            this.history[i].valid = false
+        }
+    }
+
     getResultsFromHistory(searchString) {
         console.log('history', this.history);
         searchString = searchString.toLowerCase();

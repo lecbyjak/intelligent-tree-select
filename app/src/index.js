@@ -15,6 +15,7 @@ ReactDOM.render(<IntelligentSelectTreeInput filterBy={"http://www.w3.org/2000/01
                                                 {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON},
                                                 {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON2}
                                             ]}
+                                            //forceAdding={true}
 
 
     />,   document.getElementById('intelligent-select-tree-root'));

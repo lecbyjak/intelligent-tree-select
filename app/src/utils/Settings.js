@@ -1,6 +1,6 @@
 class Settings {
 
-    constructor(filterBy, termLifetime, displayTermState, displayTermCategory, displayParent, compactMode) {
+    constructor(filterBy, termLifetime, displayTermState, displayTermCategory, displayParent, compactMode, forceAdding) {
         this._filterBy = filterBy;
         this._termLifetime = termLifetime;
         this._displayTermState = displayTermState;
@@ -9,7 +9,16 @@ class Settings {
         this._compactMode = compactMode;
 
         //calling setter for termLifetime
-        this.termLifetime = termLifetime
+        this.termLifetime = termLifetime;
+        this._forceAdding = forceAdding;
+    }
+
+    get forceAdding() {
+        return this._forceAdding;
+    }
+
+    set forceAdding(value) {
+        this._forceAdding = value;
     }
 
     get filterBy() {
