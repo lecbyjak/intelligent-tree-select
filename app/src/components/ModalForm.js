@@ -185,13 +185,10 @@ class ModalForm extends Component {
 
         let newTerm = {
             "@id": this.termID.value,
-            [this.props.optionsUtils.settings.filterBy]: [{
-                "@language": "en",
-                "@value": this.termLabel.value
-            }],
+            [this.props.optionsUtils.settings.filterBy]: this.termLabel.value,
             "@type": this.termCategories.value.split(","),
-            "@parent": this.state.selectedParent,
-            "@children": this._getSelectedChildren(),
+            "parent": this.state.selectedParent,
+            "subTerm": this._getSelectedChildren(),
             "state": optionStateEnum.NEW,
         };
         newTerm = Object.assign(newTerm, newTerm2);
@@ -250,7 +247,7 @@ class ModalForm extends Component {
                             <FormGroup>
                                 <Label for="termLabel">Term label</Label>
                                 <Input type="text" name="termLabel" innerRef={(el) => this.termLabel = el}
-                                       placeholder="Term label" autoComplete={"off"} defaultValue={""}
+                                       placeholder="Term label" autoComplete={"off"} defaultValue={this.props.currentSearch}
                                        valid={(this.state.invalidLabel || this.value)? !this.state.invalidLabel: undefined}/>
                                 <FormFeedback>Label have to be entered with minimum length of 4 characters</FormFeedback>
                             </FormGroup>

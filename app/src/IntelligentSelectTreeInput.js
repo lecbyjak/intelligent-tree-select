@@ -16,6 +16,7 @@ class IntelligentSelectTreeInput extends Component {
         this.state = {
             currentSearch: "",
             focused: false,
+            total: 100
         };
         this.clicked = false;
 
@@ -35,7 +36,7 @@ class IntelligentSelectTreeInput extends Component {
         this.autocompleteDropdown.style.minWidth = this.autocompleteInput.offsetWidth + 'px';
 
         for (let i = 0; i < this.props.providers.length; i++) {
-            if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS){
+            if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS) {
                 this.optionsUtils.addNewOptions(this.props.providers[i].value, "local data")
             }
         }
@@ -46,7 +47,9 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     filterResults(options) {
-        return options.filter(option => option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1)
+        return options.filter(option => {
+            option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1
+        })
     }
 
     setCurrentSearch(newSearch) {
@@ -54,38 +57,40 @@ class IntelligentSelectTreeInput extends Component {
         this.handleFocus();
     }
 
-    getRelevantResults() {
+    getRelevantResults(total) {
         //TODO get data from providers
         if (this.state.focused) {
+            let data =[];
 
-            let data = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
-            if (data.length === 0){
-                data = this.searchHistory.getResultsFromHistory(this.state.currentSearch.slice(0, -1));
-                if (data.length === 0){
-                    data = this.optionsUtils.getAllProcessedOptions()
-                }
-                 data = this.filterResults(data);
-                 this.searchHistory.addToHistory(this.state.currentSearch, data);
+            if (this.state.currentSearch === ""){
+                data = this.optionsUtils.getAllProcessedOptions();
+            }else{
+                data = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
+            }
+            if (data.length === 0) {
+                data = this.optionsUtils.getAllProcessedOptions();
+                data = this.filterResults(data);
+                this.searchHistory.addToHistory(this.state.currentSearch, data);
             }
 
             let resultItems = [];
-            for (let i = 0; i < data.length; i++) {
+            let cycles = (data.length < total) ? data.length : total;
+            for (let i = 0; i < cycles; i++) {
                 let resultOption = data[i];
                 resultItems.push(
-                    <ResultItem hasChild={true} tooltipLabel={resultOption.label}
-                                label={resultOption.label} termCategory={resultOption.category}
-                                id={i} key={i}
-                                badgeLabel={resultOption.state.label} badgeColor={resultOption.state.color}
-                                tooltipLabelWarning={resultOption.state.tooltip} innerClassNameWarning={"text-dark bg-warning"}
-                                onClickFnc={this.setCurrentSearch.bind(this)}
-                                settings={this.settings}
-                    />
+                    <ResultItem id={i} key={i} resultOption={resultOption} innerClassNameWarning={"text-dark bg-warning"}
+                                onClickFnc={this.setCurrentSearch.bind(this)} settings={this.settings} />
                 )
             }
 
             return (
                 <Container>
                     {resultItems}
+                    {(this.state.total < data.length) &&
+                    <Button block className={'mt-1'} color={'primary'} onClick={() => this.addMore()}>
+                        Show 50 more (visible: {this.state.total} of {data.length})
+                    </Button>
+                    }
                 </Container>
             )
         } else return ''
@@ -96,8 +101,16 @@ class IntelligentSelectTreeInput extends Component {
         this.autocompleteInput.focus()
     }
 
+    addMore() {
+        this.setState({total: this.state.total + 50});
+        this.setState({focused: true});
+        this.autocompleteInput.focus()
+    }
+
     handleBlur() {
-        if (!this.clicked) {this.setState({focused: false})}
+        if (!this.clicked) {
+            this.setState({focused: false, total: 100})
+        }
     }
 
     clearInput() {
@@ -139,8 +152,9 @@ class IntelligentSelectTreeInput extends Component {
                     <ModalForm optionsUtils={this.optionsUtils} history={this.searchHistory}/>
                 </InputGroup>
 
-                <div className="border border-secondary border-top-0 box result-area" ref={(div) => this.autocompleteDropdown = div}>
-                    {this.getRelevantResults()}
+                <div className="border border-secondary border-top-0 box result-area"
+                     ref={(div) => this.autocompleteDropdown = div}>
+                    {this.getRelevantResults(this.state.total)}
                 </div>
             </div>
         )

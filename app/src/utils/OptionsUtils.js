@@ -6,7 +6,7 @@ class OptionsUtils {
         this.processedOptions = [];
     }
 
-    mergeOptions(options) {
+    _mergeOptions(options) {
 
         options = options.concat(this.options);
 
@@ -15,6 +15,11 @@ class OptionsUtils {
             let currOption = options.shift();
             let conflicts = options.filter(object => object['@id'] === currOption['@id']);
             if (conflicts.length > 0) currOption['state'] = optionStateEnum.MERGED;
+
+            currOption['subTerm'] = [currOption['subTerm']];
+            conflicts.forEach(conflict => {
+                currOption['subTerm'].push(conflict['subTerm'])
+            });
 
             mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
 
@@ -27,38 +32,67 @@ class OptionsUtils {
 
     }
 
-    processOptions(options) {
+    _processOptions(options) {
         this.processedOptions = options.map(option => {
 
             let keys = [];
             for (let k in option) keys.push(k);
 
             let category = (keys.includes('@type')) ? option['@type'] : [];
-            let label = option[this.settings.filterBy][0]['@value'];
-            let parent = (keys.includes('@parent')) ? option['@parent'] : "";
-            let children = (keys.includes('@children')) ? option['@children'] : [];
+            let label = option[this.settings.filterBy];
+            let parent = (keys.includes('parent')) ? option['parent'] : "";
+            let subTerm = (keys.includes('subTerm')) ? option['subTerm'] : [];
             let state = (keys.includes('state')) ? option['state'] : optionStateEnum.EXTERNAL;
-            let providers = (keys.includes('providers')) ? option['providers'] : ["local data"];
+            let providers = option['providers'];
 
             return {
                 id: option['@id'],
                 label: label,
                 category: category,
                 parent: parent,
-                children: children,
+                subTerm: subTerm,
                 state: state,
                 providers: providers,
             };
         });
-        //console.log('processed', this.processedOptions);
         return this.processedOptions
     }
 
     addNewOptions(newOptions, provider) {
-        for(let i=0; i<newOptions.length;i++){
+        for (let i = 0; i < newOptions.length; i++) {
             newOptions[i]['providers'] = [provider]
         }
-        this.processOptions(this.mergeOptions(newOptions));
+        this._processOptions(this._mergeOptions(newOptions));
+
+        for (let j=0; j<this.processedOptions.length; j++){
+            this._processOptionSubTerms(this.processedOptions[j]);
+        }
+
+        console.log('processed', this.processedOptions)
+    }
+
+    _processOptionSubTerms(currOption) {
+        for (let i = 0; i < currOption['subTerm'].length; i++) {
+            if (currOption['subTerm'][i]) {
+                let currSubTerm = this.getProcessedByID(currOption['subTerm'][i]);
+                this._processOptionSubTerms(currSubTerm);
+                currSubTerm['parent'] = currOption['id'];
+                currOption['subTerm'][i] = currSubTerm;
+                this._removeFromProcessedByID(currSubTerm['id'])
+            }
+            else{
+                currOption['subTerm'].splice(i, 1);
+            }
+        }
+
+    }
+
+    _removeFromProcessedByID(id) {
+        for (let i = 0; i < this.processedOptions.length; i++)
+            if (this.processedOptions[i]['id'] && this.processedOptions[i]['id'] === id) {
+                this.processedOptions.splice(i, 1);
+                break;
+            }
     }
 
     getAllOptions() {
@@ -68,14 +102,27 @@ class OptionsUtils {
     getAllProcessedOptions() {
         return this.processedOptions
     }
+
+    getProcessedByID(id) {
+        for (let i = 0; i < this.processedOptions.length; i++) {
+            if (id === this.processedOptions[i].id) return this.processedOptions[i]
+        }
+        console.log('unable to find term by id:', id)
+    }
+
+    getOriginalByID(id) {
+        for (let i = 0; i < this.options.length; i++) {
+            if (id === this.options[i].id) return this.options[i]
+        }
+    }
 }
 
 
 const optionStateEnum = {
-        MERGED: {label: 'Merged', color: 'warning', tooltip: ''},
-        EXTERNAL: {label: 'External', color: 'primary', tooltip: ''},
-        NEW: {label: 'New', color: 'success', tooltip: 'not verified'},
-        LOCAL: {label: 'Local', color: 'secondary', tooltip: ''},
-    };
+    MERGED: {label: 'Merged', color: 'warning', tooltip: ''},
+    EXTERNAL: {label: 'External', color: 'primary', tooltip: ''},
+    NEW: {label: 'New', color: 'success', tooltip: 'not verified'},
+    LOCAL: {label: 'Local', color: 'secondary', tooltip: ''},
+};
 
 export {OptionsUtils, optionStateEnum};

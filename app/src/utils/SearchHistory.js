@@ -1,3 +1,5 @@
+import { memorySizeOf } from "./memorySizeOfObject"
+
 class SearchHistory {
 
     constructor(settings) {
@@ -23,6 +25,7 @@ class SearchHistory {
 
     getResultsFromHistory(searchString) {
         console.log('history', this.history);
+        console.log(memorySizeOf(this.history));
         searchString = searchString.toLowerCase();
         const now = Date.now();
 

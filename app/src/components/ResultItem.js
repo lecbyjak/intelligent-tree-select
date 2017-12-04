@@ -67,39 +67,12 @@ class ResultItem extends Component {
         )
     }
 
-    getAllChilds(){
-        //TODO implement this method
-        return (
-            [
-                {
-                    id: "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104-child",
-                    type: [
-                        "http://onto.fel.cvut.cz/ontologies/eccairs/occurrence-category"
-                    ],
-                    comment: "Usage Notes:\r\n• Applicable both to aircraft under tow by winch or by another aircraft or to aircraft executing towing.\r\n• To be used in events only after reaching airborne phase.\r\n• Includes loss of control because of entering the towing aircraft's wake turbulence and events where of airspeed is out of limits during tow.",
-                    name: "104 - GTOW: Glider towing related events - child",
-                },
-                {
-                    id: "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105 - child",
-                    type: [
-                        "http://onto.fel.cvut.cz/ontologies/eccairs/occurrence-category"
-                    ],
-                    comment: "Usage notes:  \r\n\r\nIncludes: \r\n- Crewmembers unable to perform duties due to illness. \r\n- Medical emergencies due to illness involving any person on board an aircraft, including passengers and crew. \r\n\r\nDoes NOT include: \r\n- Injuries sustained during flight operations. Injuries are coded as— \r\no WSTRW for injuries sustained as a result of thunderstorms or wind shear, \r\no TURB for injuries sustained as a result of turbulence (excluding turbulence caused by wind shear and/or thunderstorms), \r\no SEC for injuries resulting from intentional acts (suicide, homicide, acts of violence, or self-inflicted injury), \r\no CABIN for any injury sustained on an aircraft not occurring as a result of any events above, such as sprains, cuts, or burns resulting from normal cabin operations (handling bags, operating galley equipment, etc.) \r\n- Injuries, temporary blindness, or other incapacitation resulting from laser attacks, which are coded as SEC. \r\n\r\n\r\nCrossover to/from other occurrence categories: \r\n- Medical emergencies involving persons other than crew members or a medical evacuation patient were coded as CABIN before October 2013. All medical emergencies are now coded as MED. \r\n",
-                    name: "105 - MED: Medical - child",
-
-                }
-            ]
-        )
-    }
-
     getChildRowElem() {
-        let allChilds = this.getAllChilds();
         let resultItems = [];
-        for (let i = 0; i < allChilds.length; i++) {
-            let resultOption = allChilds[i];
+        for (let i = 0; i < this.props.resultOption.subTerm.length; i++) {
+            let resultOption = this.props.resultOption.subTerm[i];
             resultItems.push(
-                <ResultItem hasChild={false} tooltipLabel={resultOption.label}
-                            label={resultOption.label}
+                <ResultItem resultOption={resultOption}
                             id={this.props.id +"-"+i} key={this.props.id +"-"+i}
                             onClickFnc={this.props.onClickFnc}
                             settings={this.props.settings}
@@ -119,7 +92,7 @@ class ResultItem extends Component {
     render() {
         let button = null;
         let child = null;
-        if (this.props.hasChild) {
+        if (this.props.resultOption.subTerm.length > 0) {
             button = this.getCollapseButton();
             child = this.getChildRowElem();
         }
@@ -132,29 +105,29 @@ class ResultItem extends Component {
                     </div>
                     <Col className={"border list-group-item-action d-flex justify-content-start align-items-center p-0"} onClick={()=>this.props.onClickFnc(this.props.label)}>
 
-                        <TooltipItem id={this.props.id + '-1'} label={this.props.label}
+                        <TooltipItem id={this.props.id + '-1'} label={this.props.resultOption.label}
                                      className={"result-item"}
-                                     tooltipLabel={this.props.tooltipLabel}
+                                     tooltipLabel={this.props.resultOption.label}
                                      tooltipClassName={this.props.tooltipClassName}
                                      tooltipInnerClassName={this.props.tooltipInnerClassName}
+                                     tooltipDelay={{"show": 300, "hide": 0}}
                                      tooltipPlacement={"bottom"} style={{maxWidth : 420}} />
-
-                        {this.props.tooltipLabelWarning &&
+                        {this.props.resultOption.state.tooltip &&
                         <TooltipItem id={this.props.id + '-2'} colAttribute={"auto"} label={this.getWarningIcon()}
-                                     tooltipLabel={this.props.tooltipLabelWarning}
+                                     tooltipLabel={this.props.resultOption.state.tooltip}
                                      tooltipClassName={this.props.className}
                                      tooltipInnerClassName={this.props.innerClassNameWarning}
                                      tooltipPlacement={"bottom"}
                                      tooltipDelay={{"show": 200, "hide": 100}}/>
                         }
 
-                        {this.props.badgeLabel && this.props.settings.displayTermState &&
+                        {this.props.resultOption.state.label && this.props.settings.displayTermState &&
                         <Col className={"p-0 pl-1 pr-1"} xs="auto"><Badge
-                            color={this.props.badgeColor}>{this.props.badgeLabel}</Badge></Col>
+                            color={this.props.resultOption.state.color}>{this.props.resultOption.state.label}</Badge></Col>
                         }
-                        {this.props.termCategory && this.props.settings.displayTermCategory &&
-                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{maxWidth : 150}} label={this.props.termCategory.toString()}
-                                     tooltipLabel={this.props.termCategory.toString()} tooltipClassName={"bg-light"}
+                        {this.props.resultOption.category && this.props.settings.displayTermCategory &&
+                        <TooltipItem id={this.props.id + '-3'} colAttribute={"auto"} style={{maxWidth : 150}} label={this.props.resultOption.category.toString()}
+                                     tooltipLabel={this.props.resultOption.category.toString()} tooltipClassName={"bg-light"}
                                      tooltipInnerClassName={"bg-light text-dark border border-dark"}
                                      className={"result-item"}
                                      tooltipPlacement={"right"}/>
