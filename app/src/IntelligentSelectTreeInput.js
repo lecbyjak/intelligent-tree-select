@@ -47,9 +47,16 @@ class IntelligentSelectTreeInput extends Component {
     }
 
     filterResults(options) {
-        return options.filter(option => {
-            option.label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) !== -1
-        })
+        for (let i = options.length - 1; i >= 0; i--) {
+            options[i].subTerm = this.filterResults(options[i].subTerm);
+            if (options[i].label.toLowerCase().indexOf(this.state.currentSearch.toLowerCase()) === -1) {
+                //does not mach
+                if (options[i].subTerm.length === 0) {
+                    options.splice(i, 1)
+                }
+            }
+        }
+        return options
     }
 
     setCurrentSearch(newSearch) {
@@ -60,11 +67,11 @@ class IntelligentSelectTreeInput extends Component {
     getRelevantResults(total) {
         //TODO get data from providers
         if (this.state.focused) {
-            let data =[];
+            let data = [];
 
-            if (this.state.currentSearch === ""){
+            if (this.state.currentSearch === "") {
                 data = this.optionsUtils.getAllProcessedOptions();
-            }else{
+            } else {
                 data = this.searchHistory.getResultsFromHistory(this.state.currentSearch);
             }
             if (data.length === 0) {
@@ -78,8 +85,9 @@ class IntelligentSelectTreeInput extends Component {
             for (let i = 0; i < cycles; i++) {
                 let resultOption = data[i];
                 resultItems.push(
-                    <ResultItem id={i} key={i} resultOption={resultOption} innerClassNameWarning={"text-dark bg-warning"}
-                                onClickFnc={this.setCurrentSearch.bind(this)} settings={this.settings} />
+                    <ResultItem id={i} key={i} resultOption={resultOption}
+                                innerClassNameWarning={"text-dark bg-warning"}
+                                onClickFnc={this.setCurrentSearch.bind(this)} settings={this.settings}/>
                 )
             }
 
@@ -143,13 +151,13 @@ class IntelligentSelectTreeInput extends Component {
                 <InputGroup>
                     <Input placeholder="Search ..." type="text" name="search" id="searchInput" autoComplete={"off"}
                            value={this.state.currentSearch}
-                           onChange={e => this.setState({currentSearch: e.target.value.trim()})}
+                           onChange={e => this.setState({currentSearch: e.target.value})}
                            onFocus={() => this.handleFocus()}
                            onBlur={() => this.handleBlur()}
                            innerRef={(input) => this.autocompleteInput = input}
                     />
                     {clearButton()}
-                    <ModalForm optionsUtils={this.optionsUtils} history={this.searchHistory}/>
+                    <ModalForm optionsUtils={this.optionsUtils} history={this.searchHistory} currentSearch={this.state.currentSearch}/>
                 </InputGroup>
 
                 <div className="border border-secondary border-top-0 box result-area"

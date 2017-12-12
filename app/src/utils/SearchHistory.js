@@ -13,6 +13,7 @@ class SearchHistory {
     addToHistory(searchString, resultsArr) {
         if (!this.isInHistory(searchString)) {
             //pushing to the front of an array
+            console.log("adding to history: ", searchString, resultsArr)
             this.history.unshift({searchString: searchString, results: resultsArr, timestamp: Date.now(), valid: true});
         }
     }

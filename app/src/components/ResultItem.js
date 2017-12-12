@@ -103,7 +103,7 @@ class ResultItem extends Component {
                     <div className={"empty d-flex"} style={{width: 26}}>
                         {button}
                     </div>
-                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center p-0"} onClick={()=>this.props.onClickFnc(this.props.label)}>
+                    <Col className={"border list-group-item-action d-flex justify-content-start align-items-center p-0"} onClick={()=>this.props.onClickFnc(this.props.resultOption.label)}>
 
                         <TooltipItem id={this.props.id + '-1'} label={this.props.resultOption.label}
                                      className={"result-item"}

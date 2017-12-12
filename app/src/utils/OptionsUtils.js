@@ -100,7 +100,8 @@ class OptionsUtils {
     }
 
     getAllProcessedOptions() {
-        return this.processedOptions
+        //return copy of an array
+        return JSON.parse(JSON.stringify(this.processedOptions));
     }
 
     getProcessedByID(id) {
