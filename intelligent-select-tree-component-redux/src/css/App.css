@@ -1,0 +1,34 @@
+.result-item{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  flex: 1;
+}
+.VirtualizedSelectOption{
+  display: flex;
+  align-items: flex-start;
+  padding: 0 .5rem;
+}
+.VirtualizedTreeSelectTooltip{
+  max-width: 300px;
+  text-align: start;
+  word-break: break-all;
+}
+
+.toggleButton{
+  width: 16px;
+}
+
+.result-item{
+  flex: 1;
+}
+
+.Select.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+.highlighted{
+  font-weight: bold;
+  background: none;
+}

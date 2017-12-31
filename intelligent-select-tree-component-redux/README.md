@@ -1631,12 +1631,12 @@ that your web app is reliably fast, even on a slow or unreliable network.
 
 If you would prefer not to enable service workers prior to your initial
 production deployment, then remove the call to `registerServiceWorker()`
-from [`src/index.js`](src/index.js).
+from [`src/index.js`](src/js/index.js).
 
 If you had previously enabled service workers in your production deployment and
 have decided that you would like to disable them for all your existing users,
 you can swap out the call to `registerServiceWorker()` in
-[`src/index.js`](src/index.js) first by modifying the service worker import:
+[`src/index.js`](src/js/index.js) first by modifying the service worker import:
 ```javascript
 import { unregister } from './registerServiceWorker';
 ```

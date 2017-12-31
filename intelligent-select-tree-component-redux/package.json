@@ -3,19 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0-beta",
+    "hashmap": "^2.3.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-highlight-words": "^0.10.0",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
-    "reactstrap": "^4.8.0",
+    "react-select-fast-filter-options": "^0.2.3",
+    "react-transition-group": "^1.2.1",
+    "react-virtualized": "^9.14.1",
+    "react-virtualized-select": "^3.1.0",
+    "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "reselect": "^3.0.1",
+    "unique-concat": "^0.2.2",
+    "react-select": "latest",
+    "js-search": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
