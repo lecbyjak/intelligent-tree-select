@@ -12,7 +12,8 @@ export default function createFilterOptions ({
                                                  sanitizer,
                                                  searchIndex,
                                                  tokenizer,
-                                                 valueKey = 'value'
+                                                 valueKey = 'value',
+                                                 childrenKey = 'children',
                                              }) {
     const search = new Search(valueKey);
     search.searchIndex = searchIndex || new UnorderedSearchIndex();
@@ -43,13 +44,13 @@ export default function createFilterOptions ({
 
         let filteredWithParents = filtered;
         filtered.forEach(option => {
-            const index = filteredWithParents.findIndex((obj) => obj.id === option.id);
-            let indexParent = options.findIndex((obj) => obj.id === option.parent);
+            const index = filteredWithParents.findIndex((obj) => obj[valueKey] === option[valueKey]);
+            let indexParent = options.findIndex((obj) => obj[valueKey] === option.parent);
             while (indexParent >= 0){
                 const parent = options[indexParent];
                 if (filteredWithParents.includes(parent)) break;
                 filteredWithParents.splice(index, 0, parent);
-                indexParent = options.findIndex((obj) => obj.id === parent.parent);
+                indexParent = options.findIndex((obj) => obj[valueKey] === parent.parent);
             }
          });
 

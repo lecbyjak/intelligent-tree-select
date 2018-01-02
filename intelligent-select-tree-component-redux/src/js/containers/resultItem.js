@@ -64,7 +64,7 @@ class ResultItem extends Component {
 
     render() {
         let button = null;
-        if (this.props.option.children.length > 0) {
+        if (this.props.option.hasChildren) {
             button = this.getCollapseButton();
         }
         let style = {};

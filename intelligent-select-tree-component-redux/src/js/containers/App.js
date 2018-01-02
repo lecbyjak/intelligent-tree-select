@@ -8,12 +8,12 @@ import '../../css/App.css';
 
 import Settings from '../containers/settings'
 import VirtualizedTreeSelect from "./virtualizedTreeSelect";
+import ResultItem from './resultItem'
 import {initSettings} from "../actions/settings-actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {addNewOptions, addSelectedOption} from "../actions/options-actions";
 import {setCurrentSearchInput} from "../actions/other-actions";
-import VirtualizedSelect from "react-virtualized-select";
 
 class App extends Component {
 
@@ -32,36 +32,68 @@ class App extends Component {
 
         for (let i = 0; i < this.props.providers.length; i++) {
             if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS) {
-                let processedOptions = this._processOptions(this.props.providers[i].value, "local data");
-                this.props.addNewOptions(processedOptions);
+                let preProcessedOptions = this._preProcessOptions(this.props.providers[i].value, "local data");
+                this.props.addNewOptions(preProcessedOptions, this.props.labelKey, this.props.valueKey, this.props.childrenKey);
             }
         }
     }
 
-    _processOptions(options, provider) {
+    _preProcessOptions(options, provider) {
         return options.map(option => {
-
-            let keys = [];
-            for (let k in option) keys.push(k);
-
-            let children = (this.props.childrenKey)? option[this.props.childrenKey]: options['children']
+            let children = (this.props.childrenKey)? option[this.props.childrenKey]: options['children'];
             if (!Array.isArray(children)) {
                 if (children) children = [children];
                 else children = []
             }
-
             return {
                 ...option,
-                id: (this.props.valueKey)? option[this.props.valueKey]: options['value'],
-                label: (this.props.labelKey)? option[this.props.labelKey]: options['label'],
-                parent: (keys.includes('parent')) ? option['parent'] : "",
-                children: children,
-                state: (keys.includes('state')) ? option['state'] : optionStateEnum.EXTERNAL,
+                state: (option['state']) ? option['state'] : optionStateEnum.EXTERNAL,
                 providers: [provider],
-                expanded: this.props.expanded,
+
             };
 
         })
+    }
+
+    //TODO my own renderer
+    _optionRenderer ({ focusedOption, focusOption, key, labelKey, option, selectValue, style, valueArray, onTooggleClick }) {
+
+        const className = ['VirtualizedSelectOption'];
+
+        if (option === focusedOption) {
+            className.push('VirtualizedSelectFocusedOption')
+        }
+
+        if (option.disabled) {
+            className.push('VirtualizedSelectDisabledOption')
+        }
+
+        if (valueArray && valueArray.indexOf(option) >= 0) {
+            className.push('VirtualizedSelectSelectedOption')
+        }
+
+        if (option.className) {
+            className.push(option.className)
+        }
+
+        const events = option.disabled
+            ? {}
+            : {
+                onClick: () => selectValue(option),
+                onMouseEnter: () => focusOption(option)
+            };
+
+        return (
+            <ResultItem
+                className={className.join(' ')}
+                key={key}
+                style={style}
+                option={option}
+                label={option[labelKey]}
+                {...events}
+                onTooggleClick={onTooggleClick}
+            />
+        )
     }
 
 
@@ -73,7 +105,17 @@ class App extends Component {
                     name="react-virtualized-tree-select"
                     onChange={(selectValue) => this.props.addSelectedOption(selectValue)}
                     value={this.props.selectedOptions}
-                    {...this.props}
+                    options={this.props.options}
+
+                    optionRenderer={this._optionRenderer}
+
+                    expanded={this.props.expanded}
+                    renderAsTree={this.props.renderAsTree}
+
+                    valueKey={this.props.valueKey}
+                    labelKey={this.props.labelKey}
+                    childrenKey={this.props.childrenKey}
+
                     {...this.props.settings}
                 />
             </div>
@@ -99,7 +141,7 @@ App.defaultProps = {
     context: "",
     displayState: false,
     displayInfoOnHover: false,
-    expanded: false,
+    expanded: true,
     renderAsTree: true,
     multi: true,
 };
