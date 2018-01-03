@@ -13,7 +13,6 @@ export default function createFilterOptions ({
                                                  searchIndex,
                                                  tokenizer,
                                                  valueKey = 'value',
-                                                 childrenKey = 'children',
                                              }) {
     const search = new Search(valueKey);
     search.searchIndex = searchIndex || new UnorderedSearchIndex();
