@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {toggleExpanded} from "../actions/options-actions";
 
 import ResultItem from './resultItem'
-import {setCurrentSearchInput} from "../actions/other-actions";
 import createFilterOptions from "../utils/TreeNodeFastFilter"
 import {AutoSizer, List} from "react-virtualized";
 
@@ -25,10 +21,13 @@ class VirtualizedTreeSelect extends Component {
 
     static defaultProps = {
         async: false,
-        maxHeight: 300,
+        maxHeight: 200,
         optionHeight: 25,
         expanded: true,
         renderAsTree: true,
+        childrenKey: 'children',
+        valueKey: 'value',
+        labelKey: 'label',
     };
 
     constructor(props, context) {
@@ -40,8 +39,11 @@ class VirtualizedTreeSelect extends Component {
         this._setSelectRef = this._setSelectRef.bind(this);
     }
 
-    componentWillMount() {
-        this._processOptions()
+    componentDidUpdate(prevProps){
+        if (this.props.options.length !== prevProps.options.length){
+            this._processOptions();
+            this.forceUpdate()
+        }
     }
 
     /** See List#recomputeRowHeights */
@@ -62,7 +64,7 @@ class VirtualizedTreeSelect extends Component {
         let options = this.props.options;
         //Add parent value to options
         options.forEach((option) => {
-            option.children.forEach((childID) => {
+            option[this.props.childrenKey].forEach((childID) => {
                 const index = options.findIndex((obj) => obj[this.props.valueKey] === childID);
                 if (!options[index].parent) options[index].parent = option[this.props.valueKey];
             })
@@ -87,7 +89,7 @@ class VirtualizedTreeSelect extends Component {
 
         let counter = 0;
         sortedArr.push(options[index]);
-        options[index].children.forEach((child) => {
+        options[index][this.props.childrenKey].forEach((child) => {
             sortedArr = this._createGraph(options, child, depth + 1, graph + "-" + counter, sortedArr);
             counter++
         });
@@ -153,7 +155,6 @@ class VirtualizedTreeSelect extends Component {
         function wrappedRowRenderer({index, key, style}) {
             const option = options[index];
 
-
             return innerRowRenderer({
                 focusedOption,
                 focusedOptionIndex,
@@ -208,6 +209,7 @@ class VirtualizedTreeSelect extends Component {
             }
         }
 
+
         return height
     }
 
@@ -249,7 +251,6 @@ class VirtualizedTreeSelect extends Component {
             valueKey: this.props.valueKey,
             labelKey: this.props.labelKey,
         });
-
         return (
             <SelectComponent
                 closeOnSelect={false}
@@ -259,7 +260,6 @@ class VirtualizedTreeSelect extends Component {
                 menuStyle={{overflow: 'hidden'}}
                 ref={this._setSelectRef}
                 menuRenderer={this._renderMenu}
-                onInputChange={(x) => this.props.setCurrentSearchInput(x)}
                 {...this.props}
                 options={this.options}
                 {...attributes}
@@ -269,19 +269,4 @@ class VirtualizedTreeSelect extends Component {
 }
 
 
-function mapStateToProps(state) {
-    return {
-        currentSearch: state.other.currentSearch,
-        selectedOption: state.options.selectedOption,
-        options: state.options.options
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        toggleExpanded: toggleExpanded,
-        setCurrentSearchInput: setCurrentSearchInput,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(VirtualizedTreeSelect);
+export default VirtualizedTreeSelect;

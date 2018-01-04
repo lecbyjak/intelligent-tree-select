@@ -18,9 +18,22 @@ export default function (state={
             //merge options
             while (options.length > 0) {
                 let currOption = options.shift();
+
+                //if not array make an array
+                if (!Array.isArray(currOption[action.payload.childrenKey])) {
+                    if (currOption[action.payload.childrenKey]) currOption[action.payload.childrenKey] = [currOption[action.payload.childrenKey]];
+                else currOption[action.payload.childrenKey] = []
+                }
+
                 let conflicts = options.filter(object => object[action.payload.valueKey] === currOption[action.payload.valueKey]);
                 if (conflicts.length > 0) currOption.state = optionStateEnum.MERGED;
                 conflicts.forEach(conflict => {
+
+                    if (!Array.isArray(conflict[action.payload.childrenKey])) {
+                        if (conflict[action.payload.childrenKey]) conflict[action.payload.childrenKey] = [conflict[action.payload.childrenKey]];
+                    else conflict[action.payload.childrenKey] = []
+                    }
+
                     currOption[action.payload.childrenKey] = currOption[action.payload.childrenKey].concat(conflict[action.payload.childrenKey])
                 });
                 mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));

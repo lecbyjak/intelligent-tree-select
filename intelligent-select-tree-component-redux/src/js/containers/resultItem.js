@@ -64,7 +64,7 @@ class ResultItem extends Component {
 
     render() {
         let button = null;
-        if (this.props.option.hasChildren) {
+        if (this.props.hasChildren) {
             button = this.getCollapseButton();
         }
         let style = {};
@@ -86,6 +86,8 @@ class ResultItem extends Component {
 
                 <TooltipItem id={this.props.option.graph}
                              option={this.props.option}
+                             label={this.props.label}
+                             value={this.props.option[this.props.settings.valueKey]}
                              currentSearch={this.props.currentSearch}
                              onClick={this.props.onClick}
                              hoverActive={this.props.settings.displayInfoOnHover}

@@ -25,7 +25,7 @@ class TooltipItem extends Component {
                     highlightClassName='highlighted'
                     searchWords={[this.props.currentSearch]}
                     autoEscape={true}
-                    textToHighlight={this.props.option.label}
+                    textToHighlight={this.props.label}
                 />
 
                 <Tooltip innerClassName={"VirtualizedTreeSelectTooltip"}
@@ -33,8 +33,8 @@ class TooltipItem extends Component {
                          target={'Tooltip-' + this.props.id} autohide={false}
                          toggle={() => this.toggle()} delay={{"show": 300, "hide": 0}}
                 >
-                    <b>Label: </b> {this.props.option.label} <br/>
-                    <b>Value: </b>{this.props.option.id} <br/>
+                    <b>Label: </b> {this.props.label} <br/>
+                    <b>Value: </b>{this.props.value} <br/>
                     <b>Providers: </b>{this.props.option.providers} <br/>
                     <b>Graph: </b>{this.props.option.graph} <br/>
                 </Tooltip>

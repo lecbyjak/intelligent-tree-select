@@ -40,11 +40,7 @@ class App extends Component {
 
     _preProcessOptions(options, provider) {
         return options.map(option => {
-            let children = (this.props.childrenKey)? option[this.props.childrenKey]: options['children'];
-            if (!Array.isArray(children)) {
-                if (children) children = [children];
-                else children = []
-            }
+
             return {
                 ...option,
                 state: (option['state']) ? option['state'] : optionStateEnum.EXTERNAL,
@@ -55,8 +51,8 @@ class App extends Component {
         })
     }
 
-    //TODO my own renderer
-    _optionRenderer ({ focusedOption, focusOption, key, labelKey, option, selectValue, style, valueArray, onTooggleClick }) {
+    //custom renderer
+    _optionRenderer ({ focusedOption, focusOption, key, labelKey, option, selectValue, style, valueArray, onTooggleClick, childrenKey}) {
 
         const className = ['VirtualizedSelectOption'];
 
@@ -90,6 +86,7 @@ class App extends Component {
                 style={style}
                 option={option}
                 label={option[labelKey]}
+                hasChildren={!!(option[childrenKey].length)}
                 {...events}
                 onTooggleClick={onTooggleClick}
             />
@@ -101,9 +98,10 @@ class App extends Component {
         return (
             <div className="container-fluid">
                 <Settings/>
-                <VirtualizedTreeSelect
+                    <VirtualizedTreeSelect
                     name="react-virtualized-tree-select"
                     onChange={(selectValue) => this.props.addSelectedOption(selectValue)}
+                    onInputChange={(x) => this.props.setCurrentSearchInput(x)}
                     value={this.props.selectedOptions}
                     options={this.props.options}
 
@@ -118,6 +116,7 @@ class App extends Component {
 
                     {...this.props.settings}
                 />
+
             </div>
         )
     }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Field, FieldArray, initialize, reduxForm} from 'redux-form'
+import {Field, FieldArray, reduxForm} from 'redux-form'
 import {Button, Collapse, Form, FormFeedback, FormGroup, Input, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import validate from './newTerm-form-validate'
 import {toggleModalFormAdvancedOptions, toggleModalWindow} from "../../actions/other-actions";
@@ -96,7 +96,7 @@ class NewTermModalForm extends Component {
 
     componentWillMount() {
         //this.props.dispatch(initialize('newTerm', {termLabel: this.props.defaultInputValue}));
-        this.options = this.props.options
+        this.options = this.props.options;
         this.filter = createFilterOptions({options: this.options, valueKey: "id"})
     }
 
