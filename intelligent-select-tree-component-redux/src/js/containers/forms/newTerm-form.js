@@ -57,6 +57,8 @@ const RenderSelect = createRendered((field) => {
                 options={field.options}
                 filterOptions={field.filterOptions}
                 placeholder={field.placeholder}
+                labelKey={field.labelKey}
+                valueKey={field.valueKey}
                 {...attributes}
                 {...field.input}
                 onBlur={() => field.input.onBlur(field.input.value)}
@@ -97,7 +99,11 @@ class NewTermModalForm extends Component {
     componentWillMount() {
         //this.props.dispatch(initialize('newTerm', {termLabel: this.props.defaultInputValue}));
         this.options = this.props.options;
-        this.filter = createFilterOptions({options: this.options, valueKey: "id"})
+        this.filter = createFilterOptions({
+            options: this.options,
+            valueKey: this.props.settings.valueKey,
+            labelKey: this.props.settings.labelKey
+        })
     }
 
 
@@ -127,6 +133,8 @@ class NewTermModalForm extends Component {
                                filterOptions={this.filter}
                                placeholder={"Select parent ..."}
                                component={RenderSelect}
+                               labelKey={this.props.settings.labelKey}
+                               valueKey={this.props.settings.valueKey}
                         />
 
                         <Field name={"child-terms"}
@@ -135,7 +143,10 @@ class NewTermModalForm extends Component {
                                placeholder={"Select children ..."}
                                multi
                                joinValues
-                               component={RenderSelect}/>
+                               component={RenderSelect}
+                               labelKey={this.props.settings.labelKey}
+                               valueKey={this.props.settings.valueKey}
+                        />
 
                         <FieldArray name="termProperties" component={renderMembers}/>
 
@@ -160,6 +171,7 @@ function mapStateToProps(state) {
     return {
         defaultInputValue: state.other.currentSearch,
         options: state.options.options,
+        settings: state.settings,
         modalFormAdvancedOptionsVisible: state.other.modalFormAdvancedOptionsVisible,
     }
 }

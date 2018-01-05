@@ -6,6 +6,9 @@ export default function (state={
     displayInfoOnHover: false,
     renderAsTree: false,
     multi: true,
+    labelKey: 'label',
+    valueKey: 'value',
+    childrenKey: 'children',
 }, action) {
     switch (action.type){
         case "TOGGLE_SETTINGS":
@@ -47,6 +50,9 @@ export default function (state={
                 expanded: action.payload.expanded,
                 renderAsTree: action.payload.renderAsTree,
                 multi: action.payload.multi,
+                labelKey: action.payload.labelKey,
+                valueKey: action.payload.valueKey,
+                childrenKey: action.payload.childrenKey,
             };
         default:
             return state;

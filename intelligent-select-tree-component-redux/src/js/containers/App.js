@@ -26,6 +26,9 @@ class App extends Component {
             expanded: this.props.expanded,
             renderAsTree: this.props.renderAsTree,
             multi: this.props.multi,
+            labelKey: this.props.labelKey,
+            valueKey: this.props.valueKey,
+            childrenKey: this.props.childrenKey,
         };
 
         this.props.initSettings(this.settings);
@@ -143,6 +146,9 @@ App.defaultProps = {
     expanded: true,
     renderAsTree: true,
     multi: true,
+    labelKey: 'label',
+    valueKey: 'value',
+    childrenKey: 'children',
 };
 
 
