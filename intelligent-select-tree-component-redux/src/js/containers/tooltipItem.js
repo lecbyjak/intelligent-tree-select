@@ -24,8 +24,9 @@ class TooltipItem extends Component {
                 <Highlighter
                     highlightClassName='highlighted'
                     searchWords={[this.props.currentSearch]}
-                    autoEscape={true}
+                    autoEscape={false}
                     textToHighlight={this.props.label}
+                    highlightTag={"span"}
                 />
 
                 <Tooltip innerClassName={"VirtualizedTreeSelectTooltip"}
@@ -37,6 +38,7 @@ class TooltipItem extends Component {
                     <b>Value: </b>{this.props.value} <br/>
                     <b>Providers: </b>{this.props.option.providers} <br/>
                     <b>Graph: </b>{this.props.option.graph} <br/>
+                    <b>Tree path: </b>TODO <br/>
                 </Tooltip>
             </div>
         );
