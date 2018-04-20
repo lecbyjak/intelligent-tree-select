@@ -13,9 +13,10 @@ class TooltipItem extends Component {
 
     toggle() {
         this.setState({
-            tooltipOpen: !this.state.tooltipOpen
+            tooltipOpen: !this.state.tooltipOpen,
         });
     }
+
 
     render() {
         return (
@@ -30,15 +31,19 @@ class TooltipItem extends Component {
                 />
 
                 <Tooltip innerClassName={"VirtualizedTreeSelectTooltip"}
-                         placement={'bottom'} isOpen={this.props.hoverActive && this.state.tooltipOpen}
+                         style={{left: "400px!important"}}
+                         placement={'right'} isOpen={this.props.hoverActive && this.state.tooltipOpen}
                          target={'Tooltip-' + this.props.id} autohide={false}
                          toggle={() => this.toggle()} delay={{"show": 300, "hide": 0}}
+                         modifiers={{
+                             preventOverflow: {
+                                 escapeWithReference: true,
+                             },
+                         }}
                 >
                     <b>Label: </b> {this.props.label} <br/>
                     <b>Value: </b>{this.props.value} <br/>
                     <b>Providers: </b>{this.props.option.providers} <br/>
-                    <b>Graph: </b>{this.props.option.graph} <br/>
-                    <b>Tree path: </b>TODO <br/>
                 </Tooltip>
             </div>
         );

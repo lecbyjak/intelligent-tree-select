@@ -4,7 +4,9 @@ body {
   font-family: sans-serif; }
 
 body #intelligent-select-tree-root {
-  width: 500px; }
+  max-width: 500px;
+  margin: auto;
+}
 
 #intelligent-select-tree-root button{
   cursor: pointer
