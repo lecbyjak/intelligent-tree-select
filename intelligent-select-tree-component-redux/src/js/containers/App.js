@@ -15,6 +15,8 @@ import {bindActionCreators} from "redux";
 import {addNewOptions, addSelectedOption} from "../actions/options-actions";
 import {setCurrentSearchInput} from "../actions/other-actions";
 
+import PropTypes from 'prop-types'
+
 class App extends Component {
 
 
@@ -32,7 +34,7 @@ class App extends Component {
         };
 
         this.props.initSettings(this.settings);
-
+//TODO options only + providers separatly
         for (let i = 0; i < this.props.providers.length; i++) {
             if (this.props.providers[i].type === ProviderTypeEnum.OPTIONS) {
                 let preProcessedOptions = this._preProcessOptions(this.props.providers[i].value, "local data");
@@ -101,7 +103,7 @@ class App extends Component {
         return (
             <div className="container-fluid">
                 <Settings/>
-                    <VirtualizedTreeSelect
+                <VirtualizedTreeSelect
                     name="react-virtualized-tree-select"
                     onChange={(selectValue) => this.props.addSelectedOption(selectValue)}
                     onInputChange={(x) => this.props.setCurrentSearchInput(x)}
@@ -126,21 +128,33 @@ class App extends Component {
 
 }
 
-const ProviderTypeEnum = {
-    OPTIONS: Symbol('OPTIONS'),
-    GET_ALL: Symbol('GET_ALL'),
-    SEARCH: Symbol('SEARCH'),
-};
-
-const optionStateEnum = {
+const ptionStateEnum = {
     MERGED: {label: 'Merged', color: 'warning', tooltip: ''},
     EXTERNAL: {label: 'External', color: 'primary', tooltip: ''},
     NEW: {label: 'New', color: 'success', tooltip: 'not verified'},
     LOCAL: {label: 'Local', color: 'secondary', tooltip: ''},
 };
 
+App.propTypes = {
+    providers: PropTypes.arrayOf(
+        PropTypes.objectOf(PropTypes.shape(providerShape))
+    )
+}
+
+const providerShape = {
+    responseToJsonArr: PropTypes.func,
+    getResponse: PropTypes.func,
+    labelKey: PropTypes.string,
+    valueKey: PropTypes.string,
+    childrenKey: PropTypes.string,
+    graphOptions: PropTypes.bool,
+}
+
+
 App.defaultProps = {
     context: "",
+    options: [],
+    graphOptions: false, 
     displayState: false,
     displayInfoOnHover: false,
     expanded: true,

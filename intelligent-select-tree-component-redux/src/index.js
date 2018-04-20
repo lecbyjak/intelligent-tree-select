@@ -28,8 +28,11 @@ ReactDOM.render(
                                         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
                                         childrenKey={"subTerm"}
 
+                                        options={myJSON3}
+                                        graphOptions={true}
+
                                         providers={[
-                                            {'type':ProviderTypeEnum.OPTIONS, 'value':myJSON3},
+                                            
                                         ]}
                                         />
     </Provider>
