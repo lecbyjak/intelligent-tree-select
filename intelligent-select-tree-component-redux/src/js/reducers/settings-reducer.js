@@ -1,6 +1,5 @@
 export default function (state={
     settingsOpened: false,
-    context: "",
     expanded: true,
     displayState: true,
     displayInfoOnHover: false,
@@ -44,7 +43,6 @@ export default function (state={
         case "INIT_SETTINGS":
             return{
                 ...state,
-                context: action.payload.context,
                 displayState: action.payload.displayState,
                 displayInfoOnHover: action.payload.displayInfoOnHover,
                 expanded: action.payload.expanded,

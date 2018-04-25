@@ -1,20 +1,16 @@
-export function addNewOptions(options, labelKey, valueKey, childrenKey) {
+export function addNewOptions(options) {
     return {
         type: "ADD_NEW_OPTIONS",
         payload: {
-            options,
-            labelKey,
-            valueKey,
-            childrenKey,
+            options
         }
     }
 }
-export function toggleExpanded(optionID, valueKey) {
+export function toggleExpanded(optionID) {
     return {
         type: "TOGGLE_EXPANDED_FOR_OPTION",
         payload: {
-            optionID,
-            valueKey
+            optionID
         }
     }
 }
@@ -30,5 +26,16 @@ export function setExpandedForAll(value) {
     return {
         type: "SET_EXPANDED_FOR_ALL",
         payload: value
+    }
+}
+
+export function addToHistory(searchString, data, validTo){
+    return {
+        type: "ADD_TO_HISTORY",
+        payload: {
+            searchString,
+            data,
+            validTo,
+        }
     }
 }

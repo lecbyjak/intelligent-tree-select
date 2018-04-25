@@ -5,7 +5,6 @@ import {Button, InputGroupButton, Modal, Tooltip} from "reactstrap";
 import {toggleModalWindow, toggleModalWindowButtonTooltip} from "../actions/other-actions";
 import {addNewOptions} from "../actions/options-actions";
 import NewTermModalForm from "./forms/newTerm-form";
-import {optionStateEnum} from "./App";
 
 class ModalWindow extends Component {
 

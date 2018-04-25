@@ -42,7 +42,7 @@ class ResultItem extends Component {
 
     _handleButtonClick() {
         this.props.option.expanded = !this.props.option.expanded;
-        this.props.onTooggleClick()
+        this.props.onToggleClick();
     }
 
     getCollapseButton() {
@@ -64,11 +64,17 @@ class ResultItem extends Component {
 
     render() {
         let button = null;
-        if (this.props.hasChildren) {
+        let option = this.props.option;
+        if (option[option.providers[0].childrenKey].length > 0) {
             button = this.getCollapseButton();
         }
         let style = {};
-        style.width = this.props.option.depth*10+'px';
+        style.width = option.depth*10+'px';
+
+        let label = option[option.providers[0].labelKey];
+        if (!(typeof label === 'string' || label instanceof String)){
+            label = option.providers[0].labelValue(label)
+        }
 
         return (
             <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter}>
@@ -84,19 +90,19 @@ class ResultItem extends Component {
                     </div>
                 }
 
-                <TooltipItem id={this.props.option.graph}
-                             option={this.props.option}
-                             label={this.props.label}
-                             value={this.props.option[this.props.settings.valueKey]}
+                <TooltipItem id={option.graph}
+                             option={option}
+                             label={label}
+                             value={option[option.providers[0].valueKey]}
                              currentSearch={this.props.currentSearch}
                              onClick={this.props.onClick}
                              hoverActive={this.props.settings.displayInfoOnHover}
                 />
 
 
-                {this.props.option.state.label && this.props.settings.displayState &&
+                {option.state.label && this.props.settings.displayState &&
                 <div className={"p-0 pl-1 pr-1"} xs="auto"><Badge
-                    color={this.props.option.state.color}>{this.props.option.state.label}</Badge></div>
+                    color={option.state.color}>{option.state.label}</Badge></div>
                 }
 
             </div>

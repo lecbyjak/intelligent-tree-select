@@ -16,17 +16,6 @@
   word-break: break-all;
 }
 
-.bs-tooltip-left{
-    -webkit-transform: translateX();
-    -moz-transform: translateX();
-    -ms-transform: translateX();
-    -o-transform: translateX();
-    transform: translateX();
-}
-.bs-tooltip-right{
-    left: 450px!important;
-}
-
 .toggleButton{
   width: 16px;
 }

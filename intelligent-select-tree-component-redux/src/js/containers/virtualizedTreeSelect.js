@@ -20,12 +20,14 @@ class VirtualizedTreeSelect extends Component {
     };
 
     static defaultProps = {
+        options: [],
         async: false,
         maxHeight: 200,
         optionHeight: 25,
-        expanded: true,
+        expanded: false,
         renderAsTree: true,
         childrenKey: 'children',
+        parentKey: null,
         valueKey: 'value',
         labelKey: 'label',
     };
@@ -38,6 +40,7 @@ class VirtualizedTreeSelect extends Component {
         this._setListRef = this._setListRef.bind(this);
         this._setSelectRef = this._setSelectRef.bind(this);
     }
+
 
     componentDidUpdate(prevProps){
         if (this.props.options.length !== prevProps.options.length){
@@ -61,12 +64,19 @@ class VirtualizedTreeSelect extends Component {
     }
 
     _processOptions() {
+        let now = new Date().getTime();
+        console.log("Process options start");
+
         let options = this.props.options;
         //Add parent value to options
         options.forEach((option) => {
-            option[this.props.childrenKey].forEach((childID) => {
-                const index = options.findIndex((obj) => obj[this.props.valueKey] === childID);
-                if (!options[index].parent) options[index].parent = option[this.props.valueKey];
+            let children = option[option.providers[0].childrenKey];
+
+            children.forEach((childID) => {
+                const index = options.findIndex((obj) => {
+                    return obj[obj.providers[0].valueKey] === childID
+                });
+                if (!options[index].parent) options[index].parent = option[option.providers[0].valueKey];
             })
         });
         let counter = 0;
@@ -75,28 +85,32 @@ class VirtualizedTreeSelect extends Component {
         options.forEach((option) => {
             option.expanded = this.props.expanded;
             if (!option.parent) {
-                sortedArr = this._createGraph(options, option[this.props.valueKey], 0, counter, sortedArr);
+                sortedArr = this._createGraph(options, option[option.providers[0].valueKey], 0, counter+"-", sortedArr);
                 counter++
             }
         });
         this.options = sortedArr;
+
+        console.log("Process options end in: ", new Date().getTime() - now, "ms");
     }
 
     _createGraph(options, key, depth, graph, sortedArr) {
-        const index = options.findIndex((obj) => obj[this.props.valueKey] === key);
-        options[index].depth = depth;
-        options[index].graph = graph;
+        const index = options.findIndex((obj) => obj[obj.providers[0].valueKey] === key);
+        let option =  options[index];
+
+        option.depth = depth;
+        option.graph = graph;
 
         let counter = 0;
-        sortedArr.push(options[index]);
-        options[index][this.props.childrenKey].forEach((child) => {
-            sortedArr = this._createGraph(options, child, depth + 1, graph + "-" + counter, sortedArr);
+        sortedArr.push(option);
+        option[option.providers[0].childrenKey].forEach((child) => {
+            sortedArr = this._createGraph(options, child, depth + 1, graph + counter + "-", sortedArr);
             counter++
         });
         return sortedArr
     }
 
-    _optionRenderer({focusedOption, focusOption, key, labelKey, option, selectValue, style, valueArray, onTooggleClick, childrenKey}) {
+    _optionRenderer({focusedOption, focusOption, key, option,  labelKey, selectValue, style, valueArray, onToggleClick}) {
 
         const className = ['VirtualizedSelectOption'];
 
@@ -116,11 +130,10 @@ class VirtualizedTreeSelect extends Component {
             className.push(option.className)
         }
 
-        const events = option.disabled
-            ? {}
-            : {
+        const events = option.disabled? {} : {
                 onClick: () => selectValue(option),
-                onMouseEnter: () => focusOption(option)
+                onMouseEnter: () => focusOption(option),
+                onToggleClick: () => onToggleClick()
             };
 
         return (
@@ -130,10 +143,7 @@ class VirtualizedTreeSelect extends Component {
                 key={key}
                 style={style}
                 option={option}
-                label={option[labelKey]}
-                hasChildren={!!(option[childrenKey].length)}
                 {...events}
-                onTooggleClick={onTooggleClick}
             />
         )
     }
@@ -144,13 +154,8 @@ class VirtualizedTreeSelect extends Component {
         const focusedOptionIndex = options.indexOf(focusedOption);
         const height = this._calculateListHeight({options});
         const innerRowRenderer = optionRenderer || this._optionRenderer;
-        const onTooggleClick = this.forceUpdate.bind(this);
+        const onToggleClick = this.forceUpdate.bind(this);
 
-        // react-select 1.0.0-rc2 passes duplicate `onSelect` and `selectValue` props to `menuRenderer`
-        // The `Creatable` HOC only overrides `onSelect` which breaks an edge-case
-        // In order to support creating items via clicking on the placeholder option,
-        // We need to ensure that the specified `onSelect` handle is the one we use.
-        // See issue #33
 
         function wrappedRowRenderer({index, key, style}) {
             const option = options[index];
@@ -168,11 +173,10 @@ class VirtualizedTreeSelect extends Component {
                 selectValue: onSelect,
                 style,
                 valueArray,
-                onTooggleClick,
+                onToggleClick,
                 childrenKey,
             })
         }
-
         return (
             <AutoSizer disableHeight>
                 {({width}) => (
@@ -246,7 +250,7 @@ class VirtualizedTreeSelect extends Component {
         const SelectComponent = this._getSelectComponent();
 
         let attributes = {};
-        if (this.props.renderAsTree) attributes.filterOptions = createFilterOptions({
+        if (this.props.renderAsTree && !this.props.filterOptions) attributes.filterOptions = createFilterOptions({
             options: this.options,
             valueKey: this.props.valueKey,
             labelKey: this.props.labelKey,
