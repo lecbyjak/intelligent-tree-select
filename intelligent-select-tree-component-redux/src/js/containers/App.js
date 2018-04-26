@@ -119,10 +119,20 @@ class App extends Component {
         return []
     }
 
-    _simplyfyData(data) {
+    _simplyfyData(responseData,valueKey, childrenKey) {
         let result = [];
-        //TODO implement this
-        console.log("_simplyfyData", data);
+        if (!responseData || responseData.length === 0) return result;
+
+
+
+        for (let i=0; i<responseData.length; i++ ){
+            //deep clone
+            let data = JSON.parse(JSON.stringify(responseData[i]));
+            result = result.concat(this._simplyfyData(data[childrenKey],valueKey, childrenKey));
+            data[childrenKey] = data[childrenKey].map(xdata => xdata[valueKey]);
+            result = result.concat(data);
+        }
+
         return result
     }
 
@@ -166,12 +176,11 @@ class App extends Component {
                     simpleData = provider.treeDataSimpleMode;
                 }
                 responses.push({provider, simpleData, responseData});
-                //console.log(provider.name, "finished")
+                //console.log("_getResponses for: ", provider.name, "finished")
             }
         );
 
         await Promise.all(promises);
-        console.log('_getResponses result return');
         return responses;
     }
 
@@ -191,6 +200,7 @@ class App extends Component {
                 let data = [];
 
                 this.fetching = this._getResponses().then(responses => {
+                    //TODO response toJSON
                         console.log('addToHistory call', responses);
                         this.props.addToHistory(searchString, responses, Date.now() + App._getValidForInSec(this.props.termLifetime));
 
@@ -203,7 +213,7 @@ class App extends Component {
                             if (response.simpleData) {
                                 data = data.concat(this._preProcessOptions(response.responseData, response.provider));
                             } else {
-                                let simplifiedData = this._simplyfyData(response.responseData);
+                                let simplifiedData = this._simplyfyData(response.responseData, response.provider.valueKey, response.provider.childrenKey);
                                 data = data.concat(this._preProcessOptions(simplifiedData, response.provider));
                             }
                         });
@@ -262,9 +272,7 @@ class App extends Component {
 
 
     _filterOptions(options, filter, selectedOptions) {
-
-
-
+        //TODO improve
         let now = new Date().getTime();
         //console.log("Filter Options options start");
 
