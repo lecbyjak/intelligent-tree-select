@@ -1,4 +1,5 @@
-const validate = values => {
+const validate = (values) => {
+
     const errors = {};
 
     if(!values.termLabel) {
@@ -36,13 +37,11 @@ const validate = values => {
             errors.termProperties = membersArrayErrors
         }
     }
-
     if (values["parent-term"] && values["child-terms"]){
         values["child-terms"].forEach(term => {
-            if(values["parent-term"].id === term.id) errors["child-terms"] = "Child term can not be same as parent term"
+            if(Object.is(values["parent-term"], term)) errors["child-terms"] = "Child term can not be same as parent term"
         })
     }
-
     return errors
 };
 

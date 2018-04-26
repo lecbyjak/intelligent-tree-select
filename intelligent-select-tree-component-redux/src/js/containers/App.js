@@ -15,6 +15,7 @@ import {bindActionCreators} from "redux";
 import {addNewOptions, addSelectedOption, addToHistory, toggleExpanded} from "../actions/options-actions";
 import {setCurrentSearchInput} from "../actions/other-actions";
 import PropTypes from "prop-types";
+import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
 
 class App extends Component {
 
@@ -171,12 +172,22 @@ class App extends Component {
         let responses = [];
         const promises = this.props.providers.map(async (provider) => {
                 let responseData = await provider.response(searchString);
+
+                if ("toJsonArr" in provider) {
+                    responseData = provider.toJsonArr(responseData);
+                }
+                else if (typeof responseData === 'string' || responseData instanceof String){
+                    if (isXML(responseData)) responseData = xmlToJson(responseData);
+                    else if (isJson(responseData)) responseData = JSON.parse(responseData);
+                    else responseData = csvToJson(responseData) //TODO may throw error
+                }
+
                 let simpleData = false;
                 if ("treeDataSimpleMode" in provider) {
                     simpleData = provider.treeDataSimpleMode;
                 }
                 responses.push({provider, simpleData, responseData});
-                //console.log("_getResponses for: ", provider.name, "finished")
+                console.log("_getResponses for: ", provider.name, "finished")
             }
         );
 
@@ -200,8 +211,7 @@ class App extends Component {
                 let data = [];
 
                 this.fetching = this._getResponses().then(responses => {
-                    //TODO response toJSON
-                        console.log('addToHistory call', responses);
+
                         this.props.addToHistory(searchString, responses, Date.now() + App._getValidForInSec(this.props.termLifetime));
 
                         responses.forEach((response) => {

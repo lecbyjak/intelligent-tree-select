@@ -170,7 +170,7 @@ class NewTermModalForm extends Component {
 function mapStateToProps(state) {
     return {
         defaultInputValue: state.other.currentSearch,
-        options: state.options.options,
+        options: state.options.cashedOptions,
         settings: state.settings,
         modalFormAdvancedOptionsVisible: state.other.modalFormAdvancedOptionsVisible,
     }

@@ -60,16 +60,16 @@ ReactDOM.render(
                                         renderAsTree={true}
 
                                         treeDataSimpleMode={true}
-                                        //localOptions={myJSON3}
-                                        //valueKey={"@id"}
-                                        //labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
+                                        localOptions={myJSON3}
+                                        valueKey={"@id"}
+                                        labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
                                         //labelValue={(labelKey) => labelKey[0]['@value']}
-                                        //childrenKey={"subTerm"}
+                                        childrenKey={"subTerm"}
 
                                         providers={[
                                            //provider1,
-                                           //provider2,
-                                           //provider3,
+                                           provider2,
+                                           provider3,
                                            provider4,
                                         ]}
                                         />
