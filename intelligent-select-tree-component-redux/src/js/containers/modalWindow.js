@@ -5,6 +5,7 @@ import {Button, InputGroupButton, Modal, Tooltip} from "reactstrap";
 import {toggleModalWindow, toggleModalWindowButtonTooltip} from "../actions/other-actions";
 import {addNewOptions} from "../actions/options-actions";
 import NewTermModalForm from "./forms/newTerm-form";
+import {optionStateEnum} from "./App";
 
 class ModalWindow extends Component {
 
@@ -13,32 +14,54 @@ class ModalWindow extends Component {
         this.id = 'Modal_form_open_button';
     }
 
+    _getIDs(children){
+        if (!children) return [];
+        let ids = JSON.parse(JSON.stringify(children));
+        return ids.map(obj => obj[this.props.settings.valueKey])
+    }
+
     _createNewOption() {
 
-        // let newTerm2 = this.state.termProperties.reduce(function (result, elem) {
-        //     result[elem.key] = elem.value;
-        //     return result;
-        // }, {});
-        //
-        // let newTerm = {
-        //     "@id": this.termID.value,
-        //     [this.props.optionsUtils.settings.filterBy]: this.termLabel.value,
-        //     "@type": this.termCategories.value.split(","),
-        //     "parent": this.state.selectedParent,
-        //     "subTerm": this._getSelectedChildren(),
-        //     "state": optionStateEnum.NEW,
-        // };
-        // newTerm = Object.assign(newTerm, newTerm2);
-        // //console.log(newTerm);
-        //
-        // this.props.optionsUtils.addNewOptions([newTerm], "local data");
-        // if (this.props.optionsUtils.settings.forceAdding) {
-        //     this.props.history.invalidateHistory()
-        // }
+        const values = this.props.form.newTerm.values;
+        const settings = this.props.settings;
 
-        console.log('submitted');
-        console.log(this.props.form.newTerm.values)
-        console.log('term created')
+        let localProvider = {
+            name: "Local data",
+            labelKey: settings.labelKey,
+            valueKey: settings.valueKey,
+            childrenKey: settings.childrenKey,
+            labelValue: null,
+        };
+
+        let properties = {};
+        if (values.termProperties) {
+            properties = values.termProperties.reduce(function (result, elem) {
+                result[elem.key] = elem.value;
+                return result;
+            }, {});
+        }
+
+        let children = this._getIDs(values['child-terms']);
+        let parent = '';
+        if (values['parent-term']) parent = values['parent-term'][settings.valueKey];
+
+        let option = {};
+        option[settings.valueKey] = values['termID'];
+        option[settings.labelKey] = values['termLabel'];
+        option[settings.childrenKey] = children;
+        option['parent'] = parent;
+        option['description'] = values['termDescription'];
+
+        Object.assign(option, properties);
+        if (this.props.onOptionCreate) this.props.onOptionCreate(option);
+
+        //custom properties
+        let option2 = {};
+        option2['state'] = optionStateEnum.NEW;
+        option2['providers'] = [localProvider];
+        Object.assign(option2, option);
+
+        this.props.addNewOptions([option2]);
 
         this.props.toggleModalWindow()
     }

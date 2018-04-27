@@ -14,7 +14,7 @@ class Settings extends Component {
             <div className="d-flex flex-column">
 
                 <div className="d-flex justify-content-between">
-                    <ModalWindow/>
+                    <ModalWindow onOptionCreate={this.props.onOptionCreate} />
                     <Button color="link" onClick={() => this.props.toggleSettings()}>
                         {(this.props.settings.settingsOpened? "Hide filter":"Show filter")}
                     </Button>

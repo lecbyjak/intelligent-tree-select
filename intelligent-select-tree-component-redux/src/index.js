@@ -59,6 +59,8 @@ ReactDOM.render(
                                         expanded={false}
                                         renderAsTree={true}
 
+                                        onOptionCreate={(x) => console.log(x)}
+
                                         treeDataSimpleMode={true}
                                         localOptions={myJSON3}
                                         valueKey={"@id"}

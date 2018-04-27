@@ -33,8 +33,9 @@ class App extends Component {
         childrenKey: PropTypes.string,
         parentKey: PropTypes.string,
 
-        options: PropTypes.array,
+        onOptionCreate: PropTypes.func,
 
+        options: PropTypes.array,
         providers: PropTypes.arrayOf(
             PropTypes.shape({
                 name: PropTypes.string.isRequired,
@@ -338,7 +339,7 @@ class App extends Component {
 
         return (
             <div className="container-fluid">
-                <Settings/>
+                <Settings onOptionCreate={this.props.onOptionCreate} />
                 <VirtualizedTreeSelect
                     name="react-virtualized-tree-select"
 

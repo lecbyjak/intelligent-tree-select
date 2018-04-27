@@ -17,6 +17,11 @@ class TooltipItem extends Component {
         });
     }
 
+    _getProvidersName(providers){
+        let names = [];
+        providers.forEach(provider => names.push(provider.name));
+        return names.join(", ")
+    }
 
     render() {
         return (
@@ -43,7 +48,7 @@ class TooltipItem extends Component {
                 >
                     <b>Label: </b> {this.props.label} <br/>
                     <b>Value: </b>{this.props.value} <br/>
-                    <b>Providers: </b>{this.props.option.providers} <br/>
+                    <b>Providers: </b>{this._getProvidersName(this.props.option.providers )}<br/>
                 </Tooltip>
             </div>
         );

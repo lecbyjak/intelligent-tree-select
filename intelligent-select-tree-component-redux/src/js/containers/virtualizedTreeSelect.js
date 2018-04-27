@@ -6,6 +6,7 @@ import {AutoSizer, List} from "react-virtualized";
 
 import PropTypes from 'prop-types'
 import Select from 'react-select'
+import {optionStateEnum} from "./App";
 
 
 class VirtualizedTreeSelect extends Component {
@@ -77,7 +78,14 @@ class VirtualizedTreeSelect extends Component {
                     return obj[obj.providers[0].valueKey] === childID
                 });
                 if (!options[index].parent) options[index].parent = option[option.providers[0].valueKey];
-            })
+            });
+
+            if (option.state === optionStateEnum.NEW && option.parent) {
+                let myOptionID = option[option.providers[0].valueKey];
+                let parentOption = options.find(x => x[x.providers[0].valueKey] === option.parent);
+                let children = parentOption[parentOption.providers[0].childrenKey];
+                if (children.indexOf(myOptionID) === -1 )  children.push(myOptionID);
+            }
         });
         let counter = 0;
         let sortedArr = [];

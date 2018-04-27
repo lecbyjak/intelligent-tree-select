@@ -118,7 +118,6 @@ class NewTermModalForm extends Component {
                 <ModalBody>
                     <Field name="termLabel" label={"Label (required)"} component={RenderInput}/>
                     <Field name="termID" label={"Term ID (required)"} component={RenderInput}/>
-                    <Field name="termCategories" label={"Categories"} component={RenderInput}/>
                     <Field name="termDescription" label={"Description"} component={RenderInput}/>
 
 
