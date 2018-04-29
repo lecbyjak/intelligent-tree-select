@@ -26,7 +26,7 @@ class App extends Component {
         renderAsTree: PropTypes.bool,
         multi: PropTypes.bool,
         async: PropTypes.bool,
-        treeDataSimpleMode: PropTypes.bool,
+        simpleTreeData: PropTypes.bool,
 
         labelKey: PropTypes.string,
         valueKey: PropTypes.string,
@@ -42,7 +42,7 @@ class App extends Component {
                 response: PropTypes.func.isRequired,
                 toJsonArr: PropTypes.func,
 
-                treeDataSimpleMode: PropTypes.bool,
+                simpleTreeData: PropTypes.bool,
                 labelKey: PropTypes.string,
                 labelValue: PropTypes.func,
                 valueKey: PropTypes.string,
@@ -54,7 +54,7 @@ class App extends Component {
 
     static defaultProps = {
         options: [],
-        treeDataSimpleMode: false,
+        simpleTreeData: false,
         displayState: false,
         displayInfoOnHover: false,
         expanded: true,
@@ -184,8 +184,8 @@ class App extends Component {
                 }
 
                 let simpleData = false;
-                if ("treeDataSimpleMode" in provider) {
-                    simpleData = provider.treeDataSimpleMode;
+                if ("simpleTreeData" in provider) {
+                    simpleData = provider.simpleTreeData;
                 }
                 responses.push({provider, simpleData, responseData});
                 console.log("_getResponses for: ", provider.name, "finished")

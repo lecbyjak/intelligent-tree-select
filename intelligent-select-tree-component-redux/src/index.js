@@ -19,7 +19,7 @@ const store = createStore(allReducers, middleware);
 const provider1 = {
     name: "provider1",
     response: (searchInput) => new Promise((resolve) => setTimeout(resolve, 1500, myJSON3)),
-    treeDataSimpleMode: true,
+    simpleTreeData: true,
     labelKey: "http://www.w3.org/2000/01/rdf-schema#label",
     valueKey: "@id",
     childrenKey: "subTerm",
@@ -28,7 +28,7 @@ const provider1 = {
 const provider2 = {
     name: "provider2",
     response: (searchInput) => new Promise((resolve) => setTimeout(resolve, 500, myJSON)),
-    treeDataSimpleMode: true,
+    simpleTreeData: true,
     labelKey: "http://www.w3.org/2000/01/rdf-schema#label",
     labelValue: (labelKey) => labelKey[0]['@value'],
     valueKey: "@id",
@@ -37,7 +37,7 @@ const provider2 = {
 const provider3 = {
     name: "provider3",
     response: (searchInput) => new Promise((resolve) => setTimeout(resolve, 800, myJSON2)),
-    treeDataSimpleMode: true,
+    simpleTreeData: true,
     labelKey: "http://www.w3.org/2000/01/rdf-schema#label",
     labelValue: (labelKey) => labelKey[0]['@value'],
     valueKey: "@id",
@@ -46,7 +46,7 @@ const provider3 = {
 const provider4 = {
     name: "provider4",
     response: (searchInput) => new Promise((resolve) => setTimeout(resolve, 100, myJSON4)),
-    treeDataSimpleMode: false,
+    simpleTreeData: false,
     labelKey: "http://www.w3.org/2000/01/rdf-schema#label",
     labelValue: (labelKey) => labelKey[0]['@value'],
     valueKey: "@id",
@@ -61,7 +61,7 @@ ReactDOM.render(
 
                                         onOptionCreate={(x) => console.log(x)}
 
-                                        treeDataSimpleMode={true}
+                                        simpleTreeData={true}
                                         localOptions={myJSON3}
                                         valueKey={"@id"}
                                         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
