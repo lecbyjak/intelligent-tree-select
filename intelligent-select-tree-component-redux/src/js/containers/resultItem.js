@@ -31,7 +31,7 @@ class ResultItem extends Component {
 
     _getToggleMinusIcon() {
         return (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
                 <g className="nc-icon-wrapper" fill="#444444">
                     <path
                         d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/>
@@ -55,7 +55,7 @@ class ResultItem extends Component {
             button = this._getTogglePlusIcon()
         }
         return (
-            <span onClick={() => this._handleButtonClick()}>
+            <span onClick={() => this._handleButtonClick()} className={"toggleButton"}>
                 {button}
             </span>
         )
@@ -69,7 +69,7 @@ class ResultItem extends Component {
             button = this.getCollapseButton();
         }
         let style = {};
-        style.width = option.depth*10+'px';
+        style.width = option.depth*16+'px';
 
         let label = option[option.providers[0].labelKey];
         if (!(typeof label === 'string' || label instanceof String)){
@@ -85,7 +85,7 @@ class ResultItem extends Component {
                 }
 
                 {this.props.settings.renderAsTree &&
-                    <div className={"toggleButton"}>
+                    <div style={{width: '16px'}}>
                         {button}
                     </div>
                 }

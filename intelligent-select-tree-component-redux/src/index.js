@@ -14,7 +14,8 @@ import myJSON4 from './data/options3.json'
 
 const middleware = applyMiddleware(logger);
 
-const store = createStore(allReducers, middleware);
+//const store = createStore(allReducers, middleware);
+const store = createStore(allReducers);
 
 const provider1 = {
     name: "provider1",
@@ -54,14 +55,7 @@ const provider4 = {
 
 ReactDOM.render(
     <Provider store={store}>
-        <IntelligentTreeSelectComponent displayState={false}
-                                        displayInfoOnHover={false}
-                                        expanded={false}
-                                        renderAsTree={true}
-
-                                        onOptionCreate={(x) => console.log(x)}
-
-                                        simpleTreeData={true}
+        <IntelligentTreeSelectComponent simpleTreeData={true}
                                         localOptions={myJSON3}
                                         valueKey={"@id"}
                                         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
@@ -69,10 +63,10 @@ ReactDOM.render(
                                         childrenKey={"subTerm"}
 
                                         providers={[
-                                           //provider1,
-                                           provider2,
-                                           provider3,
-                                           provider4,
+                                           provider1,
+                                           //provider2,
+                                          // provider3,
+                                          // provider4,
                                         ]}
                                         />
     </Provider>

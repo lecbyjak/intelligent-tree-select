@@ -53,16 +53,11 @@ class ModalWindow extends Component {
         option['description'] = values['termDescription'];
 
         Object.assign(option, properties);
-        if (this.props.onOptionCreate) this.props.onOptionCreate(option);
+        option['state'] = optionStateEnum.NEW;
+        option['providers'] = [localProvider];
 
-        //custom properties
-        let option2 = {};
-        option2['state'] = optionStateEnum.NEW;
-        option2['providers'] = [localProvider];
-        Object.assign(option2, option);
 
-        this.props.addNewOptions([option2]);
-
+        this.props.onOptionCreate(option);
         this.props.toggleModalWindow()
     }
 

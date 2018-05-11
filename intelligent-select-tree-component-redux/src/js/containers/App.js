@@ -12,7 +12,13 @@ import ResultItem from './resultItem'
 import {initSettings} from "../actions/settings-actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {addNewOptions, addSelectedOption, addToHistory, toggleExpanded} from "../actions/options-actions";
+import {
+    addChildrenToParent,
+    addNewOptions,
+    addSelectedOption,
+    addToHistory,
+    toggleExpanded
+} from "../actions/options-actions";
 import {setCurrentSearchInput} from "../actions/other-actions";
 import PropTypes from "prop-types";
 import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
@@ -31,8 +37,7 @@ class App extends Component {
         labelKey: PropTypes.string,
         valueKey: PropTypes.string,
         childrenKey: PropTypes.string,
-        parentKey: PropTypes.string,
-
+        labelValue: PropTypes.func,
         onOptionCreate: PropTypes.func,
 
         options: PropTypes.array,
@@ -46,15 +51,14 @@ class App extends Component {
                 labelKey: PropTypes.string,
                 labelValue: PropTypes.func,
                 valueKey: PropTypes.string,
-                childrenKey: PropTypes.string,
-                parentKey: PropTypes.string,
+                childrenKey: PropTypes.string
             }).isRequired,
         )
     };
 
     static defaultProps = {
         options: [],
-        simpleTreeData: false,
+        simpleTreeData: true,
         displayState: false,
         displayInfoOnHover: false,
         expanded: true,
@@ -68,6 +72,13 @@ class App extends Component {
     };
 
 
+    constructor(props, context) {
+        super(props, context);
+        this._onOptionCreate = this._onOptionCreate.bind(this);
+        this._valueRenderer = this._valueRenderer.bind(this);
+        this._optionRenderer = this._optionRenderer.bind(this);
+    }
+
     componentWillMount() {
         this.settings = {
             displayState: this.props.displayState,
@@ -79,7 +90,6 @@ class App extends Component {
             valueKey: this.props.valueKey,
             childrenKey: this.props.childrenKey,
         };
-        this.isLoadingExternally = false;
         this.fetching = false;
         this.props.initSettings(this.settings);
 
@@ -91,9 +101,20 @@ class App extends Component {
                 childrenKey: this.props.childrenKey,
                 labelValue: this.props.labelValue,
             };
-            let options = this._preProcessOptions(this.props.localOptions, localProvider);
+
+            let data = this.props.localOptions;
+            if (!this.props.simpleTreeData){
+                let now = new Date().getTime();
+
+                data = this._simplyfyData(this.props.localOptions, localProvider.valueKey, localProvider.childrenKey);
+                console.log("Simplify options (",this.props.localOptions.length ,") end in: ", new Date().getTime() - now, "ms");
+            }
+            let options = this._preProcessOptions(data, localProvider);
             this.props.addNewOptions(options)
+
         }
+
+        this.setState({isLoadingExternally: false})
     }
 
     _preProcessOptions(options, provider) {
@@ -124,8 +145,6 @@ class App extends Component {
     _simplyfyData(responseData,valueKey, childrenKey) {
         let result = [];
         if (!responseData || responseData.length === 0) return result;
-
-
 
         for (let i=0; i<responseData.length; i++ ){
             //deep clone
@@ -171,33 +190,38 @@ class App extends Component {
 
     async _getResponses(searchString) {
         let responses = [];
-        const promises = this.props.providers.map(async (provider) => {
-                let responseData = await provider.response(searchString);
+        let promises = [];
+        this.props.providers.forEach(async (provider) => {
 
-                if ("toJsonArr" in provider) {
-                    responseData = provider.toJsonArr(responseData);
-                }
-                else if (typeof responseData === 'string' || responseData instanceof String){
-                    if (isXML(responseData)) responseData = xmlToJson(responseData);
-                    else if (isJson(responseData)) responseData = JSON.parse(responseData);
-                    else responseData = csvToJson(responseData) //TODO may throw error
-                }
+                let p = provider.response(searchString).then(responseData => {
+                    if ("toJsonArr" in provider) {
+                        responseData = provider.toJsonArr(responseData);
+                    }
 
-                let simpleData = false;
-                if ("simpleTreeData" in provider) {
-                    simpleData = provider.simpleTreeData;
-                }
-                responses.push({provider, simpleData, responseData});
-                console.log("_getResponses for: ", provider.name, "finished")
+                    else if (typeof responseData === 'string' || responseData instanceof String){
+                        if (isXML(responseData)) responseData = xmlToJson(responseData);
+                        else if (isJson(responseData)) responseData = JSON.parse(responseData);
+                        else responseData = csvToJson(responseData) //TODO may throw error
+                    }
+
+                    let simpleData = false;
+                    if ("simpleTreeData" in provider) {
+                        simpleData = provider.simpleTreeData;
+                    }
+                    responses.push({provider, simpleData, responseData});
+                    //console.log("_getResponses for: ", provider.name, "finished")
+                });
+                promises.push(p);
+
             }
         );
 
-        await Promise.all(promises);
+        await Promise.all(promises).catch(error => console.log(error));
         return responses;
     }
 
     _onInputChange(searchString) {
-        if (searchString) {
+        if (searchString && this.props.providers.length > 0) {
             let historyData = [];
             for (let i = searchString.length; i > 0; i--) {
                 if (historyData.length > 0) break;
@@ -206,9 +230,7 @@ class App extends Component {
             }
 
             if (historyData.length === 0 && !this.fetching) {
-                this.isLoadingExternally = true;
-                this.forceUpdate();
-
+                this.setState({isLoadingExternally: true});
                 let data = [];
 
                 this.fetching = this._getResponses().then(responses => {
@@ -228,10 +250,10 @@ class App extends Component {
                                 data = data.concat(this._preProcessOptions(simplifiedData, response.provider));
                             }
                         });
-                        this.props.addNewOptions(data);
-                        this.isLoadingExternally = false;
+
                         this.fetching = false;
-                        this.forceUpdate();
+                        this.props.addNewOptions(data);
+                        this.setState({isLoadingExternally: false});
                     }
                 );
             }
@@ -281,65 +303,39 @@ class App extends Component {
         )
     }
 
+    static _isURL(str) {
+        const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return pattern.test(str);
+    }
 
-    _filterOptions(options, filter, selectedOptions) {
-        //TODO improve
-        let now = new Date().getTime();
-        //console.log("Filter Options options start");
+    _valueRenderer(option, x){
+        const value = option[option.providers[0].valueKey];
+        const label = option[option.providers[0].labelKey];
+        if (App._isURL(value)) return (
+          <a href={value} target="_blank">{label}</a>
+        );
+        return label;
+    }
 
-        const filtered = filter? options.filter(option => {
-            let label = option[option.providers[0].labelKey];
-                if (typeof label === 'string' || label instanceof String){
-                    return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-                }else{
-                    return option.providers[0].labelValue(label).toLowerCase().indexOf(filter.toLowerCase()) !== -1
-                }
-        }) : options;
+    _onOptionCreate(option){
 
+        this.props.addNewOptions([option]);
+        if (option.parent)  this.props.addChildrenToParent(option[option.providers[0].valueKey], option.parent);
 
-        let filteredWithParents = filtered;
-        filtered.forEach(option => {
-            const valueKey = option.providers[0].valueKey;
-            const index = filteredWithParents.findIndex((obj) => obj[valueKey] === option[valueKey]);
-            let indexParent = options.findIndex((obj) => obj[valueKey] === option.parent);
-            while (indexParent >= 0){
-                const parent = options[indexParent];
-                if (filteredWithParents.includes(parent)) break;
-                filteredWithParents.splice(index, 0, parent);
-                indexParent = options.findIndex((obj) => obj[valueKey] === parent.parent);
-            }
-        });
-
-        for (let index = 0; index < filteredWithParents.length; index++){
-            if (!filteredWithParents[index].expanded){
-                filteredWithParents = filteredWithParents.filter(option => {
-                    if (option.graph === filteredWithParents[index].graph) return true;
-                    return !option.graph.toString().startsWith(filteredWithParents[index].graph.toString());
-                })
-            }
+        if ("onOptionCreate" in this.props) {
+            this.props.onOptionCreate(option);
         }
-        if (Array.isArray(selectedOptions) && selectedOptions.length) {
-            const selectedValues = selectedOptions.map((option) => option[option.providers[0].valueKey]);
-
-            return filtered.filter(
-                (option) => !selectedValues.includes(option[option.providers[0].valueKey])
-            )
-        }
-
-        //console.log("Filter Options end in: ", new Date().getTime() - now, "ms");
-        return filteredWithParents;
     }
 
     render() {
-
-        let attributes = {};
-        if (this.props.providers.length > 0){
-            attributes.filterOptions = (options, filter, currentValues) => this._filterOptions(options, filter, currentValues)
-        }
-
         return (
             <div className="container-fluid">
-                <Settings onOptionCreate={this.props.onOptionCreate} />
+                <Settings onOptionCreate={this._onOptionCreate} />
                 <VirtualizedTreeSelect
                     name="react-virtualized-tree-select"
 
@@ -347,14 +343,14 @@ class App extends Component {
                     value={this.props.selectedOptions}
 
                     optionRenderer={this._optionRenderer}
+                    valueRenderer={this._valueRenderer}
 
-                    isLoading={this.isLoadingExternally}
+                    isLoading={this.state.isLoadingExternally}
 
                     {...this.props}
                     onInputChange={(input) => this._onInputChange(input)}
                     options={this.props.options}
                     {...this.props.settings}
-                    {...attributes}
                 />
 
             </div>
@@ -364,10 +360,10 @@ class App extends Component {
 }
 
 const optionStateEnum = {
-    MERGED: {label: 'Merged', color: 'warning', tooltip: ''},
-    EXTERNAL: {label: 'External', color: 'primary', tooltip: ''},
-    NEW: {label: 'New', color: 'success', tooltip: 'not verified'},
-    LOCAL: {label: 'Local', color: 'secondary', tooltip: ''},
+    MERGED: {label: 'Merged', color: 'warning', message: ''},
+    EXTERNAL: {label: 'External', color: 'primary', message: ''},
+    NEW: {label: 'New', color: 'success', message: 'not verified'},
+    LOCAL: {label: 'Local', color: 'secondary', message: ''},
 };
 
 
@@ -385,6 +381,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         initSettings: initSettings,
         addNewOptions: addNewOptions,
+        addChildrenToParent: addChildrenToParent,
         toggleExpanded: toggleExpanded,
         addSelectedOption: addSelectedOption,
         setCurrentSearchInput: setCurrentSearchInput,

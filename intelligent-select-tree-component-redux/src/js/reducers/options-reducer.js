@@ -2,7 +2,7 @@ import {optionStateEnum} from "../containers/App";
 
 export default function (state = {
     cashedOptions: [],
-    selectedOptions: [],
+    selectedOptions: '',
     history: [],
 }, action) {
 
@@ -19,6 +19,18 @@ export default function (state = {
             return {
                 ...state,
                 selectedOptions: action.payload
+            };
+        case "ADD_CHILDREN_TO_PARENT":
+            let childrenID = action.payload.childrenID;
+            let parentID = action.payload.parentID;
+
+            let parentOption =  state.cashedOptions.find(x => x[x.providers[0].valueKey] === parentID);
+            let children = parentOption[parentOption.providers[0].childrenKey];
+            if (children.indexOf(childrenID) === -1 )  children.push(childrenID);
+
+            return {
+                ...state,
+                cashedOptions: state.cashedOptions,
             };
         case "ADD_NEW_OPTIONS":
 
@@ -44,12 +56,14 @@ export default function (state = {
                 let conflicts = options.filter(object => {
                     return object[object.providers[0].valueKey] === currOption[currOption.providers[0].valueKey]
                 });
-                if (conflicts.length > 0) currOption.state = optionStateEnum.MERGED;
                 conflicts.forEach(conflict => {
                     conflict = _toArray(conflict);
-                    currOption[currOption.providers[0].childrenKey] = currOption[currOption.providers[0].childrenKey].concat(conflict[conflict.providers[0].childrenKey]);
+                    let a = currOption[currOption.providers[0].childrenKey];
+                    let b = conflict[conflict.providers[0].childrenKey];
+                    currOption[currOption.providers[0].childrenKey] = a.concat(b.filter((item) => a.indexOf(item) < 0));
                 });
                 mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
+                if (currOption.providers.length > 0) currOption.state = optionStateEnum.MERGED;
                 conflicts.forEach(conflict => options.splice(
                     options.findIndex(el => el[el.providers[0].valueKey] === conflict[conflict.providers[0].valueKey]), 1)
                 );
@@ -68,7 +82,7 @@ export default function (state = {
                 cashedOptions: state.options
             };
         case "SET_EXPANDED_FOR_ALL":
-            state.cashedOptions.forEach(options => options.expanded = action.payload);
+            state.cashedOptions.forEach(option => option.expanded = action.payload);
             return {
                 ...state,
                 cashedOptions: state.cashedOptions,

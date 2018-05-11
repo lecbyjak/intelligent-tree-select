@@ -1,14 +1,11 @@
 .result-item{
+  padding-left: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: calc(100% - 46px);
   flex: 1;
-}
-.VirtualizedSelectOption{
-  display: flex;
-  align-items: flex-start;
-  padding: 0 .5rem;
+  cursor: default;
 }
 .VirtualizedTreeSelectTooltip{
   max-width: 300px;
@@ -17,7 +14,10 @@
 }
 
 .toggleButton{
-  width: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .Select.is-invalid ~ .invalid-feedback {

@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 
 import ResultItem from './resultItem'
-import createFilterOptions from "../utils/TreeNodeFastFilter"
 import {AutoSizer, List} from "react-virtualized";
 
 import PropTypes from 'prop-types'
 import Select from 'react-select'
-import {optionStateEnum} from "./App";
 
 
 class VirtualizedTreeSelect extends Component {
@@ -28,7 +26,6 @@ class VirtualizedTreeSelect extends Component {
         expanded: false,
         renderAsTree: true,
         childrenKey: 'children',
-        parentKey: null,
         valueKey: 'value',
         labelKey: 'label',
     };
@@ -37,85 +34,60 @@ class VirtualizedTreeSelect extends Component {
         super(props, context);
 
         this._renderMenu = this._renderMenu.bind(this);
+        this._processOptions = this._processOptions.bind(this);
+        this._filterOptions = this._filterOptions.bind(this);
         this._optionRenderer = this._optionRenderer.bind(this);
         this._setListRef = this._setListRef.bind(this);
         this._setSelectRef = this._setSelectRef.bind(this);
+        this.data = {};
+        this.options = [];
     }
 
 
     componentDidUpdate(prevProps){
-        if (this.props.options.length !== prevProps.options.length){
+        if (this.props.options.length !== prevProps.options.length || this.props.expanded !== prevProps.expanded){
             this._processOptions();
             this.forceUpdate()
         }
     }
 
-    /** See List#recomputeRowHeights */
-    recomputeOptionHeights(index = 0) {
-        if (this._listRef) {
-            this._listRef.recomputeRowHeights(index)
-        }
-    }
-
-    /** See Select#focus (in react-select) */
-    focus() {
-        if (this._selectRef) {
-            return this._selectRef.focus()
-        }
-    }
-
     _processOptions() {
-        let now = new Date().getTime();
-        console.log("Process options start");
+       let now = new Date().getTime();
 
-        let options = this.props.options;
-        //Add parent value to options
-        options.forEach((option) => {
-            let children = option[option.providers[0].childrenKey];
-
-            children.forEach((childID) => {
-                const index = options.findIndex((obj) => {
-                    return obj[obj.providers[0].valueKey] === childID
-                });
-                if (!options[index].parent) options[index].parent = option[option.providers[0].valueKey];
-            });
-
-            if (option.state === optionStateEnum.NEW && option.parent) {
-                let myOptionID = option[option.providers[0].valueKey];
-                let parentOption = options.find(x => x[x.providers[0].valueKey] === option.parent);
-                let children = parentOption[parentOption.providers[0].childrenKey];
-                if (children.indexOf(myOptionID) === -1 )  children.push(myOptionID);
-            }
-        });
-        let counter = 0;
-        let sortedArr = [];
-        //sort array, add other necessary properties
-        options.forEach((option) => {
+       let optionID;
+       this.data = {};
+       this.props.options.forEach(option => {
             option.expanded = this.props.expanded;
-            if (!option.parent) {
-                sortedArr = this._createGraph(options, option[option.providers[0].valueKey], 0, counter+"-", sortedArr);
-                counter++
-            }
+            optionID = option[option.providers[0].valueKey];
+            this.data[optionID] = option;
         });
+
+        const keys = Object.keys(this.data);
+        let sortedArr = [];
+        keys.forEach(xkey => {
+            let option = this.data[xkey];
+            if (!option.parent) sortedArr = this._getSortedOptionsWithDepthAndParent(sortedArr, xkey, 0, null);
+        });
+
         this.options = sortedArr;
 
-        console.log("Process options end in: ", new Date().getTime() - now, "ms");
+        console.log("Process options (",sortedArr.length ,") end in: ", new Date().getTime() - now, "ms");
     }
 
-    _createGraph(options, key, depth, graph, sortedArr) {
-        const index = options.findIndex((obj) => obj[obj.providers[0].valueKey] === key);
-        let option =  options[index];
+    _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
+        let option = this.data[key];
 
         option.depth = depth;
-        option.graph = graph;
+        if (!option.parent) option.parent = parentKey;
 
-        let counter = 0;
         sortedArr.push(option);
-        option[option.providers[0].childrenKey].forEach((child) => {
-            sortedArr = this._createGraph(options, child, depth + 1, graph + counter + "-", sortedArr);
-            counter++
+
+        option[option.providers[0].childrenKey].forEach(childID => {
+            this._getSortedOptionsWithDepthAndParent(sortedArr, childID, depth+1, key);
+
         });
-        return sortedArr
+
+        return sortedArr;
     }
 
     _optionRenderer({focusedOption, focusOption, key, option,  labelKey, selectValue, style, valueArray, onToggleClick}) {
@@ -206,6 +178,56 @@ class VirtualizedTreeSelect extends Component {
         )
     }
 
+    _filterOptions(options, filter, selectedOptions) {
+        let now = new Date().getTime();
+
+        let filtered = options.filter(option => {
+            let label = option[option.providers[0].labelKey];
+            if (typeof label === 'string' || label instanceof String){
+                return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+            }else{
+                return option.providers[0].labelValue(label).toLowerCase().indexOf(filter.toLowerCase()) !== -1
+            }});
+
+
+        let filteredWithParents = [];
+        let index = 0;
+        filtered.forEach(option => {
+            filteredWithParents.push(option);
+            let parent = option.parent? option.parent.length>0? this.data[option.parent] : null : null;
+
+            while (parent){
+                if (filteredWithParents.includes(parent)) break;
+                filteredWithParents.splice(index, 0, parent);
+                parent = parent.parent? parent.parent.length>0? this.data[parent.parent] : null : null;
+            }
+            index = filteredWithParents.length;
+        });
+
+        for (let i = 0; i < filteredWithParents.length; i++){
+            if (!filteredWithParents[i].expanded){
+                let depth = filteredWithParents[i].depth;
+                while(true){
+                    let option = filteredWithParents[i+1];
+                    if (option && option.depth > depth) filteredWithParents.splice(i+1, 1);
+                    else break;
+                }
+            }
+        }
+
+        if (Array.isArray(selectedOptions) && selectedOptions.length) {
+            const selectedValues = selectedOptions.map((option) => option[option.providers[0].valueKey]);
+
+            return filtered.filter(
+                (option) => !selectedValues.includes(option[option.providers[0].valueKey])
+            )
+        }
+
+        //console.log("Filter options (",options.length ,") end in: ", new Date().getTime() - now, "ms");
+        return filteredWithParents;
+
+    }
+
     _calculateListHeight({options}) {
         const {maxHeight} = this.props;
 
@@ -257,12 +279,6 @@ class VirtualizedTreeSelect extends Component {
     render() {
         const SelectComponent = this._getSelectComponent();
 
-        let attributes = {};
-        if (this.props.renderAsTree && !this.props.filterOptions) attributes.filterOptions = createFilterOptions({
-            options: this.options,
-            valueKey: this.props.valueKey,
-            labelKey: this.props.labelKey,
-        });
         return (
             <SelectComponent
                 closeOnSelect={false}
@@ -272,12 +288,14 @@ class VirtualizedTreeSelect extends Component {
                 menuStyle={{overflow: 'hidden'}}
                 ref={this._setSelectRef}
                 menuRenderer={this._renderMenu}
+                filterOptions = {this._filterOptions}
                 {...this.props}
                 options={this.options}
-                {...attributes}
             />
         )
     }
+
+
 }
 
 
