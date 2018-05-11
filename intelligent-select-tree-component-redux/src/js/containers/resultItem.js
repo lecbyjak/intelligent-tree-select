@@ -61,6 +61,16 @@ class ResultItem extends Component {
         )
     }
 
+    _getHash(str) {
+        var hash = 0, i, chr;
+        if (str.length === 0) return hash;
+        for (i = 0; i < str.length; i++) {
+            chr   = str.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    };
 
     render() {
         let button = null;
@@ -75,6 +85,7 @@ class ResultItem extends Component {
         if (!(typeof label === 'string' || label instanceof String)){
             label = option.providers[0].labelValue(label)
         }
+        let value = option[option.providers[0].valueKey];
 
         return (
             <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter}>
@@ -90,10 +101,10 @@ class ResultItem extends Component {
                     </div>
                 }
 
-                <TooltipItem id={option.graph}
+                <TooltipItem id={"tooltip-"+this._getHash(value)}
                              option={option}
                              label={label}
-                             value={option[option.providers[0].valueKey]}
+                             value={value}
                              currentSearch={this.props.currentSearch}
                              onClick={this.props.onClick}
                              hoverActive={this.props.settings.displayInfoOnHover}
