@@ -1,0 +1,49 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\select@language {english}
+\contentsline {chapter}{Declaration of Authorship}{v}{section*.2}
+\contentsline {chapter}{Abstract}{vii}{section*.3}
+\contentsline {chapter}{Acknowledgements}{ix}{section*.4}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.10}
+\contentsline {section}{\numberline {1.1}Overview}{1}{section.11}
+\contentsline {section}{\numberline {1.2}Current situation}{1}{section.12}
+\contentsline {section}{\numberline {1.3}Thesis goal}{1}{section.13}
+\contentsline {section}{\numberline {1.4}Outline}{2}{section.14}
+\contentsline {section}{\numberline {1.5}Term definition}{2}{section.15}
+\contentsline {chapter}{\numberline {2}Background}{3}{chapter.17}
+\contentsline {section}{\numberline {2.1}Resource Description Framework}{3}{section.18}
+\contentsline {section}{\numberline {2.2}Linked Data}{3}{section.19}
+\contentsline {section}{\numberline {2.3}JSON-LD}{4}{section.20}
+\contentsline {section}{\numberline {2.4}React, Redux}{4}{section.22}
+\contentsline {section}{\numberline {2.5}React virtualized select and React select}{4}{section.23}
+\contentsline {chapter}{\numberline {3}Related work}{7}{chapter.24}
+\contentsline {section}{\numberline {3.1}React dropdown tree select}{7}{section.25}
+\contentsline {section}{\numberline {3.2}RC tree select}{8}{section.27}
+\contentsline {section}{\numberline {3.3}Ant design tree select}{9}{section.29}
+\contentsline {section}{\numberline {3.4}Summary of the related works}{9}{section.31}
+\contentsline {chapter}{\numberline {4}Design}{11}{chapter.32}
+\contentsline {section}{\numberline {4.1}Requirements}{11}{section.33}
+\contentsline {subsection}{\numberline {4.1.1}Functional}{11}{subsection.34}
+\contentsline {subsection}{\numberline {4.1.2}Non-Functional}{11}{subsection.44}
+\contentsline {section}{\numberline {4.2}Use-cases}{12}{section.49}
+\contentsline {section}{\numberline {4.3}Providers APIs research}{13}{section.51}
+\contentsline {section}{\numberline {4.4}Component architecture}{14}{section.53}
+\contentsline {section}{\numberline {4.5}Component life cycle and search cycle}{17}{section.56}
+\contentsline {section}{\numberline {4.6}Creating and adding options}{18}{section.59}
+\contentsline {chapter}{\numberline {5}Implementation}{19}{chapter.61}
+\contentsline {section}{\numberline {5.1}Inputs and outputs}{19}{section.62}
+\contentsline {section}{\numberline {5.2}Component parts}{19}{section.64}
+\contentsline {subsection}{\numberline {5.2.1}Virtualized-tree-select part}{19}{subsection.65}
+\contentsline {subsection}{\numberline {5.2.2}Settings part}{20}{subsection.66}
+\contentsline {subsection}{\numberline {5.2.3}Modal form part}{21}{subsection.68}
+\contentsline {section}{\numberline {5.3}Performance}{21}{section.70}
+\contentsline {section}{\numberline {5.4}Render algorithm}{21}{section.76}
+\contentsline {subsection}{\numberline {5.4.1}Filter algorithm}{22}{subsection.77}
+\contentsline {subsection}{\numberline {5.4.2}Merge algorithm}{23}{subsection.78}
+\contentsline {subsection}{\numberline {5.4.3}Sort algorithm}{23}{subsection.79}
+\contentsline {subsection}{\numberline {5.4.4}Performance results}{23}{subsection.80}
+\contentsline {chapter}{\numberline {6}Conclusion}{25}{chapter.83}
+\contentsline {section}{\numberline {6.1}Future work}{25}{section.84}
+\contentsline {section}{\numberline {6.2}Summary}{25}{section.85}
+\contentsline {chapter}{\numberline {A}Intelligent Tree Select component API}{27}{appendix.86}
+\contentsline {chapter}{Bibliography}{31}{appendix*.90}

@@ -1,0 +1,101 @@
+This is BibTeX, Version 0.99d (TeX Live 2016/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: biblatex.bst
+A level-1 auxiliary file: Chapters/Chapter1.aux
+A level-1 auxiliary file: Chapters/Chapter2.aux
+A level-1 auxiliary file: Chapters/Chapter3.aux
+A level-1 auxiliary file: Chapters/Chapter4.aux
+A level-1 auxiliary file: Chapters/Chapter5.aux
+A level-1 auxiliary file: Chapters/Chapter6.aux
+A level-1 auxiliary file: Appendices/AppendixA.aux
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: main-blx.bib
+Database file #2: example.bib
+Warning--entry type for "Tolarance_study" isn't style-file defined
+--line 8 of file example.bib
+I was expecting a `,' or a `}'---line 160 of file example.bib
+ :  
+ :  Title = {Firebase database},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Biblatex version: 3.3
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2630 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2654 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2658 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2658 of file biblatex.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+Name 3 in "Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest, and Clifford Stein" has a comma at the end for entry dfs
+while executing---line 2746 of file biblatex.bst
+You've used 28 entries,
+            6256 wiz_defined-function locations,
+            1298 strings with 11216 characters,
+and the built_in function-call counts, 100722 in all, are:
+= -- 5747
+> -- 1718
+< -- 649
++ -- 2007
+- -- 665
+* -- 6749
+:= -- 8570
+add.period$ -- 0
+call.type$ -- 28
+change.case$ -- 274
+chr.to.int$ -- 33
+cite$ -- 54
+duplicate$ -- 11801
+empty$ -- 10834
+format.name$ -- 1060
+if$ -- 21571
+int.to.chr$ -- 0
+int.to.str$ -- 51
+missing$ -- 0
+newline$ -- 618
+num.names$ -- 739
+pop$ -- 9188
+preamble$ -- 1
+purify$ -- 345
+quote$ -- 0
+skip$ -- 3577
+stack$ -- 0
+substring$ -- 8214
+swap$ -- 2977
+text.length$ -- 606
+text.prefix$ -- 27
+top$ -- 1
+type$ -- 939
+warning$ -- 0
+while$ -- 1088
+width$ -- 0
+write$ -- 591
+(There were 12 error messages)

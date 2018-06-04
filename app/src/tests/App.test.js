@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IntelligentSelectTreeInput from '../IntelligentSelectTreeInput';
+import App from '../js/components/App';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<IntelligentSelectTreeInput />, div);
+  ReactDOM.render(<App />, div);
 });

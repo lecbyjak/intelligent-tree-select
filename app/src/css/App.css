@@ -1,34 +1,30 @@
-.box {
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  border-radius: 2px; }
-
-.result-area {
-  max-height: 300px;
-  overflow: auto;
-  overflow-x: hidden;
-  z-index: 980;
-  background: white;
-  position: absolute;
-  max-width: 700px;
-  transition: max-width 1s linear; }
-
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: rgba(0, 0, 0, 0.4);
-  background-color: #F5F5F5; }
-
-::-webkit-scrollbar {
-  width: 3px;
-  background-color: #F5F5F5; }
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.5); }
-
 .result-item{
-      overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  padding-left: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100% - 46px);
+  flex: 1;
+  cursor: default;
+}
+.VirtualizedTreeSelectTooltip{
+  max-width: 300px;
+  text-align: start;
+  word-break: break-all;
 }
 
-svg:hover .trashIcon{
-  fill: #990000;
+.toggleButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Select.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+.highlighted{
+  font-weight: bold;
+  background: none;
 }
