@@ -4,7 +4,7 @@ import ResultItem from './resultItem'
 import {AutoSizer, List} from "react-virtualized";
 
 import PropTypes from 'prop-types'
-import Select from 'react-select'
+import Select from './Select'
 
 
 class VirtualizedTreeSelect extends Component {
@@ -255,18 +255,6 @@ class VirtualizedTreeSelect extends Component {
             : optionHeight
     }
 
-    _getSelectComponent() {
-        const {async, selectComponent} = this.props;
-
-        if (selectComponent) {
-            return selectComponent
-        } else if (async) {
-            return Select.Async
-        } else {
-            return Select
-        }
-    }
-
     _setListRef(ref) {
         this._listRef = ref
     }
@@ -277,10 +265,9 @@ class VirtualizedTreeSelect extends Component {
 
 
     render() {
-        const SelectComponent = this._getSelectComponent();
 
         return (
-            <SelectComponent
+            <Select
                 closeOnSelect={false}
                 removeSelected={false}
 
@@ -291,6 +278,7 @@ class VirtualizedTreeSelect extends Component {
                 filterOptions = {this._filterOptions}
                 {...this.props}
                 options={this.options}
+                isMenuOpen={true}
             />
         )
     }

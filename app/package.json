@@ -18,7 +18,9 @@
     "redux-form": "^7.2.0",
     "redux-logger": "^3.0.6",
     "react-select": "latest",
-    "js-search": "latest"
+    "js-search": "latest",
+    "classnames": "latest",
+    "react-input-autosize": "latest"
   },
   "scripts": {
     "start": "react-scripts start ",
