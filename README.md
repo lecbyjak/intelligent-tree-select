@@ -15,7 +15,8 @@ npm install intelligent-tree-select --save
 
 Then import it
 ```
-import VirtualizedSelect from 'react-virtualized-select'
+import VirtualizedTreeSelect from 'intelligent-tree-select'
+import {IntelligentTreeSelectComponent , optionStateEnum} from 'intelligent-tree-select'
 ```
 
 
