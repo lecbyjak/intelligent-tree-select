@@ -1,6 +1,6 @@
 {
   "name": "intelligent-select-tree-component-redux",
-  "version": "0.1.0",
+  "version": "0.1.0-alfa.1",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
@@ -16,11 +16,9 @@
     "reactstrap": "^5.0.0-alpha.3",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
-    "redux-logger": "^3.0.6",
-    "react-select": "latest",
-    "js-search": "latest",
-    "classnames": "latest",
-    "react-input-autosize": "latest"
+    "react-select": "^1.2.1",
+    "js-search": "^1.4.2",
+    "react-input-autosize": "^2.2.1"
   },
   "scripts": {
     "start": "react-scripts start ",
@@ -29,6 +27,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "redux-devtools": "^3.4.1"
+    "redux-devtools": "^3.4.1",
+    "redux-logger": "^3.0.6"
   }
 }

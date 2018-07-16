@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from '../js/components/App';
+import {IntelligentTreeSelectComponent} from '../js/containers/App';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<IntelligentTreeSelectComponent />, div);
 });
