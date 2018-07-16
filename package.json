@@ -1,33 +1,46 @@
 {
   "name": "intelligent-tree-select",
-  "version": "0.1.1",
+  "version": "0.1.0-alfa.1",
   "private": false,
   "dependencies": {
-    "bootstrap": "^4.0.0-beta",
-    "js-search": "^1.4.2",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-highlight-words": "^0.10.0",
-    "react-input-autosize": "^2.2.1",
-    "react-redux": "^5.0.6",
-    "react-scripts": "^1.1.4",
-    "react-select": "^1.2.1",
-    "react-select-fast-filter-options": "^0.2.3",
-    "react-virtualized": "^9.14.1",
-    "react-virtualized-select": "^3.1.0",
-    "reactstrap": "^5.0.0-alpha.3",
-    "redux": "^3.7.2",
-    "redux-form": "^7.2.0"
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
   },
+  "main": "./src/index.js",
+  "author": "Jakub Lečbych",
+  "license": "MIT",
   "scripts": {
-    "start": "react-scripts start ",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production"
   },
   "devDependencies": {
-    "redux-devtools": "^3.4.1",
-    "redux-logger": "^3.0.6"
-  }
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "peerDependencies": {
+    "react": "^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0",
+    "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0"
+  },
+  "keywords": [
+    "combobox",
+    "form",
+    "input",
+    "multiselect",
+    "react",
+    "react-component",
+    "select",
+    "ui"
+  ]
 }

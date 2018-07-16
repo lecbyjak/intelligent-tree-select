@@ -4,7 +4,7 @@ import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css'
 import 'react-virtualized-select/styles.css'
 import 'bootstrap/dist/css/bootstrap.css';
-import '../../css/App.css';
+import '../../App.css';
 
 import Settings from '../containers/settings'
 import VirtualizedTreeSelect from "./virtualizedTreeSelect";
