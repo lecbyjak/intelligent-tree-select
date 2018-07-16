@@ -40,7 +40,7 @@ const shouldShowValue = (state, props) => {
     if (!inputValue) return true;
 
     if (!onSelectResetsInput){
-        return !(!isFocused && isPseudoFocused || isFocused && !isPseudoFocused);
+        return !((!isFocused && isPseudoFocused) || (isFocused && !isPseudoFocused));
     }
 
     return false;
@@ -50,7 +50,7 @@ const shouldShowPlaceholder = (state, props, isOpen) => {
     const { inputValue, isPseudoFocused, isFocused } = state;
     const { onSelectResetsInput } = props;
 
-    return !inputValue || !onSelectResetsInput && !isOpen && !isPseudoFocused && !isFocused;
+    return (!inputValue || !onSelectResetsInput) && !isOpen && !isPseudoFocused && !isFocused;
 };
 
 /**
@@ -546,6 +546,8 @@ class Select extends React.Component {
                     event.preventDefault();
                     this.popValue();
                 }
+                break;
+            default:
                 break;
         }
     }

@@ -28,3 +28,7 @@
   font-weight: bold;
   background: none;
 }
+
+#intelligent-select-tree-root button{
+  cursor: pointer
+}
