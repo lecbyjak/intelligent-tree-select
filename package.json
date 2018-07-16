@@ -1,7 +1,7 @@
 {
-  "name": "intelligent-select-tree-component-redux",
+  "name": "intelligent-tree-select",
   "version": "0.1.0-alfa.1",
-  "private": true,
+  "private": false,
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
     "prop-types": "^15.6.0",
