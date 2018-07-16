@@ -2,10 +2,6 @@
   "name": "intelligent-tree-select",
   "version": "0.1.0-alfa.1",
   "private": false,
-  "dependencies": {
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
-  },
   "main": "./src/index.js",
   "author": "Jakub Lečbych",
   "license": "MIT",
@@ -13,16 +9,39 @@
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lecbyjak/intelligent-tree-select"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.2",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "classnames": "latest",
     "css-loader": "^1.0.0",
-    "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.1",
+    "prop-types": "latest",
+    "react-highlight-words": "^0.11.0",
+    "react-input-autosize": "^2.2.1",
     "react-redux": "^5.0.7",
+    "react-select": "^1.2.1",
+    "react-select-fast-filter-options": "^0.2.3",
+    "react-virtualized": "^9.20.1",
+    "react-virtualized-select": "^3.1.3",
+    "reactstrap": "^6.3.0",
     "redux": "^4.0.0",
+    "redux-form": "^7.4.2",
     "redux-logger": "^3.0.6",
     "style-loader": "^0.21.0",
     "webpack": "^4.16.1",

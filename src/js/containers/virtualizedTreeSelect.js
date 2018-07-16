@@ -9,27 +9,6 @@ import Select from './Select'
 
 class VirtualizedTreeSelect extends Component {
 
-    static propTypes = {
-        async: PropTypes.bool,
-        listProps: PropTypes.object,
-        maxHeight: PropTypes.number,
-        optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-        optionRenderer: PropTypes.func,
-        selectComponent: PropTypes.func
-    };
-
-    static defaultProps = {
-        options: [],
-        async: false,
-        maxHeight: 200,
-        optionHeight: 25,
-        expanded: false,
-        renderAsTree: true,
-        childrenKey: 'children',
-        valueKey: 'value',
-        labelKey: 'label',
-    };
-
     constructor(props, context) {
         super(props, context);
 
@@ -286,5 +265,25 @@ class VirtualizedTreeSelect extends Component {
 
 }
 
+VirtualizedTreeSelect.propTypes = {
+    async: PropTypes.bool,
+    listProps: PropTypes.object,
+    maxHeight: PropTypes.number,
+    optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+    optionRenderer: PropTypes.func,
+    selectComponent: PropTypes.func
+};
+
+VirtualizedTreeSelect.defaultProps = {
+    options: [],
+    async: false,
+    maxHeight: 200,
+    optionHeight: 25,
+    expanded: false,
+    renderAsTree: true,
+    childrenKey: 'children',
+    valueKey: 'value',
+    labelKey: 'label',
+};
 
 export default VirtualizedTreeSelect;

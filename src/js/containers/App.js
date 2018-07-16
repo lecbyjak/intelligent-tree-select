@@ -25,52 +25,6 @@ import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
 
 class App extends Component {
 
-    static propTypes = {
-        displayState: PropTypes.bool,
-        displayInfoOnHover: PropTypes.bool,
-        expanded: PropTypes.bool,
-        renderAsTree: PropTypes.bool,
-        multi: PropTypes.bool,
-        async: PropTypes.bool,
-        simpleTreeData: PropTypes.bool,
-
-        labelKey: PropTypes.string,
-        valueKey: PropTypes.string,
-        childrenKey: PropTypes.string,
-        labelValue: PropTypes.func,
-        onOptionCreate: PropTypes.func,
-
-        options: PropTypes.array,
-        providers: PropTypes.arrayOf(
-            PropTypes.shape({
-                name: PropTypes.string.isRequired,
-                response: PropTypes.func.isRequired,
-                toJsonArr: PropTypes.func,
-
-                simpleTreeData: PropTypes.bool,
-                labelKey: PropTypes.string,
-                labelValue: PropTypes.func,
-                valueKey: PropTypes.string,
-                childrenKey: PropTypes.string
-            }).isRequired,
-        )
-    };
-
-    static defaultProps = {
-        options: [],
-        simpleTreeData: true,
-        displayState: false,
-        displayInfoOnHover: false,
-        expanded: true,
-        renderAsTree: true,
-        multi: true,
-        labelKey: 'label',
-        valueKey: 'value',
-        childrenKey: 'children',
-        termLifetime: "5m",
-
-    };
-
 
     constructor(props, context) {
         super(props, context);
@@ -362,6 +316,52 @@ class App extends Component {
     }
 
 }
+
+App.propTypes = {
+    displayState: PropTypes.bool,
+    displayInfoOnHover: PropTypes.bool,
+    expanded: PropTypes.bool,
+    renderAsTree: PropTypes.bool,
+    multi: PropTypes.bool,
+    async: PropTypes.bool,
+    simpleTreeData: PropTypes.bool,
+
+    labelKey: PropTypes.string,
+    valueKey: PropTypes.string,
+    childrenKey: PropTypes.string,
+    labelValue: PropTypes.func,
+    onOptionCreate: PropTypes.func,
+
+    options: PropTypes.array,
+    providers: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            response: PropTypes.func.isRequired,
+            toJsonArr: PropTypes.func,
+
+            simpleTreeData: PropTypes.bool,
+            labelKey: PropTypes.string,
+            labelValue: PropTypes.func,
+            valueKey: PropTypes.string,
+            childrenKey: PropTypes.string
+        }).isRequired,
+    )
+};
+
+App.defaultProps = {
+    options: [],
+    simpleTreeData: true,
+    displayState: false,
+    displayInfoOnHover: false,
+    expanded: true,
+    renderAsTree: true,
+    multi: true,
+    labelKey: 'label',
+    valueKey: 'value',
+    childrenKey: 'children',
+    termLifetime: "5m",
+
+};
 
 const optionStateEnum = {
     MERGED: {label: 'Merged', color: 'warning', message: ''},
