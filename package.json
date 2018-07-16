@@ -1,6 +1,6 @@
 {
   "name": "intelligent-tree-select",
-  "version": "0.1.0-alfa.1",
+  "version": "0.1.1",
   "private": false,
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
