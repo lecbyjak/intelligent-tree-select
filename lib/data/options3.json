@@ -1,0 +1,4982 @@
+[
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-1",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "1 - AMAN: Abrupt maneuvre"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-10",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "10 - ICE: Icing"
+          }
+        ],
+        "children": [
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-101",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "101 - EXTL: External load related occurrences"
+              }
+            ],
+            "children": []
+          },
+          {
+            "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-102",
+            "http://www.w3.org/2000/01/rdf-schema#label": [
+              {
+                "@language": "en",
+                "@value": "102 - CTOL: Collision with obstacle(s) during take-off and landing"
+              }
+            ],
+            "children": []
+          }
+        ]
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-100",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "100 - UIMC: Unintended flight in IMC"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  {
+    "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-105",
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "105 - MED: Medical"
+      }
+    ],
+    "children": [
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-103",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "103 - LOLI: Loss of lifting conditions en-route"
+          }
+        ],
+        "children": []
+      },
+      {
+        "@id": "1-1-1-1-http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-430/v-104",
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+          {
+            "@language": "en",
+            "@value": "104 - GTOW: Glider towing related events"
+          }
+        ],
+        "children": []
+      }
+    ]
+  }
+]

@@ -6,32 +6,39 @@
   "author": "Jakub Lečbych",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --mode production"
+    "dev": "concurrently \"npm run lib:watch\" \"npm run docs\"",
+    "lib": "babel src -d lib --copy-files",
+    "lib:watch": "babel src -w -d lib --copy-files",
+    "docs": "webpack-dev-server --mode development --watch --hot",
+    "docs:prod": "webpack --mode production"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lecbyjak/intelligent-tree-select"
   },
   "dependencies": {
-    "bootstrap": "^4.1.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "bootstrap": "^4.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "classnames": "latest",
+    "concurrently": "^3.6.0",
     "css-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.1",
     "prop-types": "latest",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
     "react-highlight-words": "^0.11.0",
     "react-input-autosize": "^2.2.1",
     "react-redux": "^5.0.7",
