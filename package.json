@@ -1,6 +1,6 @@
 {
   "name": "intelligent-tree-select",
-  "version": "0.1.2-alfa.1",
+  "version": "0.1.3-alfa.1",
   "private": false,
   "main": "./src/index.js",
   "author": "Jakub Lečbych",
