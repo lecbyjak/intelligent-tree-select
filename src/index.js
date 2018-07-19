@@ -1,2 +1,4 @@
-export { VirtualizedTreeSelect } from './js/containers/virtualizedTreeSelect';
-export { IntelligentTreeSelectComponent, optionStateEnum } from './js/containers/App';
+import VirtualizedTreeSelect from './js/containers/virtualizedTreeSelect';
+import { IntelligentTreeSelectComponent, optionStateEnum } from './js/containers/App';
+
+export {VirtualizedTreeSelect, IntelligentTreeSelectComponent, optionStateEnum}

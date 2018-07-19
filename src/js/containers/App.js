@@ -320,18 +320,8 @@ class App extends Component {
 App.propTypes = {
     displayState: PropTypes.bool,
     displayInfoOnHover: PropTypes.bool,
-    expanded: PropTypes.bool,
-    renderAsTree: PropTypes.bool,
-    multi: PropTypes.bool,
-    async: PropTypes.bool,
-    simpleTreeData: PropTypes.bool,
-
-    labelKey: PropTypes.string,
-    valueKey: PropTypes.string,
-    childrenKey: PropTypes.string,
     labelValue: PropTypes.func,
     onOptionCreate: PropTypes.func,
-
     options: PropTypes.array,
     providers: PropTypes.arrayOf(
         PropTypes.shape({
@@ -345,22 +335,20 @@ App.propTypes = {
             valueKey: PropTypes.string,
             childrenKey: PropTypes.string
         }).isRequired,
-    )
+    ),
+    renderAsTree: PropTypes.bool,
+    simpleTreeData: PropTypes.bool,
 };
 
 App.defaultProps = {
-    options: [],
-    simpleTreeData: true,
     displayState: false,
     displayInfoOnHover: false,
     expanded: true,
-    renderAsTree: true,
     multi: true,
-    labelKey: 'label',
-    valueKey: 'value',
-    childrenKey: 'children',
+    options: [],
+    renderAsTree: true,
+    simpleTreeData: true,
     termLifetime: "5m",
-
 };
 
 const optionStateEnum = {
