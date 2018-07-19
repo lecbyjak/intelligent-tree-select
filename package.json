@@ -78,5 +78,5 @@
     "lib": "babel src -d lib --copy-files",
     "lib:watch": "babel src -w -d lib --copy-files"
   },
-  "version": "0.1.4-alfa.1"
+  "version": "0.1.5-alfa.1"
 }

@@ -31,7 +31,7 @@ class VirtualizedTreeSelect extends Component {
     }
 
     _processOptions() {
-       let now = new Date().getTime();
+       //let now = new Date().getTime();
 
        let optionID;
        this.data = {};
@@ -50,7 +50,7 @@ class VirtualizedTreeSelect extends Component {
 
         this.options = sortedArr;
 
-        console.log("Process options (",sortedArr.length ,") end in: ", new Date().getTime() - now, "ms");
+        //console.log("Process options (",sortedArr.length ,") end in: ", new Date().getTime() - now, "ms");
     }
 
     _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
@@ -158,7 +158,7 @@ class VirtualizedTreeSelect extends Component {
     }
 
     _filterOptions(options, filter, selectedOptions) {
-        let now = new Date().getTime();
+        //let now = new Date().getTime();
 
         let filtered = options.filter(option => {
             let label = option[option.providers[0].labelKey];
@@ -244,20 +244,20 @@ class VirtualizedTreeSelect extends Component {
 
 
     render() {
+        let menuStyle = this.props.menuStyle || {};
+        menuStyle.overflow = 'hidden'
+        const menuRenderer = this.props.menuRenderer || this._renderMenu
+        const filterOptions = this.props.filterOptions || this._filterOptions
 
         return (
             <Select
-                closeOnSelect={false}
-                removeSelected={false}
-
                 joinValues={!!this.props.multi}
-                menuStyle={{overflow: 'hidden'}}
+                menuStyle={menuStyle}
                 ref={this._setSelectRef}
-                menuRenderer={this._renderMenu}
-                filterOptions = {this._filterOptions}
+                menuRenderer={menuRenderer}
+                filterOptions = {filterOptions}
                 {...this.props}
                 options={this.options}
-                isMenuOpen={true}
             />
         )
     }
@@ -266,24 +266,25 @@ class VirtualizedTreeSelect extends Component {
 }
 
 VirtualizedTreeSelect.propTypes = {
-    async: PropTypes.bool,
+    childrenKey: PropTypes.string,
+    expanded: PropTypes.bool,
+    isMenuOpen: PropTypes.bool,
     listProps: PropTypes.object,
     maxHeight: PropTypes.number,
+    menuRenderer: PropTypes.func,
     optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-    optionRenderer: PropTypes.func,
-    selectComponent: PropTypes.func
+    renderAsTree: PropTypes.bool,
 };
 
 VirtualizedTreeSelect.defaultProps = {
+    childrenKey: 'children',
     options: [],
-    async: false,
-    maxHeight: 200,
     optionHeight: 25,
     expanded: false,
+    isMenuOpen: false,
+    maxHeight: 200,
+    multi: false,
     renderAsTree: true,
-    childrenKey: 'children',
-    valueKey: 'value',
-    labelKey: 'label',
 };
 
 export default VirtualizedTreeSelect;
