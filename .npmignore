@@ -3,3 +3,5 @@ src
 .babelrc
 package-lock.json
 webpack.config.js
+lib/data
+lib/example.js
