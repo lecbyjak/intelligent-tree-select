@@ -9,43 +9,36 @@ import '../../App.css';
 import Settings from '../containers/settings'
 import VirtualizedTreeSelect from "./virtualizedTreeSelect";
 import ResultItem from './resultItem'
-import {initSettings} from "../actions/settings-actions";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {
-    addChildrenToParent,
-    addNewOptions,
-    addSelectedOption,
-    addToHistory,
-    toggleExpanded
-} from "../actions/options-actions";
-import {setCurrentSearchInput} from "../actions/other-actions";
 import PropTypes from "prop-types";
 import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
 
-class App extends Component {
+class IntelligentTreeSelect extends Component {
 
 
     constructor(props, context) {
         super(props, context);
+
         this._onOptionCreate = this._onOptionCreate.bind(this);
         this._valueRenderer = this._valueRenderer.bind(this);
         this._optionRenderer = this._optionRenderer.bind(this);
-    }
+        this._addSelectedOption = this._addSelectedOption.bind(this);
 
-    componentWillMount() {
-        this.settings = {
+        this.state = {
             displayState: this.props.displayState,
             displayInfoOnHover: this.props.displayInfoOnHover,
             expanded: this.props.expanded,
             renderAsTree: this.props.renderAsTree,
             multi: this.props.multi,
-            labelKey: this.props.labelKey,
-            valueKey: this.props.valueKey,
-            childrenKey: this.props.childrenKey,
-        };
+            options: [],
+            selectedOptions: [],
+            isLoadingExternally: false,
+        }
+    }
+
+    componentWillMount() {
         this.fetching = false;
-        this.props.initSettings(this.settings);
+        this.history = [];
+        this. searchString = "";
 
         if ("localOptions" in this.props) {
             let localProvider = {
@@ -57,14 +50,14 @@ class App extends Component {
             };
 
             let data = this.props.localOptions;
-            if (!this.props.simpleTreeData){
+            if (!this.props.simpleTreeData) {
                 let now = new Date().getTime();
 
                 data = this._simplyfyData(this.props.localOptions, localProvider.valueKey, localProvider.childrenKey);
-                console.log("Simplify options (",this.props.localOptions.length ,") end in: ", new Date().getTime() - now, "ms");
+                console.log("Simplify options (", this.props.localOptions.length, ") end in: ", new Date().getTime() - now, "ms");
             }
             let options = this._preProcessOptions(data, localProvider);
-            this.props.addNewOptions(options)
+            this._addNewOptions(options)
 
         }
 
@@ -84,26 +77,25 @@ class App extends Component {
 
     _getResultsFromHistory(searchString) {
         searchString = searchString.toLowerCase();
-        let history = this.props.history;
 
-        for (let i = 0; i < history.length; i++) {
-            if (history[i].searchString.toLowerCase() === searchString) {
-                if (Date.now() < history[i].validTo) {
-                    return history[i].data
+        for (let i = 0; i < this.history.length; i++) {
+            if (this.history[i].searchString.toLowerCase() === searchString) {
+                if (Date.now() < this.history[i].validTo) {
+                    return this.history[i].data
                 }
             }
         }
         return []
     }
 
-    _simplyfyData(responseData,valueKey, childrenKey) {
+    _simplyfyData(responseData, valueKey, childrenKey) {
         let result = [];
         if (!responseData || responseData.length === 0) return result;
 
-        for (let i=0; i<responseData.length; i++ ){
+        for (let i = 0; i < responseData.length; i++) {
             //deep clone
             let data = JSON.parse(JSON.stringify(responseData[i]));
-            result = result.concat(this._simplyfyData(data[childrenKey],valueKey, childrenKey));
+            result = result.concat(this._simplyfyData(data[childrenKey], valueKey, childrenKey));
             data[childrenKey] = data[childrenKey].map(xdata => xdata[valueKey]);
             result = result.concat(data);
         }
@@ -133,7 +125,7 @@ class App extends Component {
     }
 
     static _getValidForInSec(termLifetime) {
-        termLifetime = App._parseTermLifetime(termLifetime);
+        termLifetime = IntelligentTreeSelect._parseTermLifetime(termLifetime);
         let res = 0;
         res += (isNaN(termLifetime.seconds) ? 0 : termLifetime.seconds);
         res += (isNaN(termLifetime.minutes) ? 0 : termLifetime.minutes * 60);
@@ -152,7 +144,7 @@ class App extends Component {
                         responseData = provider.toJsonArr(responseData);
                     }
 
-                    else if (typeof responseData === 'string' || responseData instanceof String){
+                    else if (typeof responseData === 'string' || responseData instanceof String) {
                         if (isXML(responseData)) responseData = xmlToJson(responseData);
                         else if (isJson(responseData)) responseData = JSON.parse(responseData);
                         else responseData = csvToJson(responseData) //TODO may throw error
@@ -189,7 +181,7 @@ class App extends Component {
 
                 this.fetching = this._getResponses().then(responses => {
 
-                        this.props.addToHistory(searchString, responses, Date.now() + App._getValidForInSec(this.props.termLifetime));
+                        this._addToHistory(searchString, responses, Date.now() + IntelligentTreeSelect._getValidForInSec(this.props.termLifetime));
 
                         responses.forEach((response) => {
                             //default value for this attributes
@@ -206,14 +198,14 @@ class App extends Component {
                         });
 
                         this.fetching = false;
-                        this.props.addNewOptions(data);
+                        this._addNewOptions(data);
                         this.setState({isLoadingExternally: false});
                     }
                 );
             }
         }
 
-        this.props.setCurrentSearchInput(searchString);
+        this.searchString = searchString;
         if ("onInputChange" in this.props) {
             this.props.onInputChange(searchString);
         }
@@ -240,7 +232,7 @@ class App extends Component {
             className.push(option.className)
         }
 
-        const events = option.disabled? {} : {
+        const events = option.disabled ? {} : {
             onClick: () => selectValue(option),
             onMouseEnter: () => focusOption(option),
             onToggleClick: () => onToggleClick()
@@ -258,57 +250,131 @@ class App extends Component {
     }
 
     static _isURL(str) {
-        const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
         return pattern.test(str);
     }
 
-    _valueRenderer(option, x){
-        if (Array.isArray(option)){
+    _valueRenderer(option, x) {
+        if (Array.isArray(option)) {
             option = option[0]
         }
         const value = option[option.providers[0].valueKey];
         const label = option[option.providers[0].labelKey];
 
-        if (App._isURL(value)) return (
-          <a href={value} target="_blank">{label}</a>
+        if (IntelligentTreeSelect._isURL(value)) return (
+            <a href={value} target="_blank">{label}</a>
         );
         return label;
     }
 
-    _onOptionCreate(option){
-
+    _onOptionCreate(option) {
+        // TODO remove?
         this.props.addNewOptions([option]);
-        if (option.parent)  this.props.addChildrenToParent(option[option.providers[0].valueKey], option.parent);
+        if (option.parent) this.props.addChildrenToParent(option[option.providers[0].valueKey], option.parent);
 
         if ("onOptionCreate" in this.props) {
             this.props.onOptionCreate(option);
         }
     }
 
+    _addNewOptions(newOptions){
+        const _toArray = (object) => {
+            let childrenKey = object.providers[0].childrenKey;
+
+            if (!Array.isArray(object[childrenKey])) {
+                if (object[childrenKey]) object[childrenKey] = [object[childrenKey]];
+                else object[childrenKey] = []
+            }
+            return object;
+        };
+
+        let options = newOptions.concat(this.state.options);
+        let mergedArr = [];
+
+        //merge options
+        while (options.length > 0) {
+            let currOption = options.shift();
+
+            currOption = _toArray(currOption);
+
+            let conflicts = options.filter(object => {
+                return object[object.providers[0].valueKey] === currOption[currOption.providers[0].valueKey]
+            });
+            conflicts.forEach(conflict => {
+                conflict = _toArray(conflict);
+                let a = currOption[currOption.providers[0].childrenKey];
+                let b = conflict[conflict.providers[0].childrenKey];
+                currOption[currOption.providers[0].childrenKey] = a.concat(b.filter((item) => a.indexOf(item) < 0));
+            });
+            mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
+            if (currOption.providers.length > 0) currOption.state = optionStateEnum.MERGED;
+            conflicts.forEach(conflict => options.splice(
+                options.findIndex(el => el[el.providers[0].valueKey] === conflict[conflict.providers[0].valueKey]), 1)
+            );
+        }
+
+        this.setState({options: mergedArr})
+    }
+
+    _onSettingsChange(payload) {
+
+        if (payload.hasOwnProperty('expanded')){
+            this.state.options.forEach(option => option.expanded = payload.expanded);
+            payload.options = this.state.options;
+        }
+
+        this.setState(payload);
+    }
+
+    _addSelectedOption(selectedOptions){
+        this.setState({selectedOptions})
+    }
+
+    _addToHistory(searchString, data, validTo){
+        this.history.unshift({searchString, data, validTo})
+    }
+
     render() {
         return (
+
             <div className="container-fluid">
-                <Settings onOptionCreate={this._onOptionCreate} />
+
+                <Settings onOptionCreate={this._onOptionCreate}
+                          onSettingsChange={this._onSettingsChange}
+                          data={{
+                              displayState: this.props.displayState,
+                              displayInfoOnHover: this.props.displayInfoOnHover,
+                              expanded: this.props.expanded,
+                              renderAsTree: this.props.renderAsTree,
+                              multi: this.props.multi,
+                          }}
+                          formData={{
+                            labelKey: this.props.labelKey || 'label',
+                            valueKey: this.props.valueKey || 'value',
+                            childrenKey: this.props.childrenKey || 'children',
+                            data: this.state.options,
+                          }}
+                />
+
                 <VirtualizedTreeSelect
                     name="react-virtualized-tree-select"
 
-                    onChange={(selectValue) => this.props.addSelectedOption(selectValue)}
-                    value={this.props.selectedOptions}
+                    onChange={this._addSelectedOption}
+                    value={this.state.selectedOptions}
 
                     optionRenderer={this._optionRenderer}
                     valueRenderer={this._valueRenderer}
 
-                    isLoading={this.state.isLoadingExternally}
-
                     {...this.props}
+
+                    isLoading={this.state.isLoadingExternally}
                     onInputChange={(input) => this._onInputChange(input)}
-                    options={this.props.options}
-                    {...this.props.settings}
+                    options={this.state.options}
                 />
 
             </div>
@@ -317,7 +383,7 @@ class App extends Component {
 
 }
 
-App.propTypes = {
+IntelligentTreeSelect.propTypes = {
     displayState: PropTypes.bool,
     displayInfoOnHover: PropTypes.bool,
     labelValue: PropTypes.func,
@@ -340,7 +406,7 @@ App.propTypes = {
     simpleTreeData: PropTypes.bool,
 };
 
-App.defaultProps = {
+IntelligentTreeSelect.defaultProps = {
     displayState: false,
     displayInfoOnHover: false,
     expanded: true,
@@ -359,28 +425,4 @@ const optionStateEnum = {
 };
 
 
-function mapStateToProps(state) {
-    return {
-        options: state.options.cashedOptions,
-        history: state.options.history,
-        selectedOptions: state.options.selectedOptions,
-        other: state.other,
-        settings: state.settings,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        initSettings: initSettings,
-        addNewOptions: addNewOptions,
-        addChildrenToParent: addChildrenToParent,
-        toggleExpanded: toggleExpanded,
-        addSelectedOption: addSelectedOption,
-        setCurrentSearchInput: setCurrentSearchInput,
-        addToHistory: addToHistory,
-    }, dispatch)
-}
-
-const IntelligentTreeSelectComponent = connect(mapStateToProps, mapDispatchToProps)(App);
-
-export {IntelligentTreeSelectComponent, optionStateEnum};
+export {IntelligentTreeSelect, optionStateEnum};
