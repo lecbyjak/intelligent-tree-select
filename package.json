@@ -2,51 +2,25 @@
   "author": {
     "name": "Jakub Lečbych"
   },
+  "version": "0.1.5-alfa.2",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
   },
-  "bundleDependencies": false,
-  "dependencies": {
-    "bootstrap": "^4.1.2",
-    "reactstrap": "^6.3.0",
-    "classnames": "latest",
-    "react-select": "^1.2.1",
-    "react-select-fast-filter-options": "^0.2.3",
-    "react-virtualized": "^9.20.1",
-    "react-virtualized-select": "^3.1.3",
-    "react-highlight-words": "^0.11.0",
-    "react-input-autosize": "^2.2.1",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "redux-form": "^7.4.2",
-    "redux-logger": "^3.0.6"
-  },
-  "deprecated": false,
+  "dependencies": {},
   "description": "React tree select component  based on [react-select](https://github.com/JedWatson/react-select#react-select)\r and [react-virtualized-select](https://github.com/bvaughn/react-virtualized-select#react-virtualized-select)",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
-    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "concurrently": "^3.6.0",
     "css-loader": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.1",
-    "prop-types": "latest",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "style-loader": "^0.21.0",
     "webpack": "^4.16.1",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   },
   "homepage": "https://github.com/lecbyjak/intelligent-tree-select#readme",
   "keywords": [
@@ -60,11 +34,11 @@
     "ui"
   ],
   "license": "MIT",
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "name": "intelligent-tree-select",
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0",
-    "react-dom": "^0.14.9 || ^15.3.0 || ^16.0.0-rc || ^16.0"
+    "react": "^15.3.0 || ^16.0.0-rc || ^16.0",
+    "react-dom": "^15.3.0 || ^16.0.0-rc || ^16.0"
   },
   "private": false,
   "repository": {
@@ -72,11 +46,7 @@
     "url": "git+https://github.com/lecbyjak/intelligent-tree-select.git"
   },
   "scripts": {
-    "dev": "concurrently \"npm run lib:watch\" \"npm run docs\"",
-    "docs": "webpack-dev-server --mode development --watch --hot",
-    "docs:prod": "webpack --mode production",
-    "lib": "babel src -d lib --copy-files",
-    "lib:watch": "babel src -w -d lib --copy-files"
-  },
-  "version": "0.1.5-alfa.1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development"
+  }
 }

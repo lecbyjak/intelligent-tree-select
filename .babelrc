@@ -1,8 +1,3 @@
 {
-  "presets": ["env", "react",  "es2015", "stage-0" ],
-  "plugins": [
-    "transform-object-rest-spread", 
-    "syntax-object-rest-spread",
-    "babel-plugin-transform-runtime"
-  ]
+  "presets": ["es2015", "stage-2", "react"]
 }
