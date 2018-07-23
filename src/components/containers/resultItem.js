@@ -105,7 +105,7 @@ class ResultItem extends Component {
                              option={option}
                              label={label}
                              value={value}
-                             currentSearch={this.props.currentSearch}
+                             searchString={this.props.settings.searchString}
                              onClick={this.props.onClick}
                              hoverActive={this.props.settings.displayInfoOnHover}
                 />
@@ -131,17 +131,4 @@ ResultItem.defaultProps = {
     badgeColor: 'primary',
 };
 
-function mapStateToProps(state) {
-    return {
-        options: state.options,
-        currentSearch: state.other.currentSearch,
-        settings: state.settings,
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ResultItem);
+export default ResultItem;

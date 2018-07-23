@@ -1,1 +1,2 @@
-export {IntelligentTreeSelect, OptionStateEnum} from '../src/components/containers/App';
+export {IntelligentTreeSelect, optionStateEnum} from '../lib/components/containers/App';
+export { VirtualizedTreeSelect } from '../lib/components/containers/virtualizedTreeSelect';

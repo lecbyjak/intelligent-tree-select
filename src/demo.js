@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import myJSON3 from '../../src/data/events.json'
-import './app.sass';
-import {IntelligentTreeSelect} from '../../src/components/containers/App';
+import myJSON3 from '../examples/data/events.json'
+import './styles.css';
+import {IntelligentTreeSelect} from './components/containers/App';
 
 
 const provider1 = {

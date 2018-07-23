@@ -19,9 +19,14 @@ class VirtualizedTreeSelect extends Component {
         this._setListRef = this._setListRef.bind(this);
         this._setSelectRef = this._setSelectRef.bind(this);
         this.data = {};
-        this.options = [];
+        this.state = {
+          options: []
+        };
     }
 
+    componentDidMount() {
+      this._processOptions()
+    }
 
     componentDidUpdate(prevProps){
         if (this.props.options.length !== prevProps.options.length || this.props.expanded !== prevProps.expanded){
@@ -32,7 +37,6 @@ class VirtualizedTreeSelect extends Component {
 
     _processOptions() {
        //let now = new Date().getTime();
-
        let optionID;
        this.data = {};
        this.props.options.forEach(option => {
@@ -48,8 +52,8 @@ class VirtualizedTreeSelect extends Component {
             if (!option.parent) sortedArr = this._getSortedOptionsWithDepthAndParent(sortedArr, xkey, 0, null);
         });
 
-        this.options = sortedArr;
 
+        this.setState({options: sortedArr});
         //console.log("Process options (",sortedArr.length ,") end in: ", new Date().getTime() - now, "ms");
     }
 
@@ -102,6 +106,11 @@ class VirtualizedTreeSelect extends Component {
                 key={key}
                 style={style}
                 option={option}
+                settings={{
+                  renderAsTree: this.props.renderAsTree,
+                  displayInfoOnHover: this.props.displayInfoOnHover,
+                  displayState: this.props.displayState
+                }}
                 {...events}
             />
         )
@@ -114,7 +123,6 @@ class VirtualizedTreeSelect extends Component {
         const height = this._calculateListHeight({options});
         const innerRowRenderer = optionRenderer || this._optionRenderer;
         const onToggleClick = this.forceUpdate.bind(this);
-
 
         function wrappedRowRenderer({index, key, style}) {
             const option = options[index];
@@ -245,9 +253,9 @@ class VirtualizedTreeSelect extends Component {
 
     render() {
         let menuStyle = this.props.menuStyle || {};
-        menuStyle.overflow = 'hidden'
-        const menuRenderer = this.props.menuRenderer || this._renderMenu
-        const filterOptions = this.props.filterOptions || this._filterOptions
+        menuStyle.overflow = 'hidden';
+        const menuRenderer = this.props.menuRenderer || this._renderMenu;
+        const filterOptions = this.props.filterOptions || this._filterOptions;
 
         return (
             <Select
@@ -257,7 +265,7 @@ class VirtualizedTreeSelect extends Component {
                 menuRenderer={menuRenderer}
                 filterOptions = {filterOptions}
                 {...this.props}
-                options={this.options}
+                options={this.state.options}
             />
         )
     }
@@ -287,4 +295,4 @@ VirtualizedTreeSelect.defaultProps = {
     renderAsTree: true,
 };
 
-export default VirtualizedTreeSelect;
+export { VirtualizedTreeSelect };

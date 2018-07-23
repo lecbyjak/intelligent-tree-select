@@ -3,6 +3,19 @@ import {Button, Card, CardBody, Collapse, Form, FormGroup, Input, Label} from "r
 import ModalForm from '../containers/modalForm'
 import PropTypes from "prop-types";
 
+import { createStore, combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
+import {Provider} from "react-redux";
+
+const rootReducer = combineReducers({
+  // ...your other reducers here
+  // you have to pass formReducer under 'form' key,
+  // for custom keys look up the docs for 'getFormState'
+  form: formReducer
+});
+
+const store = createStore(rootReducer);
+
 class Settings extends Component {
 
 
@@ -26,9 +39,11 @@ class Settings extends Component {
             <div className="d-flex flex-column">
 
                 <div className="d-flex justify-content-between">
+                  <Provider store={ store }>
                     <ModalForm onOptionCreate={this.props.onOptionCreate}
                                data={this.props.formData}
                     />
+                  </Provider>
                     <Button color="link" onClick={this._toggleSettings}>
                         {(this.state.open ? "Hide filter" : "Show filter")}
                     </Button>

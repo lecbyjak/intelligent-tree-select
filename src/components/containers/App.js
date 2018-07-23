@@ -4,10 +4,9 @@ import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css'
 import 'react-virtualized-select/styles.css'
 import 'bootstrap/dist/css/bootstrap.css';
-import '../../App.css';
 
 import Settings from '../containers/settings'
-import VirtualizedTreeSelect from "./virtualizedTreeSelect";
+import {VirtualizedTreeSelect} from "./virtualizedTreeSelect";
 import ResultItem from './resultItem'
 import PropTypes from "prop-types";
 import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
@@ -22,6 +21,7 @@ class IntelligentTreeSelect extends Component {
         this._valueRenderer = this._valueRenderer.bind(this);
         this._optionRenderer = this._optionRenderer.bind(this);
         this._addSelectedOption = this._addSelectedOption.bind(this);
+        this._onSettingsChange = this._onSettingsChange.bind(this);
 
         this.state = {
             displayState: this.props.displayState,
@@ -237,13 +237,18 @@ class IntelligentTreeSelect extends Component {
             onMouseEnter: () => focusOption(option),
             onToggleClick: () => onToggleClick()
         };
-
         return (
             <ResultItem
                 className={className.join(' ')}
                 key={key}
                 style={style}
                 option={option}
+                settings={{
+                  searchString: this.searchString,
+                  renderAsTree: this.state.renderAsTree,
+                  displayInfoOnHover: this.state.displayInfoOnHover,
+                  displayState: this.state.displayState
+                }}
                 {...events}
             />
         )
@@ -322,13 +327,12 @@ class IntelligentTreeSelect extends Component {
     }
 
     _onSettingsChange(payload) {
-
         if (payload.hasOwnProperty('expanded')){
             this.state.options.forEach(option => option.expanded = payload.expanded);
             payload.options = this.state.options;
         }
 
-        this.setState(payload);
+        this.setState({...payload});
     }
 
     _addSelectedOption(selectedOptions){
@@ -347,11 +351,11 @@ class IntelligentTreeSelect extends Component {
                 <Settings onOptionCreate={this._onOptionCreate}
                           onSettingsChange={this._onSettingsChange}
                           data={{
-                              displayState: this.props.displayState,
-                              displayInfoOnHover: this.props.displayInfoOnHover,
-                              expanded: this.props.expanded,
-                              renderAsTree: this.props.renderAsTree,
-                              multi: this.props.multi,
+                              displayState: this.state.displayState,
+                              displayInfoOnHover: this.state.displayInfoOnHover,
+                              expanded: this.state.expanded,
+                              renderAsTree: this.state.renderAsTree,
+                              multi: this.state.multi,
                           }}
                           formData={{
                             labelKey: this.props.labelKey || 'label',
@@ -371,6 +375,9 @@ class IntelligentTreeSelect extends Component {
                     valueRenderer={this._valueRenderer}
 
                     {...this.props}
+                    expanded={this.state.expanded}
+                    renderAsTree={this.state.renderAsTree}
+                    multi={this.state.multi}
 
                     isLoading={this.state.isLoadingExternally}
                     onInputChange={(input) => this._onInputChange(input)}

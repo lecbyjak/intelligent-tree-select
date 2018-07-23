@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {
-    Button,
-    Collapse, Form,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Tooltip
+  Button,
+  Collapse, Form,
+  FormFeedback,
+  FormGroup,
+  Input,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Tooltip
 } from "reactstrap";
 import {optionStateEnum} from "./App";
-import VirtualizedTreeSelect from "./virtualizedTreeSelect";
+import {VirtualizedTreeSelect} from "./virtualizedTreeSelect";
 import {Field, FieldArray, reduxForm} from "redux-form";
 import validate from "./forms/newTerm-form-validate";
 import createFilterOptions from "react-select-fast-filter-options";
@@ -122,8 +122,8 @@ class ModalForm extends Component {
         this.options = this.props.data.options;
         this.filter = createFilterOptions({
             options: this.options,
-            valueKey: this.props.settings.valueKey,
-            labelKey: this.props.settings.labelKey
+            valueKey: this.props.data.valueKey,
+            labelKey: this.props.data.labelKey
         })
     }
 
@@ -219,8 +219,8 @@ class ModalForm extends Component {
                                        filterOptions={this.filter}
                                        placeholder={"Select parent ..."}
                                        component={RenderSelect}
-                                       labelKey={this.props.settings.labelKey}
-                                       valueKey={this.props.settings.valueKey}
+                                       labelKey={this.props.data.labelKey}
+                                       valueKey={this.props.data.valueKey}
                                 />
 
                                 <Field name={"child-terms"}
@@ -230,8 +230,8 @@ class ModalForm extends Component {
                                        multi
                                        joinValues
                                        component={RenderSelect}
-                                       labelKey={this.props.settings.labelKey}
-                                       valueKey={this.props.settings.valueKey}
+                                       labelKey={this.props.data.labelKey}
+                                       valueKey={this.props.data.valueKey}
                                 />
 
                                 <FieldArray name="termProperties" component={renderMembers}/>
