@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import myJSON3 from '../examples/data/events.json'
 import './styles.css';
-import {IntelligentTreeSelect} from './components/containers/App';
+import {IntelligentTreeSelect} from './components/App';
 
 
 const provider1 = {

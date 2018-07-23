@@ -5,11 +5,11 @@ import 'react-virtualized/styles.css'
 import 'react-virtualized-select/styles.css'
 import 'bootstrap/dist/css/bootstrap.css';
 
-import Settings from '../containers/settings'
+import Settings from './settings'
 import {VirtualizedTreeSelect} from "./virtualizedTreeSelect";
 import ResultItem from './resultItem'
 import PropTypes from "prop-types";
-import {isXML, xmlToJson, isJson, csvToJson} from "../utils/testFunctions";
+import {isXML, xmlToJson, isJson, csvToJson} from "./utils/testFunctions";
 
 class IntelligentTreeSelect extends Component {
 

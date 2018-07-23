@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Card, CardBody, Collapse, Form, FormGroup, Input, Label} from "reactstrap";
-import ModalForm from '../containers/modalForm'
+import ModalForm from './modalForm'
 import PropTypes from "prop-types";
 
 import { createStore, combineReducers } from 'redux'

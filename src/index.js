@@ -1,2 +1,2 @@
-export {IntelligentTreeSelect, optionStateEnum} from '../lib/components/containers/App';
-export { VirtualizedTreeSelect } from '../lib/components/containers/virtualizedTreeSelect';
+export {IntelligentTreeSelect, optionStateEnum} from '../lib/components/App';
+export { VirtualizedTreeSelect } from '../lib/components/virtualizedTreeSelect';
