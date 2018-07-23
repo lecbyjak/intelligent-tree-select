@@ -16,10 +16,13 @@ npm install intelligent-tree-select --save
 Then import it
 ```
 import { VirtualizedTreeSelect } from 'intelligent-tree-select'
-import { IntelligentTreeSelectComponent , optionStateEnum } from 'intelligent-tree-select'
-import "../node_modules/intelligent-tree-select/lib/App.css"
+import { IntelligentTreeSelect , optionStateEnum } from 'intelligent-tree-select'
+import "../node_modules/intelligent-tree-select/lib/styles.css"
 ```
 
 
 ### Intelligent tree select Props
 TODO
+
+see [IntelligentTreeSelect](https://github.com/lecbyjak/intelligent-tree-select/blob/master/src/components/App.js) PropTypes
+and [VirtualizedTreeSelect](https://github.com/lecbyjak/intelligent-tree-select/blob/master/src/components/virtualizedTreeSelect.js) PropTypes
