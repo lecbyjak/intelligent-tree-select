@@ -607,37 +607,37 @@ class Select extends React.Component {
             this.props.onChange(value);
         }
     }
-
-    selectValue (value) {
-        // NOTE: we actually add/set the value in a callback to make sure the
-        // input value is empty to avoid styling issues in Chrome
-        if (this.props.closeOnSelect) {
-            this.hasScrolledToOption = false;
-        }
-        const updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
-        if (this.props.multi) {
-            this.setState({
-                focusedIndex: null,
-                inputValue: this.handleInputValueChange(updatedValue),
-                isOpen: !this.props.closeOnSelect,
-            }, () => {
-                const valueArray = this.getValueArray(this.props.value);
-                if (valueArray.some(i => i[this.props.valueKey] === value[this.props.valueKey])) {
-                    this.removeValue(value);
-                } else {
-                    this.addValue(value);
-                }
-            });
-        } else {
-            this.setState({
-                inputValue: this.handleInputValueChange(updatedValue),
-                isOpen: !this.props.closeOnSelect,
-                isPseudoFocused: this.state.isFocused,
-            }, () => {
-                this.setValue(value);
-            });
-        }
+  
+  selectValue(value) {
+    // NOTE: we actually add/set the value in a callback to make sure the
+    // input value is empty to avoid styling issues in Chrome
+    if (this.props.closeOnSelect) {
+      this.hasScrolledToOption = false;
     }
+    const updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
+    if (this.props.multi) {
+      this.setState({
+        focusedIndex: null,
+        inputValue: this.handleInputValueChange(updatedValue),
+        isOpen: this.props.isMenuOpen || !this.props.closeOnSelect
+      }, () => {
+        const valueArray = this.getValueArray(this.props.value);
+        if (valueArray.some(i => i[this.props.valueKey] === value[this.props.valueKey])) {
+          this.removeValue(value);
+        } else {
+          this.addValue(value);
+        }
+      });
+    } else {
+      this.setState({
+        inputValue: this.handleInputValueChange(updatedValue),
+        isOpen: this.props.isMenuOpen || !this.props.closeOnSelect,
+        isPseudoFocused: this.state.isFocused
+      }, () => {
+        this.setValue(value);
+      });
+    }
+  }
 
     addValue (value) {
         let valueArray = this.getValueArray(this.props.value);

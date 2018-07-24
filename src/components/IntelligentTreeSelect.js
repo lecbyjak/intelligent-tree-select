@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 
-import 'react-select/dist/react-select.css';
-import 'react-virtualized/styles.css'
-import 'react-virtualized-select/styles.css'
-import 'bootstrap/dist/css/bootstrap.css';
-
 import Settings from './settings'
-import {VirtualizedTreeSelect} from "./virtualizedTreeSelect";
+import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import ResultItem from './resultItem'
 import PropTypes from "prop-types";
 import {isXML, xmlToJson, isJson, csvToJson} from "./utils/testFunctions";
@@ -38,7 +33,7 @@ class IntelligentTreeSelect extends Component {
     componentWillMount() {
         this.fetching = false;
         this.history = [];
-        this. searchString = "";
+        this.searchString = "";
 
         if ("localOptions" in this.props) {
             let localProvider = {
@@ -51,10 +46,7 @@ class IntelligentTreeSelect extends Component {
 
             let data = this.props.localOptions;
             if (!this.props.simpleTreeData) {
-                let now = new Date().getTime();
-
                 data = this._simplyfyData(this.props.localOptions, localProvider.valueKey, localProvider.childrenKey);
-                console.log("Simplify options (", this.props.localOptions.length, ") end in: ", new Date().getTime() - now, "ms");
             }
             let options = this._preProcessOptions(data, localProvider);
             this._addNewOptions(options)
@@ -211,8 +203,7 @@ class IntelligentTreeSelect extends Component {
         }
     }
 
-    //custom renderer
-    _optionRenderer({focusedOption, focusOption, key, option, selectValue, style, valueArray, onToggleClick}) {
+    _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray}) {
 
         const className = ['VirtualizedSelectOption'];
 
@@ -235,13 +226,14 @@ class IntelligentTreeSelect extends Component {
         const events = option.disabled ? {} : {
             onClick: () => selectValue(option),
             onMouseEnter: () => focusOption(option),
-            onToggleClick: () => onToggleClick()
+            onToggleClick: () => this.forceUpdate()
         };
+
         return (
             <ResultItem
                 className={className.join(' ')}
                 key={key}
-                style={style}
+                style={optionStyle}
                 option={option}
                 settings={{
                   searchString: this.searchString,
@@ -279,8 +271,8 @@ class IntelligentTreeSelect extends Component {
 
     _onOptionCreate(option) {
         // TODO remove?
-        this.props.addNewOptions([option]);
-        if (option.parent) this.props.addChildrenToParent(option[option.providers[0].valueKey], option.parent);
+        this._addNewOptions([option]);
+        if (option.parent) this._addChildrenToParent(option[option.providers[0].valueKey], option.parent);
 
         if ("onOptionCreate" in this.props) {
             this.props.onOptionCreate(option);
@@ -335,6 +327,15 @@ class IntelligentTreeSelect extends Component {
         this.setState({...payload});
     }
 
+    _addChildrenToParent(childrenID, parentID) {
+
+    let parentOption =  this.state.options.find(x => x[x.providers[0].valueKey] === parentID);
+    let children = parentOption[parentOption.providers[0].childrenKey];
+    if (children.indexOf(childrenID) === -1 )  children.push(childrenID);
+
+    this.setState({options: this.state.options})
+  }
+
     _addSelectedOption(selectedOptions){
         this.setState({selectedOptions})
     }
@@ -378,7 +379,7 @@ class IntelligentTreeSelect extends Component {
                     expanded={this.state.expanded}
                     renderAsTree={this.state.renderAsTree}
                     multi={this.state.multi}
-
+                    isMenuOpen={true}
                     isLoading={this.state.isLoadingExternally}
                     onInputChange={(input) => this._onInputChange(input)}
                     options={this.state.options}
@@ -387,7 +388,6 @@ class IntelligentTreeSelect extends Component {
             </div>
         )
     }
-
 }
 
 IntelligentTreeSelect.propTypes = {

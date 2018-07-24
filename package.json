@@ -71,6 +71,6 @@
     "lib:watch": "babel src -w -d lib --copy-files",
     "lib-dev:watch": "babel src/demo.js -w -o examples/demo.js --copy-files",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --open --mode development"
+    "start": "webpack-dev-server --open --mode development --watch"
   }
 }

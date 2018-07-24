@@ -11,8 +11,8 @@ import {
   ModalHeader,
   Tooltip
 } from "reactstrap";
-import {optionStateEnum} from "./App";
-import {VirtualizedTreeSelect} from "./virtualizedTreeSelect";
+import {optionStateEnum} from "./IntelligentTreeSelect";
+import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import {Field, FieldArray, reduxForm} from "redux-form";
 import validate from "./forms/newTerm-form-validate";
 import createFilterOptions from "react-select-fast-filter-options";

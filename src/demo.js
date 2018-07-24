@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+
 import myJSON3 from '../examples/data/events.json'
 import './styles.css';
-import {IntelligentTreeSelect} from './components/App';
+import {IntelligentTreeSelect} from './components/IntelligentTreeSelect';
 
 
 const provider1 = {
@@ -19,7 +20,6 @@ ReactDOM.render(
                                     localOptions={myJSON3}
                                     valueKey={"@id"}
                                     labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
-      //labelValue={(labelKey) => labelKey[0]['@value']}
                                     childrenKey={"subTerm"}
 
                                     providers={[

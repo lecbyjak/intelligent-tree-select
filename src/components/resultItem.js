@@ -78,8 +78,6 @@ class ResultItem extends Component {
         if (option[option.providers[0].childrenKey].length > 0) {
             button = this.getCollapseButton();
         }
-        let style = {};
-        style.width = option.depth*16+'px';
 
         let label = option[option.providers[0].labelKey];
         if (!(typeof label === 'string' || label instanceof String)){
@@ -89,11 +87,6 @@ class ResultItem extends Component {
 
         return (
             <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter}>
-
-                {this.props.settings.renderAsTree &&
-                    <div style={style}>
-                    </div>
-                }
 
                 {this.props.settings.renderAsTree &&
                     <div style={{width: '16px'}}>
