@@ -37,7 +37,6 @@ class VirtualizedTreeSelect extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.options.length !== prevProps.options.length || this.props.expanded !== prevProps.expanded) {
       this._processOptions();
-      this.forceUpdate()
     }
   }
   
@@ -123,7 +122,7 @@ class VirtualizedTreeSelect extends Component {
   }
   
   // See https://github.com/JedWatson/react-select/#effeciently-rendering-large-lists-with-windowing
-  _renderMenu({focusedOption, focusOption, labelKey, onSelect, options, selectValue, valueArray}) {
+  _renderMenu({focusedOption, focusOption, labelKey, onSelect, options, selectValue, valueArray, valueKey}) {
     const {listProps, optionRenderer, childrenKey, optionLeftOffset, renderAsTree} = this.props;
     const focusedOptionIndex = options.indexOf(focusedOption);
     const height = this._calculateListHeight({options});
@@ -145,13 +144,12 @@ class VirtualizedTreeSelect extends Component {
         focusOption,
         key,
         labelKey,
-        onSelect,
         option,
         optionIndex: index,
         optionStyle,
         selectValue: onSelect,
-        style,
         valueArray,
+        valueKey
       })
     }
     
