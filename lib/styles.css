@@ -3,7 +3,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: calc(100% - 46px);
   flex: 1;
   cursor: default;
 }
@@ -27,8 +26,4 @@
 .highlighted{
   font-weight: bold;
   background: none;
-}
-
-#intelligent-select-tree-root button{
-  cursor: pointer
 }

@@ -17,6 +17,8 @@ class IntelligentTreeSelect extends Component {
         this._optionRenderer = this._optionRenderer.bind(this);
         this._addSelectedOption = this._addSelectedOption.bind(this);
         this._onSettingsChange = this._onSettingsChange.bind(this);
+        this._onInputChange = this._onInputChange.bind(this);
+        this._onScroll = this._onScroll.bind(this);
 
         this.state = {
             displayState: this.props.displayState,
@@ -95,7 +97,7 @@ class IntelligentTreeSelect extends Component {
         return result
     }
 
-    static _parseTermLifetime(value) {
+    _parseTermLifetime(value) {
         let termLifetime = {
             days: 0,
             hours: 0,
@@ -116,8 +118,8 @@ class IntelligentTreeSelect extends Component {
         return termLifetime
     }
 
-    static _getValidForInSec(termLifetime) {
-        termLifetime = IntelligentTreeSelect._parseTermLifetime(termLifetime);
+    _getValidForInSec(termLifetime) {
+        termLifetime = this._parseTermLifetime(termLifetime);
         let res = 0;
         res += (isNaN(termLifetime.seconds) ? 0 : termLifetime.seconds);
         res += (isNaN(termLifetime.minutes) ? 0 : termLifetime.minutes * 60);
@@ -173,7 +175,7 @@ class IntelligentTreeSelect extends Component {
 
                 this.fetching = this._getResponses().then(responses => {
 
-                        this._addToHistory(searchString, responses, Date.now() + IntelligentTreeSelect._getValidForInSec(this.props.termLifetime));
+                        this._addToHistory(searchString, responses, Date.now() + this._getValidForInSec(this.props.termLifetime));
 
                         responses.forEach((response) => {
                             //default value for this attributes
@@ -201,6 +203,11 @@ class IntelligentTreeSelect extends Component {
         if ("onInputChange" in this.props) {
             this.props.onInputChange(searchString);
         }
+    }
+
+    _onScroll(data){
+      const {clientHeight, scrollHeight, scrollTop} = data;
+
     }
 
     _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray}) {
@@ -345,6 +352,9 @@ class IntelligentTreeSelect extends Component {
     }
 
     render() {
+
+      let listProps = {};
+      listProps.onScroll = this.props.onScroll || this._onScroll;
         return (
 
             <div className="container-fluid">
@@ -381,8 +391,9 @@ class IntelligentTreeSelect extends Component {
                     multi={this.state.multi}
                     isMenuOpen={true}
                     isLoading={this.state.isLoadingExternally}
-                    onInputChange={(input) => this._onInputChange(input)}
+                    onInputChange={this._onInputChange}
                     options={this.state.options}
+                    listProps={listProps}
                 />
 
             </div>

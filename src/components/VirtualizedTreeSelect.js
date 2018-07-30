@@ -128,7 +128,7 @@ class VirtualizedTreeSelect extends Component {
     const focusedOptionIndex = options.indexOf(focusedOption);
     const height = this._calculateListHeight({options});
     const innerRowRenderer = optionRenderer || this._optionRenderer;
-    
+
     function wrappedRowRenderer({index, key, style}) {
       const option = options[index];
       let leftOffset = 0;
@@ -230,7 +230,7 @@ class VirtualizedTreeSelect extends Component {
   }
   
   _calculateListHeight({options}) {
-    const {maxHeight} = this.props;
+    const {maxHeight, minHeight} = this.props;
     
     let height = 0;
     
@@ -241,6 +241,9 @@ class VirtualizedTreeSelect extends Component {
       
       if (height > maxHeight) {
         return maxHeight
+      }
+      if (height < minHeight) {
+        return minHeight
       }
     }
     
@@ -273,7 +276,11 @@ class VirtualizedTreeSelect extends Component {
   
   render() {
     let menuStyle = this.props.menuStyle || {};
+    let menuContainerStyle = this.props.menuContainerStyle || {};
     menuStyle.overflow = 'hidden';
+    menuStyle.maxHeight = this.props.maxHeight;
+    menuContainerStyle.maxHeight = this.props.maxHeight;
+
     const menuRenderer = this.props.menuRenderer || this._renderMenu;
     const filterOptions = this.props.filterOptions || this._filterOptions;
     
@@ -281,6 +288,7 @@ class VirtualizedTreeSelect extends Component {
       <Select
         joinValues={!!this.props.multi}
         menuStyle={menuStyle}
+        menuContainerStyle={menuContainerStyle}
         ref={this._setSelectRef}
         menuRenderer={menuRenderer}
         filterOptions={filterOptions}
@@ -313,7 +321,8 @@ VirtualizedTreeSelect.defaultProps = {
   optionLeftOffset: 16,
   expanded: false,
   isMenuOpen: false,
-  maxHeight: 200,
+  maxHeight: 300,
+  minHeight: 0,
   multi: false,
   renderAsTree: true,
 };
