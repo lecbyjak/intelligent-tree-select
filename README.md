@@ -20,6 +20,7 @@ import { IntelligentTreeSelect , optionStateEnum } from 'intelligent-tree-select
 import "../node_modules/intelligent-tree-select/lib/styles.css"
 ```
 
+example of the usage in the `src/demo.js`
 
 ### Virtualized tree select Props
 
@@ -75,7 +76,7 @@ You can override the built-in option renderer by specifying your own `optionRend
 | response | `functino` | (required) | callback for fetching the options with signature `({ searchString: string }): Promise` |
 | toJsonArr | `function` | -- | function to convert response data to json array format. E.g. XML to JSON, CSV to JSON, etc. |
 | simpleTreeData | `bool` | true | whether the options are in the simple format. (One node == one option) |
-| labelKey | `string` | 'label' | see signature bellow |
-| labelValue | `function` | -- | see signature bellow |
-| valueKey | `string` | 'value' | see signature bellow |
-| childrenKey | `string` | 'children' | see signature bellow |
+| labelKey | `string` | 'label' | Attribute of option that contains the display text. |
+| labelValue | `function` | -- | Return the label for option. Function with signature `({ option: Object }): string` |
+| valueKey | `string` | 'value' | Attribute of option that contains the value. |
+| childrenKey | `string` | 'children' | Attribute of option that contains the children key. |
