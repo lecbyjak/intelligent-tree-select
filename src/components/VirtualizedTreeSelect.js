@@ -41,25 +41,23 @@ class VirtualizedTreeSelect extends Component {
   }
   
   _processOptions() {
-    //let now = new Date().getTime();
     let optionID;
     this.data = {};
     this.props.options.forEach(option => {
       option.expanded = this.props.expanded;
-      optionID = option[option.providers[0].valueKey];
+      optionID = option[this.props.valueKey];
       this.data[optionID] = option;
     });
     
     const keys = Object.keys(this.data);
-    let sortedArr = [];
+    let options = [];
     keys.forEach(xkey => {
       let option = this.data[xkey];
-      if (!option.parent) sortedArr = this._getSortedOptionsWithDepthAndParent(sortedArr, xkey, 0, null);
+      if (!option.parent) options = this._getSortedOptionsWithDepthAndParent(options, xkey, 0, null);
     });
     
     
-    this.setState({options: sortedArr});
-    //console.log("Process options (",sortedArr.length ,") end in: ", new Date().getTime() - now, "ms");
+    this.setState({options: options});
   }
   
   _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
@@ -70,7 +68,7 @@ class VirtualizedTreeSelect extends Component {
     
     sortedArr.push(option);
     
-    option[option.providers[0].childrenKey].forEach(childID => {
+    option[this.props.childrenKey].forEach(childID => {
       this._getSortedOptionsWithDepthAndParent(sortedArr, childID, depth + 1, key);
       
     });
@@ -178,17 +176,15 @@ class VirtualizedTreeSelect extends Component {
     //let now = new Date().getTime();
     
     let filtered = options.filter(option => {
-      let label = option[option.providers[0].labelKey];
-      if (typeof label === 'string' || label instanceof String) {
-        return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-      } else {
-        return option.providers[0].labelValue(label).toLowerCase().indexOf(filter.toLowerCase()) !== -1
-      }
+      let label = option[this.props.labelKey];
+      return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     });
     
     
     let filteredWithParents = [];
     let index = 0;
+
+    // get parent options for filtered options
     filtered.forEach(option => {
       filteredWithParents.push(option);
       let parent = option.parent ? option.parent.length > 0 ? this.data[option.parent] : null : null;
@@ -200,7 +196,8 @@ class VirtualizedTreeSelect extends Component {
       }
       index = filteredWithParents.length;
     });
-    
+
+    //remove all hidden options
     for (let i = 0; i < filteredWithParents.length; i++) {
       if (!filteredWithParents[i].expanded) {
         let depth = filteredWithParents[i].depth;
@@ -212,13 +209,13 @@ class VirtualizedTreeSelect extends Component {
       }
     }
     
-    // Uncomment to not show selected options
+    // Uncomment this to disable showing selected options
     
     // if (Array.isArray(selectedOptions) && selectedOptions.length) {
-    //     const selectedValues = selectedOptions.map((option) => option[option.providers[0].valueKey]);
+    //     const selectedValues = selectedOptions.map((option) => option[this.props.valueKey]);
     //
     //     return filtered.filter(
-    //         (option) => !selectedValues.includes(option[option.providers[0].valueKey])
+    //         (option) => !selectedValues.includes(option[this.props.valueKey])
     //     )
     // }
     

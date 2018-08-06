@@ -74,16 +74,16 @@ class ResultItem extends Component {
 
     render() {
         let button = null;
-        let option = this.props.option;
-        if (option[option.providers[0].childrenKey].length > 0) {
+        let {option, childrenKey, valueKey, labelKey, labelValue} = this.props;
+        if (option[childrenKey].length > 0) {
             button = this.getCollapseButton();
         }
 
-        let label = option[option.providers[0].labelKey];
+        let label = option[labelKey];
         if (!(typeof label === 'string' || label instanceof String)){
-            label = option.providers[0].labelValue(label)
+            label = labelValue(label)
         }
-        let value = option[option.providers[0].valueKey];
+        let value = option[valueKey];
 
         return (
             <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter}>
@@ -102,12 +102,6 @@ class ResultItem extends Component {
                              onClick={this.props.onClick}
                              hoverActive={this.props.settings.displayInfoOnHover}
                 />
-
-
-                {option.state.label && this.props.settings.displayState &&
-                <div className={"p-0 pl-1 pr-1"} xs="auto"><Badge
-                    color={option.state.color}>{option.state.label}</Badge></div>
-                }
 
             </div>
         )

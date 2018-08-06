@@ -17,10 +17,11 @@ class TooltipItem extends Component {
         });
     }
 
-    _getProvidersName(providers){
-        let names = [];
-        providers.forEach(provider => names.push(provider.name));
-        return names.join(", ")
+    _getTooltipData(){
+      const keys = Object.keys(this.props.option);
+      return keys.map((key,index) => {
+        return (<div key={index}><b>{key}: </b> {this.props.option[key]} </div>)
+      });
     }
 
     render() {
@@ -35,21 +36,21 @@ class TooltipItem extends Component {
                     highlightTag={"span"}
                 />
 
+              {this.props.hoverActive &&
                 <Tooltip innerClassName={"VirtualizedTreeSelectTooltip"}
                          style={{left: "400px!important"}}
-                         placement={'right'} isOpen={this.props.hoverActive && this.state.tooltipOpen}
+                         placement={'left'} isOpen={this.state.tooltipOpen}
                          target={'Tooltip-' + this.props.id} autohide={false}
                          toggle={() => this.toggle()} delay={{"show": 300, "hide": 0}}
                          modifiers={{
                              preventOverflow: {
-                                 escapeWithReference: true,
+                                 escapeWithReference: false,
                              },
                          }}
                 >
-                    <b>Label: </b> {this.props.label} <br/>
-                    <b>Value: </b>{this.props.value} <br/>
-                    <b>Providers: </b>{this._getProvidersName(this.props.option.providers )}<br/>
+                  {this._getTooltipData()}
                 </Tooltip>
+              }
             </div>
         );
     }

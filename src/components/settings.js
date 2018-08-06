@@ -64,15 +64,6 @@ class Settings extends Component {
 
                                 <FormGroup check>
                                     <Label check>
-                                        <Input type="checkbox" name="displayTermState"
-                                               onClick={() => this.props.onSettingsChange({displayState: !data.displayState})}
-                                               defaultChecked={data.displayState}/>{' '}
-                                        Display Term State
-                                    </Label>
-                                </FormGroup>
-
-                                <FormGroup check>
-                                    <Label check>
                                         <Input type="checkbox" name="infoOnHover"
                                                onClick={() => this.props.onSettingsChange({displayInfoOnHover: !data.displayInfoOnHover})}
                                                defaultChecked={data.displayInfoOnHover}/>{' '}

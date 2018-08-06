@@ -4,7 +4,6 @@ import Settings from './settings'
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import ResultItem from './resultItem'
 import PropTypes from "prop-types";
-import {isXML, xmlToJson, isJson, csvToJson} from "./utils/testFunctions";
 
 class IntelligentTreeSelect extends Component {
 
@@ -37,37 +36,15 @@ class IntelligentTreeSelect extends Component {
         this.history = [];
         this.searchString = "";
 
-        if ("localOptions" in this.props) {
-            let localProvider = {
-                name: "Local data",
-                labelKey: this.props.labelKey,
-                valueKey: this.props.valueKey,
-                childrenKey: this.props.childrenKey,
-                labelValue: this.props.labelValue,
-            };
-
-            let data = this.props.localOptions;
-            if (!this.props.simpleTreeData) {
-                data = this._simplyfyData(this.props.localOptions, localProvider.valueKey, localProvider.childrenKey);
-            }
-            let options = this._preProcessOptions(data, localProvider);
-            this._addNewOptions(options)
-
+        let data = this.props.options;
+        if (!this.props.simpleTreeData) {
+          data = this._simplyfyData(this.props.options);
         }
+        this._addNewOptions(data);
 
         this.setState({isLoadingExternally: false})
     }
 
-    _preProcessOptions(options, provider) {
-        return options.map(option => {
-            return {
-                ...option,
-                state: (option['state']) ? option['state'] : optionStateEnum.EXTERNAL,
-                providers: [provider],
-            };
-
-        })
-    }
 
     _getResultsFromHistory(searchString) {
         searchString = searchString.toLowerCase();
@@ -82,8 +59,10 @@ class IntelligentTreeSelect extends Component {
         return []
     }
 
-    _simplyfyData(responseData, valueKey, childrenKey) {
+    _simplyfyData(responseData) {
         let result = [];
+        const {valueKey, childrenKey} = this.props;
+
         if (!responseData || responseData.length === 0) return result;
 
         for (let i = 0; i < responseData.length; i++) {
@@ -128,40 +107,19 @@ class IntelligentTreeSelect extends Component {
         return res * 1000
     }
 
-    async _getResponses(searchString) {
-        let responses = [];
-        let promises = [];
-        this.props.providers.forEach(async (provider) => {
+    async _getResponse(searchString, optionID, limit, offset) {
+        if (this.props.loadOptions){
+          return await this.props.loadOptions({searchString, optionID, limit, offset})
+        }
+    }
 
-                let p = provider.response(searchString).then(responseData => {
-                    if ("toJsonArr" in provider) {
-                        responseData = provider.toJsonArr(responseData);
-                    }
-
-                    else if (typeof responseData === 'string' || responseData instanceof String) {
-                        if (isXML(responseData)) responseData = xmlToJson(responseData);
-                        else if (isJson(responseData)) responseData = JSON.parse(responseData);
-                        else responseData = csvToJson(responseData) //TODO may throw error
-                    }
-
-                    let simpleData = false;
-                    if ("simpleTreeData" in provider) {
-                        simpleData = provider.simpleTreeData;
-                    }
-                    responses.push({provider, simpleData, responseData});
-                    //console.log("_getResponses for: ", provider.name, "finished")
-                });
-                promises.push(p);
-
-            }
-        );
-
-        await Promise.all(promises).catch(error => console.log(error));
-        return responses;
+    _calculateOffset(){
+          //TODO
+        return this.state.options.length
     }
 
     _onInputChange(searchString) {
-        if (searchString && this.props.providers.length > 0) {
+        if (searchString && this.props.loadOptions) {
             let historyData = [];
             for (let i = searchString.length; i > 0; i--) {
                 if (historyData.length > 0) break;
@@ -173,24 +131,16 @@ class IntelligentTreeSelect extends Component {
                 this.setState({isLoadingExternally: true});
                 let data = [];
 
-                this.fetching = this._getResponses().then(responses => {
+                const offset = this._calculateOffset();
+                this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
 
-                        this._addToHistory(searchString, responses, Date.now() + this._getValidForInSec(this.props.termLifetime));
+                        if (!this.props.simpleTreeData) {
+                          data = this._simplyfyData(response);
+                        }else {
+                          data = response
+                        }
 
-                        responses.forEach((response) => {
-                            //default value for this attributes
-                            response.provider.labelKey = response.provider.labelKey ? response.provider.labelKey : 'label';
-                            response.provider.valueKey = response.provider.valueKey ? response.provider.valueKey : 'value';
-                            response.provider.childrenKey = response.provider.childrenKey ? response.provider.childrenKey : 'children';
-
-                            if (response.simpleData) {
-                                data = data.concat(this._preProcessOptions(response.responseData, response.provider));
-                            } else {
-                                let simplifiedData = this._simplyfyData(response.responseData, response.provider.valueKey, response.provider.childrenKey);
-                                data = data.concat(this._preProcessOptions(simplifiedData, response.provider));
-                            }
-                        });
-
+                        this._addToHistory(searchString, response, Date.now() + this._getValidForInSec(this.props.termLifetime));
                         this.fetching = false;
                         this._addNewOptions(data);
                         this.setState({isLoadingExternally: false});
@@ -207,7 +157,15 @@ class IntelligentTreeSelect extends Component {
 
     _onScroll(data){
       const {clientHeight, scrollHeight, scrollTop} = data;
+      //TODO fetch data
+    }
 
+    _onOptionExpand(option){
+      if (option.expanded){
+        console.log('expand', option);
+        //TODO fetch data
+      }
+      this.forceUpdate()
     }
 
     _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray}) {
@@ -233,7 +191,7 @@ class IntelligentTreeSelect extends Component {
         const events = option.disabled ? {} : {
             onClick: () => selectValue(option),
             onMouseEnter: () => focusOption(option),
-            onToggleClick: () => this.forceUpdate()
+            onToggleClick: () => this._onOptionExpand(option)
         };
 
         return (
@@ -242,11 +200,14 @@ class IntelligentTreeSelect extends Component {
                 key={key}
                 style={optionStyle}
                 option={option}
+                childrenKey={this.props.childrenKey}
+                valueKey={this.props.valueKey}
+                labelKey={this.props.labelKey}
+                labelValue={this.props.labelValue}
                 settings={{
                   searchString: this.searchString,
                   renderAsTree: this.state.renderAsTree,
-                  displayInfoOnHover: this.state.displayInfoOnHover,
-                  displayState: this.state.displayState
+                  displayInfoOnHover: this.state.displayInfoOnHover
                 }}
                 {...events}
             />
@@ -267,8 +228,8 @@ class IntelligentTreeSelect extends Component {
         if (Array.isArray(option)) {
             option = option[0]
         }
-        const value = option[option.providers[0].valueKey];
-        const label = option[option.providers[0].labelKey];
+        const value = option[this.props.valueKey];
+        const label = option[this.props.labelKey];
 
         if (IntelligentTreeSelect._isURL(value)) return (
             <a href={value} target="_blank">{label}</a>
@@ -279,7 +240,7 @@ class IntelligentTreeSelect extends Component {
     _onOptionCreate(option) {
         // TODO remove?
         this._addNewOptions([option]);
-        if (option.parent) this._addChildrenToParent(option[option.providers[0].valueKey], option.parent);
+        if (option.parent) this._addChildrenToParent(option[this.props.valueKey], option.parent);
 
         if ("onOptionCreate" in this.props) {
             this.props.onOptionCreate(option);
@@ -287,8 +248,8 @@ class IntelligentTreeSelect extends Component {
     }
 
     _addNewOptions(newOptions){
+      const {valueKey, childrenKey} = this.props;
         const _toArray = (object) => {
-            let childrenKey = object.providers[0].childrenKey;
 
             if (!Array.isArray(object[childrenKey])) {
                 if (object[childrenKey]) object[childrenKey] = [object[childrenKey]];
@@ -307,18 +268,17 @@ class IntelligentTreeSelect extends Component {
             currOption = _toArray(currOption);
 
             let conflicts = options.filter(object => {
-                return object[object.providers[0].valueKey] === currOption[currOption.providers[0].valueKey]
+                return object[valueKey] === currOption[valueKey]
             });
             conflicts.forEach(conflict => {
                 conflict = _toArray(conflict);
-                let a = currOption[currOption.providers[0].childrenKey];
-                let b = conflict[conflict.providers[0].childrenKey];
-                currOption[currOption.providers[0].childrenKey] = a.concat(b.filter((item) => a.indexOf(item) < 0));
+                let a = currOption[childrenKey];
+                let b = conflict[childrenKey];
+                currOption[childrenKey] = a.concat(b.filter((item) => a.indexOf(item) < 0));
             });
             mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
-            if (currOption.providers.length > 0) currOption.state = optionStateEnum.MERGED;
             conflicts.forEach(conflict => options.splice(
-                options.findIndex(el => el[el.providers[0].valueKey] === conflict[conflict.providers[0].valueKey]), 1)
+                options.findIndex(el => el[valueKey] === conflict[valueKey]), 1)
             );
         }
 
@@ -327,6 +287,7 @@ class IntelligentTreeSelect extends Component {
 
     _onSettingsChange(payload) {
         if (payload.hasOwnProperty('expanded')){
+            //TODO fetch data
             this.state.options.forEach(option => option.expanded = payload.expanded);
             payload.options = this.state.options;
         }
@@ -336,8 +297,8 @@ class IntelligentTreeSelect extends Component {
 
     _addChildrenToParent(childrenID, parentID) {
 
-    let parentOption =  this.state.options.find(x => x[x.providers[0].valueKey] === parentID);
-    let children = parentOption[parentOption.providers[0].childrenKey];
+    let parentOption =  this.state.options.find(x => x[this.props.valueKey] === parentID);
+    let children = parentOption[this.props.childrenKey];
     if (children.indexOf(childrenID) === -1 )  children.push(childrenID);
 
     this.setState({options: this.state.options})
@@ -404,22 +365,11 @@ class IntelligentTreeSelect extends Component {
 IntelligentTreeSelect.propTypes = {
     displayState: PropTypes.bool,
     displayInfoOnHover: PropTypes.bool,
+    fetchLimit: PropTypes.number,
     labelValue: PropTypes.func,
+    loadOptions: PropTypes.func,
     onOptionCreate: PropTypes.func,
     options: PropTypes.array,
-    providers: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            response: PropTypes.func.isRequired,
-            toJsonArr: PropTypes.func,
-
-            simpleTreeData: PropTypes.bool,
-            labelKey: PropTypes.string,
-            labelValue: PropTypes.func,
-            valueKey: PropTypes.string,
-            childrenKey: PropTypes.string
-        }).isRequired,
-    ),
     renderAsTree: PropTypes.bool,
     simpleTreeData: PropTypes.bool,
 };
@@ -427,20 +377,13 @@ IntelligentTreeSelect.propTypes = {
 IntelligentTreeSelect.defaultProps = {
     displayState: false,
     displayInfoOnHover: false,
-    expanded: true,
+    expanded: false,
     multi: true,
     options: [],
     renderAsTree: true,
     simpleTreeData: true,
     termLifetime: "5m",
+    fetchLimit: 100,
 };
 
-const optionStateEnum = {
-    MERGED: {label: 'Merged', color: 'warning', message: ''},
-    EXTERNAL: {label: 'External', color: 'primary', message: ''},
-    NEW: {label: 'New', color: 'success', message: 'not verified'},
-    LOCAL: {label: 'Local', color: 'secondary', message: ''},
-};
-
-
-export {IntelligentTreeSelect, optionStateEnum};
+export {IntelligentTreeSelect};

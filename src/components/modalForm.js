@@ -11,7 +11,6 @@ import {
   ModalHeader,
   Tooltip
 } from "reactstrap";
-import {optionStateEnum} from "./IntelligentTreeSelect";
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import {Field, FieldArray, reduxForm} from "redux-form";
 import validate from "./forms/newTerm-form-validate";
@@ -142,14 +141,6 @@ class ModalForm extends Component {
 
         const values = this.props.form.newTerm.values;
 
-        let localProvider = {
-            name: "Local data",
-            labelKey: this.props.data.labelKey,
-            valueKey: this.props.data.valueKey,
-            childrenKey: this.props.data.childrenKey,
-            labelValue: null,
-        };
-
         let properties = {};
         if (values.termProperties) {
             properties = values.termProperties.reduce(function (result, elem) {
@@ -170,8 +161,6 @@ class ModalForm extends Component {
         option['description'] = values['termDescription'];
 
         Object.assign(option, properties);
-        option['state'] = optionStateEnum.NEW;
-        option['providers'] = [localProvider];
 
 
         this.props.onOptionCreate(option);
