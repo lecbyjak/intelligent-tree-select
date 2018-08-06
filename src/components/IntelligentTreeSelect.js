@@ -34,9 +34,26 @@ class IntelligentTreeSelect extends Component {
     componentWillMount() {
         this.fetching = false;
         this.history = [];
+        let data = [];
         this.searchString = "";
+        this.key = this.props.name || this._getRnadomKey();
 
-        let data = this.props.options;
+        if (!this.props.name) {
+          window.onunload = () => window.localStorage.removeItem(this.key);
+        }
+
+        let cashedData = window.localStorage.getItem(this.key);
+        if (cashedData) {
+          cashedData = JSON.parse(cashedData);
+          if (cashedData.validTo > Date.now()) {
+            console.log('from cashed');
+            data = cashedData.data
+          }
+        }
+        if (data.length === 0){
+          data = this.props.options;
+        }
+
         if (!this.props.simpleTreeData) {
           data = this._simplyfyData(this.props.options);
         }
@@ -45,19 +62,32 @@ class IntelligentTreeSelect extends Component {
         this.setState({isLoadingExternally: false})
     }
 
-
-    _getResultsFromHistory(searchString) {
-        searchString = searchString.toLowerCase();
-
-        for (let i = 0; i < this.history.length; i++) {
-            if (this.history[i].searchString.toLowerCase() === searchString) {
-                if (Date.now() < this.history[i].validTo) {
-                    return this.history[i].data
-                }
-            }
-        }
-        return []
+    componentWillUnmount(){
+      if (!this.props.name) window.localStorage.removeItem(this.key);
     }
+
+    _getRnadomKey() {
+      let text = "";
+      const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (let i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return 'cashed_data_'+text;
+    }
+
+    _isInHistory(searchString) {
+          searchString = searchString.toLowerCase();
+
+          for (let i = 0; i < this.history.length; i++) {
+              if (this.history[i].searchString.toLowerCase() === searchString) {
+                  if (Date.now() < this.history[i].validTo) {
+                      return true
+                  }
+              }
+          }
+          return false
+      }
 
     _simplyfyData(responseData) {
         let result = [];
@@ -108,30 +138,31 @@ class IntelligentTreeSelect extends Component {
     }
 
     async _getResponse(searchString, optionID, limit, offset) {
-        if (this.props.loadOptions){
-          return await this.props.loadOptions({searchString, optionID, limit, offset})
+        if (this.props.fetchOptions){
+          return await this.props.fetchOptions({searchString, optionID, limit, offset})
         }
     }
 
-    _calculateOffset(){
-          //TODO
-        return this.state.options.length
-    }
-
     _onInputChange(searchString) {
-        if (searchString && this.props.loadOptions) {
-            let historyData = [];
+        if (searchString && this.props.fetchOptions) {
+
+            let dataCashed = false;
             for (let i = searchString.length; i > 0; i--) {
-                if (historyData.length > 0) break;
+                if (dataCashed) break;
                 let substring = searchString.substring(0, i);
-                historyData = this._getResultsFromHistory(substring);
+              dataCashed = this._isInHistory(substring);
             }
 
-            if (historyData.length === 0 && !this.fetching) {
+            if (!dataCashed && !this.fetching) {
                 this.setState({isLoadingExternally: true});
                 let data = [];
+                let offset = 0;
 
-                const offset = this._calculateOffset();
+                this.state.options.forEach(option => {
+                  if (option.depth === 0) offset++;
+                });
+
+                //TODO figure out how to get all parents for matching node
                 this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
 
                         if (!this.props.simpleTreeData) {
@@ -140,7 +171,7 @@ class IntelligentTreeSelect extends Component {
                           data = response
                         }
 
-                        this._addToHistory(searchString, response, Date.now() + this._getValidForInSec(this.props.termLifetime));
+                        this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.termLifetime));
                         this.fetching = false;
                         this._addNewOptions(data);
                         this.setState({isLoadingExternally: false});
@@ -282,6 +313,16 @@ class IntelligentTreeSelect extends Component {
             );
         }
 
+
+        window.localStorage.setItem(this.key,
+          JSON.stringify(
+            {
+              validTo: Date.now() + this._getValidForInSec(this.props.termLifetime),
+              data: mergedArr,
+            }
+          )
+        );
+
         this.setState({options: mergedArr})
     }
 
@@ -308,8 +349,8 @@ class IntelligentTreeSelect extends Component {
         this.setState({selectedOptions})
     }
 
-    _addToHistory(searchString, data, validTo){
-        this.history.unshift({searchString, data, validTo})
+    _addToHistory(searchString, validTo){
+        this.history.unshift({searchString, validTo})
     }
 
     render() {
@@ -360,18 +401,20 @@ class IntelligentTreeSelect extends Component {
             </div>
         )
     }
+
 }
 
 IntelligentTreeSelect.propTypes = {
     displayState: PropTypes.bool,
     displayInfoOnHover: PropTypes.bool,
     fetchLimit: PropTypes.number,
+    fetchOptions: PropTypes.func,
     labelValue: PropTypes.func,
-    loadOptions: PropTypes.func,
     onOptionCreate: PropTypes.func,
     options: PropTypes.array,
     renderAsTree: PropTypes.bool,
     simpleTreeData: PropTypes.bool,
+    name: PropTypes.string,
 };
 
 IntelligentTreeSelect.defaultProps = {

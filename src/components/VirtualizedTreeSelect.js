@@ -55,8 +55,7 @@ class VirtualizedTreeSelect extends Component {
       let option = this.data[xkey];
       if (!option.parent) options = this._getSortedOptionsWithDepthAndParent(options, xkey, 0, null);
     });
-    
-    
+
     this.setState({options: options});
   }
   
