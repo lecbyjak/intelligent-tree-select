@@ -103,6 +103,14 @@ class ResultItem extends Component {
                              hoverActive={this.props.settings.displayInfoOnHover}
                 />
 
+              {option.fetchingChild &&
+              <span className="Select-loading-zone" aria-hidden="true" style={{'paddingLeft': '5px'}}>
+                <span className="Select-loading" />
+              </span>
+              }
+
+
+
             </div>
         )
     }
