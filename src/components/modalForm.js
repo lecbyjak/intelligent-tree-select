@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
   Button,
-  Collapse, Form,
+  Collapse,
   FormFeedback,
   FormGroup,
   Input,
@@ -12,9 +12,10 @@ import {
   Tooltip
 } from "reactstrap";
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
-import {Field, FieldArray, reduxForm} from "redux-form";
 import validate from "./forms/newTerm-form-validate";
 import createFilterOptions from "react-select-fast-filter-options";
+
+import {Form, Text, Field, NestedField} from 'react-form';
 
 const createRendered = render => (field) => {
     return (
@@ -33,7 +34,9 @@ const createGroupRendered = render => (field) => {
         </span>
     )
 };
+
 const RenderInput = createRendered((field) => {
+        console.log('RenderInput', field)
         let attributes = {};
         if (field.meta.touched) attributes.valid = field.meta.valid;
         return <Input type={"text"} {...field.input} autoComplete={"off"} placeholder={field.label} {...attributes} />
@@ -41,8 +44,9 @@ const RenderInput = createRendered((field) => {
 );
 
 const RenderGroupInput = createGroupRendered((field) => {
+        console.log('RenderGroupInput', field)
         let attributes = {};
-        if (field.meta.touched) attributes.valid = field.meta.valid;
+        if (field.formApi.touched) attributes.valid = !!field.formApi.errors.name;
         return <Input type={"text"} {...field.input} autoComplete={"off"} placeholder={field.label} {...attributes} />
     }
 );
@@ -73,29 +77,33 @@ const RenderSelect = createRendered((field) => {
     }
 );
 
-const renderMembers = ({fields, meta: {touched, error}}) => (
+const renderMembers = (formApi) => (
     <FormGroup>
-        <Button type="button" onClick={() => fields.push({})} color={'primary'} size="sm">
+        <Button type="button" onClick={() => formApi.addValue('siblings', '')} color={'primary'} size="sm">
             Add term property
         </Button>
-        {touched && error && <span>{error}</span>}
+        {/*{touched && error && <span>{error}</span>}*/}
+        {console.log('renderMembers', formApi)}
 
-        {fields.map((member, index) =>
-            <FormGroup key={index} className={"d-flex justify-content-between align-items-center m-1"}>
-                <Field
+        {formApi.values.siblings && formApi.values.siblings.map((member, index) => (
+                <FormGroup key={index} className={"d-flex justify-content-between align-items-center m-1"}>
+                  <Field
                     name={`${member}.key`}
                     component={RenderGroupInput}
                     label="Property Key"/>
-                <Field
+                  <Field
                     name={`${member}.value`}
                     component={RenderGroupInput}
                     label="Property value"/>
 
-                <span onClick={() => fields.remove(index)} style={{pointer: 'cursor'}} className="Select-clear-zone"
-                      title="Remove term property" aria-label="Remove term property">
+                  <span onClick={() => formApi.values.siblings.remove(index)} style={{pointer: 'cursor'}} className="Select-clear-zone"
+                        title="Remove term property" aria-label="Remove term property">
                     <span className="Select-clear" style={{fontSize: 24 + 'px'}}>×</span>
-                </span>
-            </FormGroup>
+                  </span>
+                </FormGroup>
+             ))
+        }
+
         )}
 
     </FormGroup>
@@ -136,9 +144,9 @@ class ModalForm extends Component {
         this.setState({modalVisible: !this.state.modalVisible})
     }
 
-
     _createNewOption() {
 
+        console.log('_createNewOption', this.props.form.newTerm)
         const values = this.props.form.newTerm.values;
 
         let properties = {};
@@ -163,12 +171,14 @@ class ModalForm extends Component {
         Object.assign(option, properties);
 
 
-        this.props.onOptionCreate(option);
-        this.props.toggleModalWindow()
+        //this.props.onOptionCreate(option);
+        //this.props.toggleModalWindow()
     }
 
 
     render() {
+
+
         return (
             <div>
                 <Button color={"link"} className={"d-flex justify-content-center  align-items-center"}
@@ -185,7 +195,8 @@ class ModalForm extends Component {
                 <Modal backdrop={"static"} isOpen={this.state.modalVisible} toggle={this._toggleModal}>
 
                     <Form onSubmit={this._createNewOption}>
-
+                      { formApi => (
+                        <form onSubmit={formApi.submitForm}>
                         <ModalHeader toggle={this._toggleModal}>
                             Create new term
                         </ModalHeader>
@@ -200,6 +211,7 @@ class ModalForm extends Component {
                                     onClick={() => this.setState({modalAdvancedSectionVisible: !this.state.modalAdvancedSectionVisible})}>
                                 {(this.state.modalAdvancedSectionVisible ? "Hide advanced options" : "Show advanced options")}
                             </Button>
+
 
                             <Collapse isOpen={this.state.modalAdvancedSectionVisible}>
 
@@ -223,7 +235,7 @@ class ModalForm extends Component {
                                        valueKey={this.props.data.valueKey}
                                 />
 
-                                <FieldArray name="termProperties" component={renderMembers}/>
+                                {renderMembers(formApi)}
 
                             </Collapse>
                         </ModalBody>
@@ -234,8 +246,9 @@ class ModalForm extends Component {
                                     disabled={this.props.submitting}>Cancel</Button>
                         </ModalFooter>
 
+                        </form>
+                        )}
                     </Form>
-
                 </Modal>
                 }
 
@@ -245,8 +258,4 @@ class ModalForm extends Component {
 }
 
 
-export default reduxForm({
-    // a unique name for the form
-    form: 'newTerm',
-    validate,
-})(ModalForm);
+export default ModalForm;

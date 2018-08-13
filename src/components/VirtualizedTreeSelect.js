@@ -309,7 +309,7 @@ VirtualizedTreeSelect.propTypes = {
   minHeight: PropTypes.number,
   multi: PropTypes.bool,
   onInputChange: PropTypes.func,
-  optionHeight: PropTypes.oneOfType(PropTypes.number, PropTypes.func),
+  optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   optionLeftOffset: PropTypes.number,
   optionRenderer: PropTypes.func,
   options: PropTypes.array,
