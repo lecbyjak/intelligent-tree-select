@@ -100,8 +100,8 @@ class IntelligentTreeSelect extends Component {
     return result;
   }
 
-  _parseTermLifetime(value) {
-    let termLifetime = {
+  _parseOptionLifetime(value) {
+    let optionLifetime = {
       days: 0,
       hours: 0,
       minutes: 30,
@@ -109,7 +109,7 @@ class IntelligentTreeSelect extends Component {
     };
     if (/^(\d+d)?(\d+h)?(\d+m)?(\d+s)?$/.test(value)) {
       let tmp = /^(\d+d)?(\d+h)?(\d+m)?(\d+s)?$/.exec(value);
-      termLifetime = {
+      optionLifetime = {
         days: parseInt(tmp[1], 10),
         hours: parseInt(tmp[2], 10),
         minutes: parseInt(tmp[3], 10),
@@ -117,18 +117,18 @@ class IntelligentTreeSelect extends Component {
       };
     } else {
       throw new Error(
-        'Invalid termLifetime. Expecting format: e.g. 1d10h5m6s ');
+        'Invalid optionLifetime. Expecting format: e.g. 1d10h5m6s ');
     }
-    return termLifetime;
+    return optionLifetime;
   }
 
-  _getValidForInSec(termLifetime) {
-    termLifetime = this._parseTermLifetime(termLifetime);
+  _getValidForInSec(optionLifetime) {
+    optionLifetime = this._parseOptionLifetime(optionLifetime);
     let res = 0;
-    res += (isNaN(termLifetime.seconds) ? 0 : termLifetime.seconds);
-    res += (isNaN(termLifetime.minutes) ? 0 : termLifetime.minutes * 60);
-    res += (isNaN(termLifetime.hours) ? 0 : termLifetime.hours * 60 * 60);
-    res += (isNaN(termLifetime.days) ? 0 : termLifetime.days * 60 * 60 * 24);
+    res += (isNaN(optionLifetime.seconds) ? 0 : optionLifetime.seconds);
+    res += (isNaN(optionLifetime.minutes) ? 0 : optionLifetime.minutes * 60);
+    res += (isNaN(optionLifetime.hours) ? 0 : optionLifetime.hours * 60 * 60);
+    res += (isNaN(optionLifetime.days) ? 0 : optionLifetime.days * 60 * 60 * 24);
     return res * 1000;
   }
 
@@ -168,7 +168,7 @@ class IntelligentTreeSelect extends Component {
               data = response;
             }
 
-            this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.termLifetime));
+            this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
             this.fetching = false;
             this._addNewOptions(data);
             this.setState({isLoadingExternally: false});
@@ -284,7 +284,7 @@ class IntelligentTreeSelect extends Component {
               this.completedNodes[option[this.props.valueKey]] = true
             }
 
-            this._addToHistory(option[this.props.valueKey], Date.now() + this._getValidForInSec(this.props.termLifetime));
+            this._addToHistory(option[this.props.valueKey], Date.now() + this._getValidForInSec(this.props.optionLifetime));
 
             delete option.fetchingChild;
 
@@ -417,7 +417,7 @@ class IntelligentTreeSelect extends Component {
     window.localStorage.setItem(this.key,
       JSON.stringify(
         {
-          validTo: Date.now() + this._getValidForInSec(this.props.termLifetime),
+          validTo: Date.now() + this._getValidForInSec(this.props.optionLifetime),
           data: mergedArr,
         },
       ),
@@ -506,28 +506,33 @@ class IntelligentTreeSelect extends Component {
 }
 
 IntelligentTreeSelect.propTypes = {
-  displayState: PropTypes.bool,
+  childrenKey: PropTypes.string,
   displayInfoOnHover: PropTypes.bool,
+  expanded: PropTypes.bool,
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
+  labelKey: PropTypes.string,
   labelValue: PropTypes.func,
+  multi: PropTypes.bool,
+  name: PropTypes.string,
+  onInputChange: PropTypes.func,
   onOptionCreate: PropTypes.func,
+  optionHeight: PropTypes.oneOfType(PropTypes.number, PropTypes.func),
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
   simpleTreeData: PropTypes.bool,
-  name: PropTypes.string,
-  optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+  optionLifetime: PropTypes.string,
+  valueKey: PropTypes.string
 };
 
 IntelligentTreeSelect.defaultProps = {
-  displayState: false,
   displayInfoOnHover: false,
   expanded: false,
   multi: true,
   options: [],
   renderAsTree: true,
   simpleTreeData: true,
-  termLifetime: '5m',
+  optionLifetime: '5m',
   fetchLimit: 100,
   optionHeight: 25,
 };

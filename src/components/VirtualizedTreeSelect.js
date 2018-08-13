@@ -299,13 +299,22 @@ class VirtualizedTreeSelect extends Component {
 VirtualizedTreeSelect.propTypes = {
   childrenKey: PropTypes.string,
   expanded: PropTypes.bool,
+  filterOptions: PropTypes.func,
   isMenuOpen: PropTypes.bool,
-  listProps: PropTypes.object,
+  labelKey: PropTypes.string,
   maxHeight: PropTypes.number,
+  menuContainerStyle: PropTypes.any,
   menuRenderer: PropTypes.func,
-  optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+  menuStyle: PropTypes.object,
+  minHeight: PropTypes.number,
+  multi: PropTypes.bool,
+  onInputChange: PropTypes.func,
+  optionHeight: PropTypes.oneOfType(PropTypes.number, PropTypes.func),
   optionLeftOffset: PropTypes.number,
+  optionRenderer: PropTypes.func,
+  options: PropTypes.array,
   renderAsTree: PropTypes.bool,
+  valueKey: PropTypes.string
 };
 
 VirtualizedTreeSelect.defaultProps = {
