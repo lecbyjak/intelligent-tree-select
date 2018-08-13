@@ -1,0 +1,28 @@
+.result-item{
+  padding-left: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+}
+.VirtualizedTreeSelectTooltip{
+  max-width: 300px;
+  text-align: start;
+  word-break: break-all;
+}
+
+.toggleButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Select.is-invalid ~ .invalid-feedback {
+  display: block;
+}
+
+.highlighted{
+  font-weight: bold;
+  background: none;
+}
