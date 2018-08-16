@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
-import {Badge} from "reactstrap";
 import TooltipItem from "./tooltipItem";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
 
 
 class ResultItem extends Component {

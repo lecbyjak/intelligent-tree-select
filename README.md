@@ -68,9 +68,11 @@ You can override the built-in option renderer by specifying your own `optionRend
 | labelValue | `func` | -- | Return the label for option. Function with signature `({ option: Object }): string` |
 | onOptionCreate | `function` | -- | callback when the new option is created. Signature `({ option: Object}): none`|
 | optionLifetime | `string` | '5m' | String representing how long the options should be cached. Syntax: `XdXhXmXs` where `X` is some number, `d` stands for days, `h` hours ,`m` minutes, `s` seconds|
+| showSettings | `bool` | 'true' | whether the section with settings and button for creating new option should be visible|
 | simpleTreeData | `bool` | true | whether the options are in the simple format. (One node == one option) |
 | fetchOptions | `func` | -- | Signature: `({searchString, optionID, limit, offset}): Promise`. If the `optionID` is not an empty string then the function should return children options of that option. If the `searchString` is not an empty string then the function should return all options whose label value match the `searchStromg` + their parent options|
 | fetchLimit | `number` | 100 | amount of data to be fetched |
 | multi | `bool` | true | whether the select in multi select or not |
 | name | `string` | -- | Unique name for the component. Whenever this prop is set then the options will be cached|
+| formComponent | `func` | -- | Function returning React element representing form. Syntax `({onOptionCreate, toggleModal, options, labelKey, valueKey, childrenKey}): React.component`|
 

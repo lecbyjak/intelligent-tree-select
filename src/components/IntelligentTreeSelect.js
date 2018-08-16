@@ -368,7 +368,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onOptionCreate(option) {
-    // TODO remove?
     this._addNewOptions([option]);
     if (option.parent) this._addChildrenToParent(option[this.props.valueKey],
       option.parent);
@@ -461,23 +460,26 @@ class IntelligentTreeSelect extends Component {
     return (
 
       <div className="container-fluid">
-
-        <Settings onOptionCreate={this._onOptionCreate}
-                  onSettingsChange={this._onSettingsChange}
-                  data={{
-                    displayState: this.state.displayState,
-                    displayInfoOnHover: this.state.displayInfoOnHover,
-                    expanded: this.state.expanded,
-                    renderAsTree: this.state.renderAsTree,
-                    multi: this.state.multi,
-                  }}
-                  formData={{
-                    labelKey: this.props.labelKey || 'label',
-                    valueKey: this.props.valueKey || 'value',
-                    childrenKey: this.props.childrenKey || 'children',
-                    data: this.state.options,
-                  }}
-        />
+        {this.props.showSettings &&
+          <Settings onOptionCreate={this._onOptionCreate}
+                    onSettingsChange={this._onSettingsChange}
+                    data={{
+                      displayState: this.state.displayState,
+                      displayInfoOnHover: this.state.displayInfoOnHover,
+                      expanded: this.state.expanded,
+                      renderAsTree: this.state.renderAsTree,
+                      multi: this.state.multi,
+                    }}
+                    formComponent={this.props.formComponent}
+                    formData={{
+                      labelKey: this.props.labelKey || 'label',
+                      valueKey: this.props.valueKey || 'value',
+                      childrenKey: this.props.childrenKey || 'children',
+                      options: this.state.options,
+                      onOptionCreate: this._onOptionCreate
+                    }}
+          />
+        }
 
         <VirtualizedTreeSelect
           name="react-virtualized-tree-select"
@@ -492,7 +494,6 @@ class IntelligentTreeSelect extends Component {
           expanded={this.state.expanded}
           renderAsTree={this.state.renderAsTree}
           multi={this.state.multi}
-          isMenuOpen={true}
           isLoading={this.state.isLoadingExternally}
           onInputChange={this._onInputChange}
           options={this.state.options}
@@ -506,11 +507,13 @@ class IntelligentTreeSelect extends Component {
 }
 
 IntelligentTreeSelect.propTypes = {
+  isMenuOpen: PropTypes.bool,
   childrenKey: PropTypes.string,
   displayInfoOnHover: PropTypes.bool,
   expanded: PropTypes.bool,
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
+  formComponent: PropTypes.func,
   labelKey: PropTypes.string,
   labelValue: PropTypes.func,
   multi: PropTypes.bool,
@@ -520,6 +523,7 @@ IntelligentTreeSelect.propTypes = {
   optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
+  showSettings: PropTypes.bool,
   simpleTreeData: PropTypes.bool,
   optionLifetime: PropTypes.string,
   valueKey: PropTypes.string
@@ -527,10 +531,12 @@ IntelligentTreeSelect.propTypes = {
 
 IntelligentTreeSelect.defaultProps = {
   displayInfoOnHover: false,
+  showSettings: true,
   expanded: false,
   multi: true,
   options: [],
   renderAsTree: true,
+  isMenuOpen: false,
   simpleTreeData: true,
   optionLifetime: '5m',
   fetchLimit: 100,

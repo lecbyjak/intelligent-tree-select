@@ -17,7 +17,11 @@ ReactDOM.render(
         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
         childrenKey={"subTerm"}
         simpleTreeData={true}
+        isMenuOpen={true}
         options={data}
+        onOptionCreate={(option) => {
+          console.log('created', option)
+        }}
   />,
   document.getElementById('app')
 );

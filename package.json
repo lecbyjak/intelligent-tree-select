@@ -30,7 +30,7 @@
     "babel-runtime": "^6.11.6",
     "bootstrap": "^4.1.2",
     "classnames": "latest",
-    "react-form": "^3.5.6",
+    "informed": "^1.10.4",
     "react-highlight-words": "^0.11.0",
     "react-input-autosize": "^2.2.1",
     "react-select": "^1.2.1",
