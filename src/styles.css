@@ -3,7 +3,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  cursor: default;
+  cursor: pointer;
 }
 .VirtualizedTreeSelectTooltip{
   max-width: 300px;

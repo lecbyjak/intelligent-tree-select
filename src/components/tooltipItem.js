@@ -26,7 +26,7 @@ class TooltipItem extends Component {
 
     render() {
         return (
-            <div id={'Tooltip-' + this.props.id} onClick={this.props.onClick} className={"result-item"}>
+            <div id={'Tooltip-' + this.props.id} className={"result-item"}>
 
                 <Highlighter
                     highlightClassName='highlighted'

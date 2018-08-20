@@ -52,6 +52,7 @@ const TextInput = asField(({fieldState, ...props}) => {
 
 const Select = asField(({fieldState, ...props}) => (
   <FormGroup>
+    {console.log(fieldState)}
     <VirtualizedTreeSelect
       onChange={(value) => props.fieldApi.setValue(value)}
       value={props.fieldApi.getValue()}
@@ -69,11 +70,20 @@ class NewOptionForm extends Component {
     super(props);
 
     this._createNewOption = this._createNewOption.bind(this);
+    this.filterOptions = this.filterOptions.bind(this);
 
     this.state = {
       siblings: [],
       modalAdvancedSectionVisible: false,
     }
+  }
+
+  filterOptions(options, filter, selectedOptions){
+    let filtered = options.filter(option => {
+      let label = option[this.props.labelKey];
+      return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+    });
+    return filtered
   }
 
   _getIDs(children) {
@@ -163,6 +173,7 @@ class NewOptionForm extends Component {
                     labelKey={this.props.labelKey}
                     valueKey={this.props.valueKey}
                     childrenKey={this.props.childrenKey}
+                    filterOptions={this.filterOptions}
                     expanded={true}
                     renderAsTree={false}
             />
@@ -174,6 +185,7 @@ class NewOptionForm extends Component {
                     labelKey={this.props.labelKey}
                     valueKey={this.props.valueKey}
                     childrenKey={this.props.childrenKey}
+                    filterOptions={this.filterOptions}
                     expanded={true}
                     renderAsTree={false}
                     validate={validateNotSameAsParent}
@@ -183,7 +195,7 @@ class NewOptionForm extends Component {
               <Button type="button"
                       onClick={() => this.addSibling()}
                       color={'primary'} size="sm">
-                Add term property
+                Add option property
               </Button>
               {this.state.siblings.map((member, index) => (
                 <FormGroup key={index} className={"d-flex justify-content-between align-items-center m-1"}>
