@@ -274,6 +274,7 @@ class VirtualizedTreeSelect extends Component {
     menuStyle.overflow = 'hidden';
     menuStyle.maxHeight = this.props.maxHeight;
     menuContainerStyle.maxHeight = this.props.maxHeight;
+    menuContainerStyle.position = this.props.isMenuOpen? 'relative' : 'absolute';
 
     const menuRenderer = this.props.menuRenderer || this._renderMenu;
     const filterOptions = this.props.filterOptions || this._filterOptions;

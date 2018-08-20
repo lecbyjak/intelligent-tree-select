@@ -83,7 +83,7 @@ class ResultItem extends Component {
         let value = option[valueKey];
 
         return (
-            <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter} onClick={this.props.onClick}>
+            <div style={this.props.style} className={this.props.className} onMouseEnter={this.props.onMouseEnter} >
 
                 {this.props.settings.renderAsTree &&
                     <div style={{width: '16px'}}>
@@ -95,6 +95,7 @@ class ResultItem extends Component {
                              option={option}
                              label={label}
                              value={value}
+                             onClick={this.props.onClick}
                              searchString={this.props.settings.searchString}
                              hoverActive={this.props.settings.displayInfoOnHover}
                 />

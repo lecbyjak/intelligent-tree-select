@@ -368,9 +368,11 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onOptionCreate(option) {
+
+    if (option.parent) {
+      this._addChildrenToParent(option[this.props.valueKey], option.parent);
+    }
     this._addNewOptions([option]);
-    if (option.parent) this._addChildrenToParent(option[this.props.valueKey],
-      option.parent);
 
     if ('onOptionCreate' in this.props) {
       this.props.onOptionCreate(option);
@@ -441,8 +443,6 @@ class IntelligentTreeSelect extends Component {
       x => x[this.props.valueKey] === parentID);
     let children = parentOption[this.props.childrenKey];
     if (children.indexOf(childrenID) === -1) children.push(childrenID);
-
-    this.setState({options: this.state.options});
   }
 
   _addSelectedOption(selectedOptions) {
@@ -499,7 +499,6 @@ class IntelligentTreeSelect extends Component {
           options={this.state.options}
           listProps={listProps}
         />
-
       </div>
     );
   }

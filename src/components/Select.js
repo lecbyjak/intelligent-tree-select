@@ -1179,7 +1179,7 @@ class Select extends React.Component {
                     {removeMessage}
                     {this.renderLoading()}
                     {this.renderClear()}
-                    {this.renderArrow()}
+                    {!this.props.isMenuOpen && this.renderArrow()}
                 </div>
                 {isOpen ? this.renderOuter(options, valueArray, focusedOption) : null}
             </div>

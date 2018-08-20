@@ -20,13 +20,21 @@ class TooltipItem extends Component {
     _getTooltipData(){
       const keys = Object.keys(this.props.option);
       return keys.map((key,index) => {
-        return (<div key={index}><b>{key}: </b> {this.props.option[key]} </div>)
+        let data ="";
+        const property = this.props.option[key];
+        if (Array.isArray(property)){
+          data = property.length.toString();
+          data += (property.length === 1)? ' record': ' records'
+        } else{
+          data = JSON.stringify(property);
+        }
+        return (<div key={index}><b>{key}: </b> {data} </div>)
       });
     }
 
     render() {
         return (
-            <div id={'Tooltip-' + this.props.id} className={"result-item"}>
+            <div id={'Tooltip-' + this.props.id} className={"result-item"} onClick={this.props.onClick} >
 
                 <Highlighter
                     highlightClassName='highlighted'

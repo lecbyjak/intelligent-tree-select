@@ -2,8 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import data from '../examples/data/data.json'
-import './styles.css';
 import {IntelligentTreeSelect} from './components/IntelligentTreeSelect';
+import './styles.css';
 
 
 ReactDOM.render(

@@ -52,14 +52,13 @@ const TextInput = asField(({fieldState, ...props}) => {
 
 const Select = asField(({fieldState, ...props}) => (
   <FormGroup>
-    {console.log(fieldState)}
     <VirtualizedTreeSelect
       onChange={(value) => props.fieldApi.setValue(value)}
       value={props.fieldApi.getValue()}
       {...props}
       style={fieldState.error ? {border: 'solid 1px red'} : null}
     />
-    {fieldState.error ? (<FormFeedback style={{color: 'red'}}>{fieldState.error}</FormFeedback>) : null}
+    {fieldState.error ? (<FormFeedback style={{color: 'red', display: 'block'}}>{fieldState.error}</FormFeedback>) : null}
   </FormGroup>
 ));
 
@@ -70,7 +69,8 @@ class NewOptionForm extends Component {
     super(props);
 
     this._createNewOption = this._createNewOption.bind(this);
-    this.filterOptions = this.filterOptions.bind(this);
+    this.filterParentOptions = this.filterParentOptions.bind(this);
+    this.filterChildrenOptions = this.filterChildrenOptions.bind(this);
 
     this.state = {
       siblings: [],
@@ -78,10 +78,18 @@ class NewOptionForm extends Component {
     }
   }
 
-  filterOptions(options, filter, selectedOptions){
+  filterParentOptions(options, filter, selectedOptions){
     let filtered = options.filter(option => {
       let label = option[this.props.labelKey];
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
+    });
+    return filtered
+  }
+
+  filterChildrenOptions(options, filter, selectedOptions){
+    let filtered = options.filter(option => {
+      let label = option[this.props.labelKey];
+      return (label.toLowerCase().indexOf(filter.toLowerCase()) !== -1) && !option.parent
     });
     return filtered
   }
@@ -111,7 +119,7 @@ class NewOptionForm extends Component {
     option[this.props.labelKey] = data.optionLabel;
     option[this.props.childrenKey] = children;
     option['parent'] = parent;
-    option['description'] = data.optionDescription;
+    if (data.optionDescription) option['description'] = data.optionDescription;
 
     Object.assign(option, properties);
 
@@ -173,7 +181,7 @@ class NewOptionForm extends Component {
                     labelKey={this.props.labelKey}
                     valueKey={this.props.valueKey}
                     childrenKey={this.props.childrenKey}
-                    filterOptions={this.filterOptions}
+                    filterOptions={this.filterParentOptions}
                     expanded={true}
                     renderAsTree={false}
             />
@@ -185,10 +193,12 @@ class NewOptionForm extends Component {
                     labelKey={this.props.labelKey}
                     valueKey={this.props.valueKey}
                     childrenKey={this.props.childrenKey}
-                    filterOptions={this.filterOptions}
+                    filterOptions={this.filterChildrenOptions}
                     expanded={true}
                     renderAsTree={false}
                     validate={validateNotSameAsParent}
+                    validateOnChange
+                    validateOnBlur
             />
 
             <FormGroup>

@@ -26,3 +26,7 @@
   font-weight: bold;
   background: none;
 }
+
+.VirtualizedSelectOption{
+  cursor: default;
+}

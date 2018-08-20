@@ -25,7 +25,7 @@ class ModalWindow extends Component {
 
         return (
             <div>
-                <Button color={"link"} className={"d-flex justify-content-center  align-items-center"}
+                <Button color={"link"}
                         onClick={this._toggleModal}
                         id={this.id}>Create new option</Button>
 
