@@ -1,6 +1,7 @@
 examples
 src
 .babelrc
+.idea
 package-lock.json
 webpack.config.js
 lib/demo.js
