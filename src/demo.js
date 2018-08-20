@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import data from '../examples/data/data.json'
 import {IntelligentTreeSelect} from './components/IntelligentTreeSelect';
 import './styles.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 
 ReactDOM.render(

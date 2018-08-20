@@ -6,7 +6,6 @@ import {AutoSizer, List} from "react-virtualized";
 import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css'
 import 'react-virtualized-select/styles.css'
-import 'bootstrap/dist/css/bootstrap.css';
 
 import PropTypes from 'prop-types'
 import Select from './Select'

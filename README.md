@@ -17,7 +17,8 @@ Then import it
 ```
 import { VirtualizedTreeSelect } from 'intelligent-tree-select'
 import { IntelligentTreeSelect } from 'intelligent-tree-select'
-import "../node_modules/intelligent-tree-select/lib/styles.css"
+import "intelligent-tree-select/lib/styles.css"
+import 'bootstrap/dist/css/bootstrap.css';
 ```
 
 example of the usage in the `src/demo.js`
