@@ -10,6 +10,7 @@ class Settings extends Component {
     super(props, context);
 
     this._toggleSettings = this._toggleSettings.bind(this);
+    this._getFilterButton = this._getFilterButton.bind(this);
 
     this.state = {
       open: false
@@ -20,8 +21,18 @@ class Settings extends Component {
     this.setState({open: !this.state.open})
   }
 
+  _getFilterButton(data) {
+    return (
+      <Button color="link" onClick={this._toggleSettings}>
+        {(this.state.open ? "Hide filter" : "Show filter")}
+      </Button>
+    )
+  }
+
   render() {
     const data = this.props.data;
+    let filter = this.props.filterComponent || this._getFilterButton;
+
     return (
       <div className="d-flex flex-column">
 
@@ -30,11 +41,18 @@ class Settings extends Component {
                        formData={this.props.formData}
                        formComponent={this.props.formComponent}
           />
-          <Button color="link" onClick={this._toggleSettings}>
-            {(this.state.open ? "Hide filter" : "Show filter")}
-          </Button>
+          {
+            filter({
+              setInnerState: this.props.onSettingsChange,
+              expanded: data.expanded,
+              renderAsTree: data.renderAsTree,
+              displayInfoOnHover: data.displayInfoOnHover,
+              multi: data.multi
+            })
+          }
         </div>
 
+        {this.props.filterComponent === undefined &&
         <Collapse className="w-100" isOpen={this.state.open}>
           <Card>
             <CardBody>
@@ -81,6 +99,7 @@ class Settings extends Component {
             </CardBody>
           </Card>
         </Collapse>
+        }
       </div>
     )
   }

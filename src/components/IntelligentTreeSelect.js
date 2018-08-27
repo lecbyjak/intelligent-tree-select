@@ -19,13 +19,12 @@ class IntelligentTreeSelect extends Component {
     this._onScroll = this._onScroll.bind(this);
 
     this.state = {
-      displayState: this.props.displayState,
       displayInfoOnHover: this.props.displayInfoOnHover,
       expanded: this.props.expanded,
       renderAsTree: this.props.renderAsTree,
       multi: this.props.multi,
       options: [],
-      selectedOptions: [],
+      selectedOptions: '',
       isLoadingExternally: false,
     };
   }
@@ -355,9 +354,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   _valueRenderer(option, x) {
-    if (Array.isArray(option)) {
-      option = option[0];
-    }
     const value = option[this.props.valueKey];
     const label = option[this.props.labelKey];
 
@@ -464,13 +460,13 @@ class IntelligentTreeSelect extends Component {
           <Settings onOptionCreate={this._onOptionCreate}
                     onSettingsChange={this._onSettingsChange}
                     data={{
-                      displayState: this.state.displayState,
                       displayInfoOnHover: this.state.displayInfoOnHover,
                       expanded: this.state.expanded,
                       renderAsTree: this.state.renderAsTree,
                       multi: this.state.multi,
                     }}
                     formComponent={this.props.formComponent}
+                    filterComponent={this.props.filterComponent}
                     formData={{
                       labelKey: this.props.labelKey || 'label',
                       valueKey: this.props.valueKey || 'value',
@@ -513,6 +509,7 @@ IntelligentTreeSelect.propTypes = {
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
   formComponent: PropTypes.func,
+  filterComponent: PropTypes.func,
   labelKey: PropTypes.string,
   labelValue: PropTypes.func,
   multi: PropTypes.bool,
