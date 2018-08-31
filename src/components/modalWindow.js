@@ -29,12 +29,12 @@ class ModalWindow extends Component {
             <div>
                 <Button color={"link"}
                         onClick={this._toggleModal}
-                        id={this.id}>{openButtonTooltipLabel}</Button>
+                        id={this.id}>{openButtonLabel}</Button>
 
                 <Tooltip innerClassName={"bg-light text-dark border border-dark"} delay={{show: 300, hide: 100}}
                          placement="right" isOpen={this.state.tooltipVisible}
                          target={this.id} toggle={() => this.setState({tooltipVisible: !this.state.tooltipVisible})}>
-                  {openButtonLabel}
+                  {openButtonTooltipLabel}
                 </Tooltip>
 
                 <Modal backdrop={"static"} isOpen={this.state.modalVisible} toggle={this._toggleModal}>
