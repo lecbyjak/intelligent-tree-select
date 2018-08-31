@@ -467,7 +467,7 @@ class IntelligentTreeSelect extends Component {
                     }}
                     formComponent={this.props.formComponent}
                     filterComponent={this.props.filterComponent}
-                    openButtonabel={this.props.openButtonLabel}
+                    openButtonLabel={this.props.openButtonLabel}
                     openButtonTooltipLabel={this.props.openButtonTooltipLabel}
                     formData={{
                       labelKey: this.props.labelKey || 'label',
