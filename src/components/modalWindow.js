@@ -22,8 +22,8 @@ class ModalWindow extends Component {
 
     render() {
         const FormComponent = this.props.formComponent || NewOptionForm;
-        const openButtonTooltipLabel = this.props.openButtonTooltipLabel || 'Create new option';
-        const openButtonLabel = this.props.openButtonLabel || 'Didn´t find your term? Create new one.';
+        const openButtonTooltipLabel = this.props.openButtonTooltipLabel || 'Didn´t find your term? Create new one.';
+        const openButtonLabel = this.props.openButtonLabel || 'Create new option';
 
         return (
             <div>
