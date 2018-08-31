@@ -22,17 +22,19 @@ class ModalWindow extends Component {
 
     render() {
         const FormComponent = this.props.formComponent || NewOptionForm;
+        const openButtonTooltipLabel = this.props.openButtonTooltipLabel || 'Create new option';
+        const openButtonLabel = this.props.openButtonLabel || 'Didn´t find your term? Create new one.';
 
         return (
             <div>
                 <Button color={"link"}
                         onClick={this._toggleModal}
-                        id={this.id}>Create new option</Button>
+                        id={this.id}>{openButtonTooltipLabel}</Button>
 
                 <Tooltip innerClassName={"bg-light text-dark border border-dark"} delay={{show: 300, hide: 100}}
                          placement="right" isOpen={this.state.tooltipVisible}
                          target={this.id} toggle={() => this.setState({tooltipVisible: !this.state.tooltipVisible})}>
-                    Didn´t find your term? Add new one.
+                  {openButtonLabel}
                 </Tooltip>
 
                 <Modal backdrop={"static"} isOpen={this.state.modalVisible} toggle={this._toggleModal}>

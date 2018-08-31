@@ -40,6 +40,8 @@ class Settings extends Component {
           <ModalWindow onOptionCreate={this.props.onOptionCreate}
                        formData={this.props.formData}
                        formComponent={this.props.formComponent}
+                       openButtonTooltipLabel={this.props.openButtonTooltipLabel}
+                       openButtonLabel={this.props.openButtonLabel}
           />
           {
             filter({

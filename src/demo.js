@@ -20,8 +20,8 @@ ReactDOM.render(
         simpleTreeData={true}
         isMenuOpen={true}
         options={data}
-        //filterComponent={(data)=>{console.log(data); return null}}
-        //onOptionCreate={(option) => {console.log('created', option)}}
+        filterComponent={(data)=>{console.log(data); return null}}
+        onOptionCreate={(option) => {console.log('created', option)}}
   />,
   document.getElementById('app')
 );
