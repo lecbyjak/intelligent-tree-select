@@ -60,7 +60,7 @@ class VirtualizedTreeSelect extends Component {
   
   _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
     let option = this.data[key];
-    
+    if (!option) return sortedArr;
     option.depth = depth;
     if (!option.parent) option.parent = parentKey;
     
