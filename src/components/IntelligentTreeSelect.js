@@ -476,7 +476,7 @@ class IntelligentTreeSelect extends Component {
     listProps.onScroll = this.props.onScroll || this._onScroll;
     return (
 
-      <div className="container-fluid">
+      <div>
         {this.props.showSettings &&
           <Settings onOptionCreate={this._onOptionCreate}
                     onSettingsChange={this._onSettingsChange}
