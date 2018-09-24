@@ -312,7 +312,7 @@ class IntelligentTreeSelect extends Component {
             this._addToHistory(option[this.props.valueKey], Date.now() + this._getValidForInSec(this.props.optionLifetime));
 
             delete option.fetchingChild;
-
+            this.state.options.forEach(o => {if(o[this.props.valueKey]===option[this.props.valueKey]) {o.expanded = true;}});
             this._addNewOptions(data);
             this.setState({isLoadingExternally: false});
           },
@@ -370,13 +370,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   static _isURL(str) {
-    const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-    return pattern.test(str);
+    return str.startsWith("https://") || str.startsWith("http://")
   }
 
   _valueRenderer(option, x) {
@@ -412,7 +406,8 @@ class IntelligentTreeSelect extends Component {
       return object;
     };
 
-    let options = newOptions.concat(this.state.options);
+    const x = this.state.options;
+    let options = x.concat(newOptions);
     let mergedArr = [];
 
     //merge options

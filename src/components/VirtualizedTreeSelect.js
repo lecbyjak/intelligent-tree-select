@@ -12,10 +12,10 @@ import Select from './Select'
 
 
 class VirtualizedTreeSelect extends Component {
-  
+
   constructor(props, context) {
     super(props, context);
-    
+
     this._renderMenu = this._renderMenu.bind(this);
     this._processOptions = this._processOptions.bind(this);
     this._filterOptions = this._filterOptions.bind(this);
@@ -28,26 +28,26 @@ class VirtualizedTreeSelect extends Component {
       options: []
     };
   }
-  
+
   componentDidMount() {
     this._processOptions()
   }
-  
+
   componentDidUpdate(prevProps) {
     if (this.props.options.length !== prevProps.options.length || this.props.expanded !== prevProps.expanded) {
       this._processOptions();
     }
   }
-  
+
   _processOptions() {
     let optionID;
     this.data = {};
     this.props.options.forEach(option => {
-      option.expanded = this.props.expanded;
+      option.expanded = (option.expanded===undefined)? this.props.expanded : option.expanded;
       optionID = option[this.props.valueKey];
       this.data[optionID] = option;
     });
-    
+
     const keys = Object.keys(this.data);
     let options = [];
     keys.forEach(xkey => {
@@ -57,54 +57,54 @@ class VirtualizedTreeSelect extends Component {
 
     this.setState({options: options});
   }
-  
+
   _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
     let option = this.data[key];
     if (!option) return sortedArr;
     option.depth = depth;
     if (!option.parent) option.parent = parentKey;
-    
+
     sortedArr.push(option);
-    
+
     option[this.props.childrenKey].forEach(childID => {
       this._getSortedOptionsWithDepthAndParent(sortedArr, childID, depth + 1, key);
-      
+
     });
-    
+
     return sortedArr;
   }
-  
+
   _optionRenderer({focusedOption, focusOption, key, option, labelKey, selectValue, optionStyle, valueArray}) {
-    
+
     const className = ['VirtualizedSelectOption'];
-    
+
     if (option === focusedOption) {
       className.push('VirtualizedSelectFocusedOption')
     }
-    
+
     if (option.disabled) {
       className.push('VirtualizedSelectDisabledOption')
     }
-    
+
     if (valueArray && valueArray.indexOf(option) >= 0) {
       className.push('VirtualizedSelectSelectedOption')
     }
-    
+
     if (option.className) {
       className.push(option.className)
     }
-    
+
     const events = option.disabled ? {} : {
       onClick: () => selectValue(option),
       onMouseEnter: () => focusOption(option),
     };
-    
+
     return (
       <div style={optionStyle} className={className.join(' ')}
            onMouseEnter={events.onMouseEnter}
            onClick={events.onClick}
            key={key}>
-        
+
         <Highlighter
           highlightClassName='highlighted'
           searchWords={[this.searchString]}
@@ -112,11 +112,11 @@ class VirtualizedTreeSelect extends Component {
           textToHighlight={option[labelKey]}
           highlightTag={"span"}
         />
-      
+
       </div>
     )
   }
-  
+
   // See https://github.com/JedWatson/react-select/#effeciently-rendering-large-lists-with-windowing
   _renderMenu({focusedOption, focusOption, labelKey, onSelect, options, selectValue, valueArray, valueKey}) {
     const {listProps, optionRenderer, childrenKey, optionLeftOffset, renderAsTree} = this.props;
@@ -132,7 +132,7 @@ class VirtualizedTreeSelect extends Component {
         ...style,
         left: leftOffset
       };
-      
+
       return innerRowRenderer({
         childrenKey,
         focusedOption,
@@ -148,7 +148,7 @@ class VirtualizedTreeSelect extends Component {
         valueKey
       })
     }
-    
+
     return (
       <AutoSizer disableHeight>
         {({width}) => (
@@ -169,16 +169,16 @@ class VirtualizedTreeSelect extends Component {
       </AutoSizer>
     )
   }
-  
+
   _filterOptions(options, filter, selectedOptions) {
     //let now = new Date().getTime();
-    
+
     let filtered = options.filter(option => {
       let label = option[this.props.labelKey];
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
     });
-    
-    
+
+
     let filteredWithParents = [];
     let index = 0;
 
@@ -186,7 +186,7 @@ class VirtualizedTreeSelect extends Component {
     filtered.forEach(option => {
       filteredWithParents.push(option);
       let parent = option.parent ? option.parent.length > 0 ? this.data[option.parent] : null : null;
-      
+
       while (parent) {
         if (filteredWithParents.includes(parent)) break;
         filteredWithParents.splice(index, 0, parent);
@@ -206,9 +206,9 @@ class VirtualizedTreeSelect extends Component {
         }
       }
     }
-    
+
     // Uncomment this to disable showing selected options
-    
+
     // if (Array.isArray(selectedOptions) && selectedOptions.length) {
     //     const selectedValues = selectedOptions.map((option) => option[this.props.valueKey]);
     //
@@ -216,22 +216,22 @@ class VirtualizedTreeSelect extends Component {
     //         (option) => !selectedValues.includes(option[this.props.valueKey])
     //     )
     // }
-    
+
     //console.log("Filter options (",options.length ,") end in: ", new Date().getTime() - now, "ms");
     return filteredWithParents;
-    
+
   }
-  
+
   _calculateListHeight({options}) {
     const {maxHeight, minHeight} = this.props;
-    
+
     let height = 0;
-    
+
     for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
       let option = options[optionIndex];
-      
+
       height += this._getOptionHeight({option});
-      
+
       if (height > maxHeight) {
         return maxHeight
       }
@@ -239,34 +239,34 @@ class VirtualizedTreeSelect extends Component {
         return minHeight
       }
     }
-    
-    
+
+
     return height
   }
-  
+
   _getOptionHeight({option}) {
     const {optionHeight} = this.props;
-    
+
     return optionHeight instanceof Function
       ? optionHeight({option})
       : optionHeight
   }
-  
+
   _setListRef(ref) {
     this._listRef = ref
   }
-  
+
   _setSelectRef(ref) {
     this._selectRef = ref
   }
-  
+
   _onInputChange(input){
     this.searchString = input;
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
     }
   }
-  
+
   render() {
     let menuStyle = this.props.menuStyle || {};
     let menuContainerStyle = this.props.menuContainerStyle || {};
@@ -277,7 +277,7 @@ class VirtualizedTreeSelect extends Component {
 
     const menuRenderer = this.props.menuRenderer || this._renderMenu;
     const filterOptions = this.props.filterOptions || this._filterOptions;
-    
+
     return (
       <Select
         joinValues={!!this.props.multi}
@@ -292,8 +292,8 @@ class VirtualizedTreeSelect extends Component {
       />
     )
   }
-  
-  
+
+
 }
 
 VirtualizedTreeSelect.propTypes = {
