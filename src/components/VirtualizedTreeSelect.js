@@ -43,7 +43,7 @@ class VirtualizedTreeSelect extends Component {
     let optionID;
     this.data = {};
     this.props.options.forEach(option => {
-      option.expanded = (option.expanded===undefined)? this.props.expanded : option.expanded;
+      option.expanded = (option.expanded === undefined) ? this.props.expanded : option.expanded;
       optionID = option[this.props.valueKey];
       this.data[optionID] = option;
     });
@@ -52,27 +52,37 @@ class VirtualizedTreeSelect extends Component {
     let options = [];
     keys.forEach(xkey => {
       let option = this.data[xkey];
-      if (!option.parent) options = this._getSortedOptionsWithDepthAndParent(options, xkey, 0, null);
+      if (!option.parent) this._calculateDepth(xkey, 0, null);
+    });
+    keys.forEach(xkey => {
+      let option = this.data[xkey];
+      if (option.depth === 0) this._sort(options, xkey);
     });
 
     this.setState({options: options});
   }
 
-  _getSortedOptionsWithDepthAndParent(sortedArr, key, depth, parentKey) {
+  _calculateDepth(key, depth, parentKey) {
     let option = this.data[key];
-    if (!option) return sortedArr;
+    if (!option) return;
     option.depth = depth;
     if (!option.parent) option.parent = parentKey;
+    option[this.props.childrenKey].forEach(childID => {
+      this._calculateDepth(childID, depth + 1, key);
+    });
+  }
 
+  _sort(sortedArr, key) {
+    let option = this.data[key];
+    if (!option) return;
     sortedArr.push(option);
 
     option[this.props.childrenKey].forEach(childID => {
-      this._getSortedOptionsWithDepthAndParent(sortedArr, childID, depth + 1, key);
-
+      this._sort(sortedArr, childID);
     });
 
     return sortedArr;
-  }
+  }pa
 
   _optionRenderer({focusedOption, focusOption, key, option, labelKey, selectValue, optionStyle, valueArray}) {
 
@@ -260,7 +270,7 @@ class VirtualizedTreeSelect extends Component {
     this._selectRef = ref
   }
 
-  _onInputChange(input){
+  _onInputChange(input) {
     this.searchString = input;
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
@@ -273,7 +283,7 @@ class VirtualizedTreeSelect extends Component {
     menuStyle.overflow = 'hidden';
     menuStyle.maxHeight = this.props.maxHeight;
     menuContainerStyle.maxHeight = this.props.maxHeight;
-    menuContainerStyle.position = this.props.isMenuOpen? 'relative' : 'absolute';
+    menuContainerStyle.position = this.props.isMenuOpen ? 'relative' : 'absolute';
 
     const menuRenderer = this.props.menuRenderer || this._renderMenu;
     const filterOptions = this.props.filterOptions || this._filterOptions;
