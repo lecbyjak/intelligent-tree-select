@@ -34,7 +34,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.options.length !== prevProps.options.length || this.props.expanded !== prevProps.expanded) {
+    if (this.props.update > prevProps.update) {
       this._processOptions();
     }
   }
@@ -82,7 +82,7 @@ class VirtualizedTreeSelect extends Component {
     });
 
     return sortedArr;
-  }pa
+  }
 
   _optionRenderer({focusedOption, focusOption, key, option, labelKey, selectValue, optionStyle, valueArray}) {
 

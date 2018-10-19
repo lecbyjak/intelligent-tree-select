@@ -26,6 +26,7 @@ class IntelligentTreeSelect extends Component {
       options: [],
       selectedOptions: '',
       isLoadingExternally: false,
+      update: 0,
     };
   }
 
@@ -35,17 +36,16 @@ class IntelligentTreeSelect extends Component {
     this.history = [];
     let data = [];
     this.searchString = '';
-    this.key = this.props.name || this._getRandomKey();
 
-    if (!this.props.name) {
-      window.onunload = () => window.localStorage.removeItem(this.key);
+    if (!this.props.name && this.props.fetchOptions) {
+      let cashedData = window.localStorage.getItem(this.props.name);
+      if (cashedData) {
+        cashedData = JSON.parse(cashedData);
+        if (cashedData.validTo > Date.now()) data = cashedData.data;
+      }
     }
 
-    let cashedData = window.localStorage.getItem(this.key);
-    if (cashedData) {
-      cashedData = JSON.parse(cashedData);
-      if (cashedData.validTo > Date.now()) data = cashedData.data;
-    }
+
     if (data.length === 0) data = this.props.options;
 
     if (!this.props.simpleTreeData) data = this._simplyfyData(this.props.options);
@@ -54,11 +54,7 @@ class IntelligentTreeSelect extends Component {
     this.setState({isLoadingExternally: false});
   }
 
-  componentWillUnmount() {
-    if (!this.props.name) window.localStorage.removeItem(this.key);
-  }
-
-  componentDidMount(){
+   componentDidMount(){
     if (this.state.options.length === 0 && this.props.fetchOptions){
       if (!this.fetching) {
         this.setState({isLoadingExternally: true});
@@ -82,16 +78,6 @@ class IntelligentTreeSelect extends Component {
         );
       }
     }
-  }
-
-  _getRandomKey() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < 5; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return 'cashed_data_' + text;
   }
 
   _isInHistory(searchString) {
@@ -398,7 +384,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   _addNewOptions(newOptions) {
-    const {valueKey, childrenKey} = this.props;
+    const {valueKey, childrenKey, fetchOptions} = this.props;
     const _toArray = (object) => {
 
       if (!Array.isArray(object[childrenKey])) {
@@ -423,27 +409,23 @@ class IntelligentTreeSelect extends Component {
       });
       conflicts.forEach(conflict => {
         conflict = _toArray(conflict);
-        let a = currOption[childrenKey];
-        let b = conflict[childrenKey];
-        currOption[childrenKey] = a.concat(
-          b.filter((item) => a.indexOf(item) < 0));
+        options.splice(options.findIndex(el => el[valueKey] === conflict[valueKey]), 1);
       });
-      mergedArr.push(Object.assign({}, ...conflicts.reverse(), currOption));
-      conflicts.forEach(conflict => options.splice(
-        options.findIndex(el => el[valueKey] === conflict[valueKey]), 1),
+      mergedArr.push(Object.assign({}, currOption, ...conflicts.reverse()));
+    }
+
+    if (name && fetchOptions){
+      window.localStorage.setItem(name,
+        JSON.stringify(
+          {
+            validTo: Date.now() + this._getValidForInSec(this.props.optionLifetime),
+            data: options,
+          },
+        ),
       );
     }
 
-    window.localStorage.setItem(this.key,
-      JSON.stringify(
-        {
-          validTo: Date.now() + this._getValidForInSec(this.props.optionLifetime),
-          data: mergedArr,
-        },
-      ),
-    );
-
-    this.setState({options: mergedArr});
+    this.setState({options: mergedArr, update: ++this.state.update});
   }
 
   _onSettingsChange(payload) {
@@ -519,6 +501,7 @@ class IntelligentTreeSelect extends Component {
           onInputChange={this._onInputChange}
           options={this.state.options}
           listProps={listProps}
+          update={this.state.update}
         />
       </div>
     );

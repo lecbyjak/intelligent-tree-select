@@ -12,7 +12,16 @@ ReactDOM.render(
         //name={"main_search"}
         fetchOptions={({searchString, optionID, limit, offset}) => new Promise((resolve) => {
           //console.log({searchString, optionID, limit, offset});
-          setTimeout(resolve, 1000, data)
+          setTimeout(resolve, 1000, [
+            {
+              "@id": "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-390/v-3000000",
+              "http://www.w3.org/2000/01/rdf-schema#label": "3000000 - Consequential Events new",
+              "http://www.w3.org/2000/01/rdf-schema#comment": "An event evolving from another event.",
+              "subTerm": [
+                "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-390/v-99010132"
+              ]
+            },
+          ])
         })}
         valueKey={"@id"}
         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
@@ -20,7 +29,7 @@ ReactDOM.render(
         simpleTreeData={true}
         isMenuOpen={true}
         options={data}
-        filterComponent={(data)=>{console.log(data); return null}}
+        filterComponent={(data)=>{return null}}
         onOptionCreate={(option) => {console.log('created', option)}}
   />,
   document.getElementById('app')
