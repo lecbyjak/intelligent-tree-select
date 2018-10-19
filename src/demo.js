@@ -29,7 +29,6 @@ ReactDOM.render(
         simpleTreeData={true}
         isMenuOpen={true}
         options={data}
-        filterComponent={(data)=>{return null}}
         onOptionCreate={(option) => {console.log('created', option)}}
   />,
   document.getElementById('app')

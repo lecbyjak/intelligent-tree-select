@@ -6,103 +6,16 @@ import PropTypes from "prop-types";
 class Settings extends Component {
 
 
-  constructor(props, context) {
-    super(props, context);
-
-    this._toggleSettings = this._toggleSettings.bind(this);
-    this._getFilterButton = this._getFilterButton.bind(this);
-
-    this.state = {
-      open: false
-    }
-  }
-
-  _toggleSettings() {
-    this.setState({open: !this.state.open})
-  }
-
-  _getFilterButton(data) {
-    return (
-      <Button color="link" onClick={this._toggleSettings}>
-        {(this.state.open ? "Hide filter" : "Show filter")}
-      </Button>
-    )
-  }
-
   render() {
-    const data = this.props.data;
-    let filter = this.props.filterComponent || this._getFilterButton;
-
     return (
-      <div className="d-flex flex-column">
-
-        <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between">
           <ModalWindow onOptionCreate={this.props.onOptionCreate}
                        formData={this.props.formData}
                        formComponent={this.props.formComponent}
                        openButtonTooltipLabel={this.props.openButtonTooltipLabel}
                        openButtonLabel={this.props.openButtonLabel}
           />
-          {
-            filter({
-              setInnerState: this.props.onSettingsChange,
-              expanded: data.expanded,
-              renderAsTree: data.renderAsTree,
-              displayInfoOnHover: data.displayInfoOnHover,
-              multi: data.multi
-            })
-          }
         </div>
-
-        {this.props.filterComponent === undefined &&
-        <Collapse className="w-100" isOpen={this.state.open}>
-          <Card>
-            <CardBody>
-              <Form>
-                <FormGroup check>
-                  <Label check>
-                    <Input type="checkbox" name="multiselect"
-                           onClick={() => this.props.onSettingsChange({multi: !data.multi})}
-                           defaultChecked={data.multi}/>{' '}
-                    Multiselect
-                  </Label>
-                </FormGroup>
-
-                <FormGroup check>
-                  <Label check>
-                    <Input type="checkbox" name="infoOnHover"
-                           onClick={() => this.props.onSettingsChange({displayInfoOnHover: !data.displayInfoOnHover})}
-                           defaultChecked={data.displayInfoOnHover}/>{' '}
-                    Show info on hover
-                  </Label>
-                </FormGroup>
-
-                <FormGroup check>
-                  <Label check>
-                    <Input type="checkbox" name="infoOnHover"
-                           onClick={() => this.props.onSettingsChange({renderAsTree: !data.renderAsTree})}
-                           defaultChecked={data.renderAsTree}/>{' '}
-                    Render as tree
-                  </Label>
-                </FormGroup>
-
-                {data.renderAsTree &&
-                <FormGroup check>
-                  <Label check>
-                    <Input type="checkbox" name="expanded"
-                           onClick={() => this.props.onSettingsChange({expanded: !data.expanded})}
-                           defaultChecked={data.expanded}/>{' '}
-                    Expanded
-                  </Label>
-                </FormGroup>
-                }
-
-              </Form>
-            </CardBody>
-          </Card>
-        </Collapse>
-        }
-      </div>
     )
   }
 }
@@ -111,8 +24,6 @@ class Settings extends Component {
 export default Settings;
 
 Settings.propTypes = {
-  data: PropTypes.object.isRequired,
   formData: PropTypes.object.isRequired,
   onOptionCreate: PropTypes.func.isRequired,
-  onSettingsChange: PropTypes.func.isRequired
 };

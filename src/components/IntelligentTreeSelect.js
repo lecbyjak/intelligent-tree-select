@@ -14,7 +14,6 @@ class IntelligentTreeSelect extends Component {
     this._valueRenderer = this._valueRenderer.bind(this);
     this._optionRenderer = this._optionRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
-    this._onSettingsChange = this._onSettingsChange.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this._onScroll = this._onScroll.bind(this);
 
@@ -428,16 +427,6 @@ class IntelligentTreeSelect extends Component {
     this.setState({options: mergedArr, update: ++this.state.update});
   }
 
-  _onSettingsChange(payload) {
-    if (payload.hasOwnProperty('expanded')) {
-      //TODO fetch data
-      this.state.options.forEach(option => option.expanded = payload.expanded);
-      payload.options = this.state.options;
-    }
-
-    this.setState({...payload});
-  }
-
   _addChildrenToParent(childrenID, parentID) {
 
     let parentOption = this.state.options.find(
@@ -464,14 +453,7 @@ class IntelligentTreeSelect extends Component {
         {this.props.showSettings &&
           <Settings onOptionCreate={this._onOptionCreate}
                     onSettingsChange={this._onSettingsChange}
-                    data={{
-                      displayInfoOnHover: this.state.displayInfoOnHover,
-                      expanded: this.state.expanded,
-                      renderAsTree: this.state.renderAsTree,
-                      multi: this.state.multi,
-                    }}
                     formComponent={this.props.formComponent}
-                    filterComponent={this.props.filterComponent}
                     openButtonLabel={this.props.openButtonLabel}
                     openButtonTooltipLabel={this.props.openButtonTooltipLabel}
                     formData={{
@@ -516,8 +498,6 @@ IntelligentTreeSelect.propTypes = {
   expanded: PropTypes.bool,
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
-  formComponent: PropTypes.func,
-  filterComponent: PropTypes.func,
   labelKey: PropTypes.string,
   labelValue: PropTypes.func,
   multi: PropTypes.bool,
