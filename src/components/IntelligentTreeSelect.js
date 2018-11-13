@@ -47,7 +47,7 @@ class IntelligentTreeSelect extends Component {
 
     if (data.length === 0) data = this.props.options;
 
-    if (!this.props.simpleTreeData) data = this._simplyfyData(this.props.options);
+    if (!this.props.simpleTreeData) data = this._simplifyData(this.props.options);
 
     this._addNewOptions(data);
     this.setState({isLoadingExternally: false});
@@ -66,7 +66,7 @@ class IntelligentTreeSelect extends Component {
         this.fetching = this._getResponse('', '', this.props.fetchLimit, offset).then(response => {
 
             if (!this.props.simpleTreeData) {
-              data = this._simplyfyData(response);
+              data = this._simplifyData(response);
             } else {
               data = response;
             }
@@ -92,7 +92,7 @@ class IntelligentTreeSelect extends Component {
     return false;
   }
 
-  _simplyfyData(responseData) {
+  _simplifyData(responseData) {
     let result = [];
     const {valueKey, childrenKey} = this.props;
 
@@ -102,7 +102,7 @@ class IntelligentTreeSelect extends Component {
       //deep clone
       let data = JSON.parse(JSON.stringify(responseData[i]));
       result = result.concat(
-        this._simplyfyData(data[childrenKey], valueKey, childrenKey));
+        this._simplifyData(data[childrenKey], valueKey, childrenKey));
       if (data[childrenKey]) {
         data[childrenKey] = Array.isArray(data[childrenKey]) ? data[childrenKey].map(xdata => xdata[valueKey]) : data[childrenKey][valueKey];
       }
@@ -175,7 +175,7 @@ class IntelligentTreeSelect extends Component {
         this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
 
             if (!this.props.simpleTreeData) {
-              data = this._simplyfyData(response);
+              data = this._simplifyData(response);
             } else {
               data = response;
             }
@@ -228,7 +228,7 @@ class IntelligentTreeSelect extends Component {
         this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit, offset).then(response => {
 
           if (!this.props.simpleTreeData) {
-            data = this._simplyfyData(response);
+            data = this._simplifyData(response);
           } else {
             data = response;
           }
@@ -251,7 +251,7 @@ class IntelligentTreeSelect extends Component {
                 this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit-totalOptionFetched, offset).then(response => {
 
                   if (!this.props.simpleTreeData) {
-                    data = this._simplyfyData(response);
+                    data = this._simplifyData(response);
                   } else {
                     data = response;
                   }
@@ -287,7 +287,7 @@ class IntelligentTreeSelect extends Component {
         this._getResponse('', option[this.props.valueKey], this.props.fetchLimit, 0).then(response => {
 
             if (!this.props.simpleTreeData) {
-              data = this._simplyfyData(response);
+              data = this._simplifyData(response);
             } else {
               data = response;
             }

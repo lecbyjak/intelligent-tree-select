@@ -190,32 +190,60 @@ class VirtualizedTreeSelect extends Component {
 
 
     let filteredWithParents = [];
-    let index = 0;
+
+    function resolveInsertionIndex(options, parentIndex) {
+      if (parentIndex === -1) {
+        return -1;
+      }
+      let index = parentIndex + 1;
+      let depth = options[parentIndex].depth;
+      while (index < options.length && options[index].depth > depth) {
+        index++;
+      }
+      return index;
+    }
 
     // get parent options for filtered options
     filtered.forEach(option => {
-      filteredWithParents.push(option);
       let parent = option.parent ? option.parent.length > 0 ? this.data[option.parent] : null : null;
+      const toInsert = [];
+      let parentIndex = -1;
 
       while (parent) {
-        if (filteredWithParents.includes(parent)) break;
-        filteredWithParents.splice(index, 0, parent);
+        if (filteredWithParents.includes(parent)) {
+          parentIndex = filteredWithParents.indexOf(parent);
+          break;
+        }
+        toInsert.unshift(parent);
         parent = parent.parent ? parent.parent.length > 0 ? this.data[parent.parent] : null : null;
       }
-      index = filteredWithParents.length;
+      if (!filteredWithParents.includes(option)) {
+        toInsert.push(option);
+      }
+      const insertionIndex = resolveInsertionIndex(filteredWithParents, parentIndex);
+      for (let i = 0; i < toInsert.length; i++) {
+        if (insertionIndex > 0) {
+          filteredWithParents.splice(insertionIndex + i, 0, toInsert[i]);
+        } else {
+          filteredWithParents.push(toInsert[i]);
+        }
+      }
     });
 
     //remove all hidden options
+    const hidden = [];
     for (let i = 0; i < filteredWithParents.length; i++) {
-      if (!filteredWithParents[i].expanded) {
-        let depth = filteredWithParents[i].depth;
-        while (true) {
-          let option = filteredWithParents[i + 1];
-          if (option && option.depth > depth) filteredWithParents.splice(i + 1, 1);
-          else break;
+      const item = filteredWithParents[i];
+      let parent = item.parent;
+      while (parent && parent.length > 0) {
+        if (!this.data[parent].expanded) {
+          hidden.push(item);
+          break;
         }
+        parent = this.data[parent].parent;
       }
     }
+    filteredWithParents = filteredWithParents.filter(v => !hidden.includes(v));
 
     // Uncomment this to disable showing selected options
 
