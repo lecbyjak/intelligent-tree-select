@@ -307,7 +307,7 @@ class VirtualizedTreeSelect extends Component {
 
     return (
       <Select
-        joinValues={true}
+        joinValues={!!this.props.multi}
         menuStyle={menuStyle}
         menuContainerStyle={menuContainerStyle}
         menuRenderer={menuRenderer}
