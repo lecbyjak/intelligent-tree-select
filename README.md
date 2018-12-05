@@ -76,3 +76,10 @@ You can override the built-in option renderer by specifying your own `optionRend
 | multi | `bool` | true | whether the select in multi select or not |
 | name | `string` | -- | Unique name for the component. Whenever this prop is set then the options will be cached|
 | formComponent | `func` | -- | Function returning React element representing form. Syntax `({onOptionCreate, toggleModal, options, labelKey, valueKey, childrenKey}): React.component`|
+
+
+### IntelligentTreeSelect public API
+
+| Method | Description |
+|:---|:---|:---|:---|
+| `resetOptions` | Force reloading of options when `fetchOptions` property is used to specify how to load options | 
