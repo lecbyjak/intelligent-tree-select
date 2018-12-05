@@ -107,6 +107,7 @@ class Select extends React.Component {
             isPseudoFocused: false,
             required: false,
         };
+        this.input = React.createRef();
     }
 
     componentWillMount () {
@@ -220,13 +221,13 @@ class Select extends React.Component {
     }
 
     focus () {
-        if (!this.input) return;
-        this.input.focus();
+        if (!this.input.current) return;
+        this.input.current.focus();
     }
 
     blurInput () {
-        if (!this.input) return;
-        this.input.blur();
+        if (!this.input.current) return;
+        this.input.current.blur();
     }
 
     handleTouchMove () {
@@ -298,7 +299,7 @@ class Select extends React.Component {
             // Call focus() again here to be safe.
             this.focus();
 
-            let input = this.input;
+            let input = this.input.current;
             let toOpen = true;
 
             if (typeof input.getInput === 'function') {
@@ -880,7 +881,7 @@ class Select extends React.Component {
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
             onFocus: this.handleInputFocus,
-            ref: ref => this.input = ref,
+            ref: this.input,
             role: 'combobox',
             required: this.state.required,
             tabIndex: this.props.tabIndex,
@@ -910,7 +911,7 @@ class Select extends React.Component {
                     className={className}
                     onBlur={this.handleInputBlur}
                     onFocus={this.handleInputFocus}
-                    ref={ref => this.input = ref}
+                    ref={this.input}
                     role="combobox"
                     style={{ border: 0, width: 1, display:'inline-block' }}
                     tabIndex={this.props.tabIndex || 0}

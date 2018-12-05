@@ -20,8 +20,6 @@ class VirtualizedTreeSelect extends Component {
     this._processOptions = this._processOptions.bind(this);
     this._filterOptions = this._filterOptions.bind(this);
     this._optionRenderer = this._optionRenderer.bind(this);
-    this._setListRef = this._setListRef.bind(this);
-    this._setSelectRef = this._setSelectRef.bind(this);
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -165,7 +163,6 @@ class VirtualizedTreeSelect extends Component {
           <List
             className='VirtualSelectGrid'
             height={height}
-            ref={this._setListRef}
             rowCount={options.length}
             rowHeight={({index}) => this._getOptionHeight({
               option: options[index]
@@ -290,14 +287,6 @@ class VirtualizedTreeSelect extends Component {
       : optionHeight
   }
 
-  _setListRef(ref) {
-    this._listRef = ref
-  }
-
-  _setSelectRef(ref) {
-    this._selectRef = ref
-  }
-
   _onInputChange(input) {
     this.searchString = input;
     if ("onInputChange" in this.props) {
@@ -318,10 +307,9 @@ class VirtualizedTreeSelect extends Component {
 
     return (
       <Select
-        joinValues={!!this.props.multi}
+        joinValues={true}
         menuStyle={menuStyle}
         menuContainerStyle={menuContainerStyle}
-        ref={this._setSelectRef}
         menuRenderer={menuRenderer}
         filterOptions={filterOptions}
         {...this.props}

@@ -53,17 +53,17 @@ class IntelligentTreeSelect extends Component {
     this.setState({isLoadingExternally: false});
   }
 
-   componentDidMount(){
-    if (this.state.options.length === 0 && this.props.fetchOptions){
+  componentDidMount() {
+    this._loadOptions();
+  }
+
+  _loadOptions() {
+    if (this.state.options.length === 0 && this.props.fetchOptions) {
       if (!this.fetching) {
         this.setState({isLoadingExternally: true});
         let data = [];
-        let offset = 0;
 
-        this.state.options.forEach(option => {if (option.depth === 0) offset++;});
-
-        //TODO figure out how to get all parents for matching node
-        this.fetching = this._getResponse('', '', this.props.fetchLimit, offset).then(response => {
+        this.fetching = this._getResponse('', '', this.props.fetchLimit, 0).then(response => {
 
             if (!this.props.simpleTreeData) {
               data = this._simplifyData(response);
@@ -76,6 +76,20 @@ class IntelligentTreeSelect extends Component {
           },
         );
       }
+    }
+  }
+
+  /**
+   * Resets the option, forcing the component to reload them from the server.
+   *
+   * Note that this is supported only if fetchOptions prop is specified.
+   */
+  resetOptions() {
+    if (this.props.fetchOptions) {
+      this.setState({options: []}, () => {
+        // Reload options after rest
+        this._loadOptions();
+      });
     }
   }
 
@@ -144,14 +158,16 @@ class IntelligentTreeSelect extends Component {
     return res * 1000;
   }
 
-  _getRootNodesCount(){
+  _getRootNodesCount() {
     let count = 0;
-    this.state.options.forEach(option => {if(option.depth === 0) count++ });
+    this.state.options.forEach(option => {
+      if (option.depth === 0) count++
+    });
     return count
   }
 
   async _getResponse(searchString, optionID, limit, offset) {
-    return this.props.fetchOptions? await this.props.fetchOptions({searchString, optionID, limit, offset}) : [];
+    return this.props.fetchOptions ? await this.props.fetchOptions({searchString, optionID, limit, offset}) : [];
   }
 
   _onInputChange(searchString) {
@@ -169,7 +185,9 @@ class IntelligentTreeSelect extends Component {
         let data = [];
         let offset = 0;
 
-        this.state.options.forEach(option => {if (option.depth === 0) offset++;});
+        this.state.options.forEach(option => {
+          if (option.depth === 0) offset++;
+        });
 
         //TODO figure out how to get all parents for matching node
         this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
@@ -209,8 +227,8 @@ class IntelligentTreeSelect extends Component {
         const option = this.state.options[topOptionIndex];
 
         totalOptionsHeight += this.props.optionHeight instanceof Function
-                              ? this.props.optionHeight({option})
-                              : this.props.optionHeight;
+          ? this.props.optionHeight({option})
+          : this.props.optionHeight;
 
         if (totalOptionsHeight >= scrollTop) {
           break;
@@ -218,11 +236,11 @@ class IntelligentTreeSelect extends Component {
       }
 
       const topOption = this.state.options[topOptionIndex];
-      let parentOption = this.state.options.find(option =>  option[this.props.valueKey] === topOption.parent);
-      let offset = parentOption? parentOption[this.props.childrenKey].length: this._getRootNodesCount();
-      let parentOptionValue = parentOption? parentOption[this.props.valueKey] : 'root';
+      let parentOption = this.state.options.find(option => option[this.props.valueKey] === topOption.parent);
+      let offset = parentOption ? parentOption[this.props.childrenKey].length : this._getRootNodesCount();
+      let parentOptionValue = parentOption ? parentOption[this.props.valueKey] : 'root';
 
-      if (!this.completedNodes[parentOptionValue]){
+      if (!this.completedNodes[parentOptionValue]) {
         this.setState({isLoadingExternally: true});
         //fetch child options that are not completed
         this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit, offset).then(response => {
@@ -239,16 +257,16 @@ class IntelligentTreeSelect extends Component {
             this.completedNodes[parentOptionValue] = true;
             let totalOptionFetched = data.length;
 
-            parentOption = parentOption? this.state.options.find(option =>  option[this.props.valueKey] === parentOption.parent) : null;
-            offset = parentOption? parentOption[this.props.childrenKey].length: this._getRootNodesCount();
-            parentOptionValue = parentOption? parentOption[this.props.valueKey] : 'root';
+            parentOption = parentOption ? this.state.options.find(option => option[this.props.valueKey] === parentOption.parent) : null;
+            offset = parentOption ? parentOption[this.props.childrenKey].length : this._getRootNodesCount();
+            parentOptionValue = parentOption ? parentOption[this.props.valueKey] : 'root';
 
 
             while (parentOption) {
-              if (!this.completedNodes[parentOptionValue]){
+              if (!this.completedNodes[parentOptionValue]) {
 
                 //fetch child options that are not completed
-                this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit-totalOptionFetched, offset).then(response => {
+                this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit - totalOptionFetched, offset).then(response => {
 
                   if (!this.props.simpleTreeData) {
                     data = this._simplifyData(response);
@@ -299,7 +317,11 @@ class IntelligentTreeSelect extends Component {
             this._addToHistory(option[this.props.valueKey], Date.now() + this._getValidForInSec(this.props.optionLifetime));
 
             delete option.fetchingChild;
-            this.state.options.forEach(o => {if(o[this.props.valueKey]===option[this.props.valueKey]) {o.expanded = true;}});
+            this.state.options.forEach(o => {
+              if (o[this.props.valueKey] === option[this.props.valueKey]) {
+                o.expanded = true;
+              }
+            });
             this._addNewOptions(data);
             this.setState({isLoadingExternally: false});
           },
@@ -413,7 +435,7 @@ class IntelligentTreeSelect extends Component {
       mergedArr.push(Object.assign({}, currOption, ...conflicts.reverse()));
     }
 
-    if (name && fetchOptions){
+    if (name && fetchOptions) {
       window.localStorage.setItem(name,
         JSON.stringify(
           {
@@ -451,19 +473,19 @@ class IntelligentTreeSelect extends Component {
 
       <div>
         {this.props.showSettings &&
-          <Settings onOptionCreate={this._onOptionCreate}
-                    onSettingsChange={this._onSettingsChange}
-                    formComponent={this.props.formComponent}
-                    openButtonLabel={this.props.openButtonLabel}
-                    openButtonTooltipLabel={this.props.openButtonTooltipLabel}
-                    formData={{
-                      labelKey: this.props.labelKey || 'label',
-                      valueKey: this.props.valueKey || 'value',
-                      childrenKey: this.props.childrenKey || 'children',
-                      options: this.state.options,
-                      onOptionCreate: this._onOptionCreate
-                    }}
-          />
+        <Settings onOptionCreate={this._onOptionCreate}
+                  onSettingsChange={this._onSettingsChange}
+                  formComponent={this.props.formComponent}
+                  openButtonLabel={this.props.openButtonLabel}
+                  openButtonTooltipLabel={this.props.openButtonTooltipLabel}
+                  formData={{
+                    labelKey: this.props.labelKey || 'label',
+                    valueKey: this.props.valueKey || 'value',
+                    childrenKey: this.props.childrenKey || 'children',
+                    options: this.state.options,
+                    onOptionCreate: this._onOptionCreate
+                  }}
+        />
         }
 
         <VirtualizedTreeSelect
