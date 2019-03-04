@@ -9,6 +9,7 @@ class TooltipItem extends Component {
         this.state = {
             tooltipOpen: false
         };
+        this._onClick = this._onClick.bind(this);
     }
 
     toggle() {
@@ -35,9 +36,14 @@ class TooltipItem extends Component {
       });
     }
 
+    _onClick(e) {
+      this.setState({tooltipOpen: false});
+      this.props.onClick(e);
+    }
+
     render() {
         return (
-            <div id={'Tooltip-' + this.props.id} className={"result-item"} onClick={this.props.onClick} >
+            <div id={'Tooltip-' + this.props.id} className={"result-item"} onClick={this._onClick} >
 
                 <Highlighter
                     highlightClassName='highlighted'

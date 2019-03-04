@@ -29,6 +29,7 @@ ReactDOM.render(
         simpleTreeData={true}
         isMenuOpen={true}
         options={data}
+        displayInfoOnHover={true}
         onOptionCreate={(option) => {console.log('created', option)}}
   />,
   document.getElementById('app')
