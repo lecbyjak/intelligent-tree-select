@@ -18,6 +18,9 @@ class TooltipItem extends Component {
     }
 
     _getTooltipData(){
+      if (this.props.tooltipKey) {
+        return this.props.option[this.props.tooltipKey];
+      }
       const keys = Object.keys(this.props.option);
       return keys.map((key,index) => {
         let data ="";

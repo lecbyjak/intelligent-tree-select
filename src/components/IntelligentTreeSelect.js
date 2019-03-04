@@ -342,6 +342,7 @@ class IntelligentTreeSelect extends Component {
         valueKey={this.props.valueKey}
         labelKey={this.props.labelKey}
         labelValue={this.props.labelValue}
+        tooltipKey={this.props.tooltipKey}
         settings={{
           searchString: this.searchString,
           renderAsTree: this.state.renderAsTree,
@@ -506,7 +507,8 @@ IntelligentTreeSelect.propTypes = {
   showSettings: PropTypes.bool,
   simpleTreeData: PropTypes.bool,
   optionLifetime: PropTypes.string,
-  valueKey: PropTypes.string
+  valueKey: PropTypes.string,
+  tooltipKey: PropTypes.string
 };
 
 IntelligentTreeSelect.defaultProps = {

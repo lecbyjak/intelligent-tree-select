@@ -65,7 +65,8 @@ You can override the built-in option renderer by specifying your own `optionRend
 
 | Property | Type | Default Value | Description |
 |:---|:---|:---|:---|
-| displayInfoOnHover | `bool` | false | 
+| displayInfoOnHover | `bool` | false | Whether to render option information on hover. By default, this info is extracted by transforming the option to JSON and stringifying it. |
+| tooltipKey | `string` | -- | Attribute of option which will be used as content of hover tooltip (instead of stringified option itself). |
 | labelValue | `func` | -- | Return the label for option. Function with signature `({ option: Object }): string` |
 | onOptionCreate | `function` | -- | callback when the new option is created. Signature `({ option: Object}): none`|
 | optionLifetime | `string` | '5m' | String representing how long the options should be cached. Syntax: `XdXhXmXs` where `X` is some number, `d` stands for days, `h` hours ,`m` minutes, `s` seconds|

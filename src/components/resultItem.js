@@ -98,6 +98,7 @@ class ResultItem extends Component {
                              onClick={this.props.onClick}
                              searchString={this.props.settings.searchString}
                              hoverActive={this.props.settings.displayInfoOnHover}
+                             tooltipKey={this.props.tooltipKey}
                 />
 
               {option.fetchingChild &&
