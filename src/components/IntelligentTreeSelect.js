@@ -87,8 +87,17 @@ class IntelligentTreeSelect extends Component {
   resetOptions() {
     if (this.props.fetchOptions) {
       this.setState({options: []}, () => {
-        // Reload options after rest
+        // Reload options after reset
         this._loadOptions();
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.options && prevProps.options !== this.props.options) {
+      this.setState({options: []}, () => {
+        // Reset options from props
+        this._addNewOptions(this.props.options);
       });
     }
   }

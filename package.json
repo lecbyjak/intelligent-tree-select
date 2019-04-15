@@ -3,7 +3,7 @@
     "name": "Jakub Lečbych"
   },
   "description": "React tree select component  based on [react-select](https://github.com/JedWatson/react-select#react-select)\r and [react-virtualized-select](https://github.com/bvaughn/react-virtualized-select#react-virtualized-select)",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
   },
@@ -56,8 +56,8 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "style-loader": "^0.21.0",
     "webpack": "^4.16.2",
     "webpack-cli": "^3.1.0",
