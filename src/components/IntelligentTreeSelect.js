@@ -80,9 +80,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   /**
-   * Resets the option, forcing the component to reload them from the server.
-   *
-   * Note that this is supported only if fetchOptions prop is specified.
+   * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
   resetOptions() {
     if (this.props.fetchOptions) {
@@ -90,11 +88,16 @@ class IntelligentTreeSelect extends Component {
         // Reload options after reset
         this._loadOptions();
       });
+    } else {
+      this.setState({options: []}, () => {
+        // Reset options from props
+        this._addNewOptions(this.props.options);
+      });
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.options && prevProps.options !== this.props.options) {
+    if (this.props.options && prevProps.options.length !== this.props.options.length) {
       this.setState({options: []}, () => {
         // Reset options from props
         this._addNewOptions(this.props.options);
