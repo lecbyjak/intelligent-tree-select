@@ -278,12 +278,12 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
-  _onOptionExpand(option) {
-    if (option.expanded) {
+  _onOptionToggle(option) {
+    if (!option.expanded) {
+      option.expanded = true;
+      let dataCached = this._isInHistory(option[this.props.valueKey]);
 
-      let dataCashed = this._isInHistory(option[this.props.valueKey]);
-
-      if (!dataCashed) {
+      if (!dataCached) {
         this.setState({isLoadingExternally: true});
         option.fetchingChild = true;
         let data = [];
@@ -314,6 +314,8 @@ class IntelligentTreeSelect extends Component {
         );
 
       }
+    } else {
+      option.expanded = false;
     }
     this.forceUpdate();
   }
@@ -341,7 +343,7 @@ class IntelligentTreeSelect extends Component {
     const events = option.disabled ? {} : {
       onClick: () => selectValue(option),
       onMouseEnter: () => focusOption(option),
-      onToggleClick: () => this._onOptionExpand(option),
+      onToggleClick: () => this._onOptionToggle(option),
     };
 
     return (
