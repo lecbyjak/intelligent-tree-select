@@ -19,9 +19,7 @@ class IntelligentTreeSelect extends Component {
     this._onScroll = this._onScroll.bind(this);
 
     this.state = {
-      displayInfoOnHover: this.props.displayInfoOnHover,
       expanded: this.props.expanded,
-      renderAsTree: this.props.renderAsTree,
       multi: this.props.multi,
       options: [],
       selectedOptions: '',
@@ -348,8 +346,8 @@ class IntelligentTreeSelect extends Component {
         tooltipKey={this.props.tooltipKey}
         settings={{
           searchString: this.searchString,
-          renderAsTree: this.state.renderAsTree,
-          displayInfoOnHover: this.state.displayInfoOnHover,
+          renderAsTree: this.props.renderAsTree,
+          displayInfoOnHover: this.props.displayInfoOnHover,
         }}
         {...events}
       />
@@ -483,7 +481,7 @@ class IntelligentTreeSelect extends Component {
 
           {...this.props}
           expanded={this.state.expanded}
-          renderAsTree={this.state.renderAsTree}
+          renderAsTree={this.props.renderAsTree}
           multi={this.state.multi}
           isLoading={this.state.isLoadingExternally}
           onInputChange={this._onInputChange}
