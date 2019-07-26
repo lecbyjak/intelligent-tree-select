@@ -4,6 +4,7 @@ import Settings from './settings';
 import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
 import ResultItem from './resultItem';
 import PropTypes from 'prop-types';
+import classNames from "classnames";
 
 class IntelligentTreeSelect extends Component {
 
@@ -320,35 +321,23 @@ class IntelligentTreeSelect extends Component {
     this.forceUpdate();
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray}) {
+  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, onOptionToggle}) {
 
-    const className = ['VirtualizedSelectOption'];
-
-    if (option === focusedOption) {
-      className.push('VirtualizedSelectFocusedOption');
-    }
-
-    if (option.disabled) {
-      className.push('VirtualizedSelectDisabledOption');
-    }
-
-    if (valueArray && valueArray.indexOf(option) >= 0) {
-      className.push('VirtualizedSelectSelectedOption');
-    }
-
-    if (option.className) {
-      className.push(option.className);
-    }
+    const className = classNames("VirtualizedSelectOption", {
+      "VirtualizedSelectFocusedOption": option === focusedOption,
+      "VirtualizedSelectDisabledOption": option.disabled,
+      "VirtualizedSelectSelectedOption": valueArray && valueArray.indexOf(option) >= 0
+    }, option.className);
 
     const events = option.disabled ? {} : {
       onClick: () => selectValue(option),
       onMouseEnter: () => focusOption(option),
-      onToggleClick: () => this._onOptionToggle(option),
+      onToggleClick: () => onOptionToggle(option),
     };
 
     return (
       <ResultItem
-        className={className.join(' ')}
+        className={className}
         key={key}
         style={optionStyle}
         option={option}
@@ -458,6 +447,12 @@ class IntelligentTreeSelect extends Component {
 
     let listProps = {};
     listProps.onScroll = this.props.onScroll || this._onScroll;
+    const optionRenderer = this.props.optionRenderer || this._optionRenderer;
+    const me = this;
+    function optionRendererWrapper(params) {
+      const args = Object.assign(params, {onOptionToggle: me._onOptionToggle.bind(me)});
+      return optionRenderer(args);
+    }
     return (
 
       <div>
@@ -483,7 +478,7 @@ class IntelligentTreeSelect extends Component {
           onChange={this._addSelectedOption}
           value={this.state.selectedOptions}
 
-          optionRenderer={this._optionRenderer}
+          optionRenderer={optionRendererWrapper}
           valueRenderer={this._valueRenderer}
 
           {...this.props}
