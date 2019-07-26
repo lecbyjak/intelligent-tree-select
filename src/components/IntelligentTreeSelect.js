@@ -319,7 +319,7 @@ class IntelligentTreeSelect extends Component {
     this.forceUpdate();
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, onOptionToggle, searchString}) {
+  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, toggleOption, searchString}) {
 
     const className = classNames("VirtualizedSelectOption", {
       "VirtualizedSelectFocusedOption": option === focusedOption,
@@ -330,7 +330,7 @@ class IntelligentTreeSelect extends Component {
     const events = option.disabled ? {} : {
       onClick: () => selectValue(option),
       onMouseEnter: () => focusOption(option),
-      onToggleClick: () => onOptionToggle(option),
+      onToggleClick: () => toggleOption(option),
     };
 
     return (

@@ -36,8 +36,8 @@ They are:
 | isMenuOpen | `bool` | false | Whether the menu is open. Setting this to true force menu to me always opened |
 | maxHeight | `number` | 300 | Maximum height of the dropdown menu |
 | minHeight | `number` | 0 | Minimum height of the dropdown menu |
-| menuRenderer | `func` | - | overriding build-in drop-down menu render function |
-| optionRenderer | `func` | - | overriding build-in option render function |
+| menuRenderer | `func` | - | overriding built-in drop-down menu render function |
+| optionRenderer | `func` | - | overriding built-in option render function. |
 | optionHeight | `number` or `func` | 25px | Option height. Dynamic height can be supported via a function with the signature `({ option: Object }): number` |
 | optionLeftOffset | `number` | 16px | Option base left offset. Left offset is calculated as `depth level of the option * optionLeftOffset` |
 | renderAsTree | `bool` | true | whether options should be rendered as a tree. |
@@ -56,8 +56,10 @@ You can override the built-in option renderer by specifying your own `optionRend
 | labelKey | `string` | Attribute of option that contains the display text. |
 | option | `Object` | The option to be rendered. |
 | optionIndex | `number` | Index of the option to be rendered. |
+| searchString | `string` | Current content of the search input. |
 | selectValue | `Function` | Callback to update the selected values; for example, you may want to call this function on click. |
 | optionStyle | `Object` | Styles that must be passed to the rendered option. These styles are specifying the position of each option (required for correct option displaying in the dropdown).
+| toggleOption | `Function` | Expand/Collapse option if it has children. |
 | valueArray | `Array<Object>` | Array of the currently-selected options. Use this property to determine if your rendered option should be highlighted or styled differently. |
 | valueKey | `string` | Attribute of option that contains the value. |
 
