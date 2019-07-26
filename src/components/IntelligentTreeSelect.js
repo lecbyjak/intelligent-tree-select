@@ -319,7 +319,7 @@ class IntelligentTreeSelect extends Component {
     this.forceUpdate();
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, onOptionToggle}) {
+  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, onOptionToggle, searchString}) {
 
     const className = classNames("VirtualizedSelectOption", {
       "VirtualizedSelectFocusedOption": option === focusedOption,
@@ -345,7 +345,7 @@ class IntelligentTreeSelect extends Component {
         labelValue={this.props.labelValue}
         tooltipKey={this.props.tooltipKey}
         settings={{
-          searchString: this.searchString,
+          searchString,
           renderAsTree: this.props.renderAsTree,
           displayInfoOnHover: this.props.displayInfoOnHover,
         }}
@@ -447,10 +447,12 @@ class IntelligentTreeSelect extends Component {
     listProps.onScroll = this.props.onScroll || this._onScroll;
     const optionRenderer = this.props.optionRenderer || this._optionRenderer;
     const me = this;
+
     function optionRendererWrapper(params) {
-      const args = Object.assign(params, {onOptionToggle: me._onOptionToggle.bind(me)});
+      const args = Object.assign(params, {onOptionToggle: me._onOptionToggle.bind(me), searchString: me.searchString});
       return optionRenderer(args);
     }
+
     return (
 
       <div>
