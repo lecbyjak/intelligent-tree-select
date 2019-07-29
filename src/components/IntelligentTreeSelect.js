@@ -453,6 +453,11 @@ class IntelligentTreeSelect extends Component {
       return optionRenderer(args);
     }
 
+    // Ensure optionRendererWrapper is not overridden by the props version
+    const propsToPass = Object.assign({}, this.props);
+    delete propsToPass.optionRenderer;
+    delete propsToPass.onScroll;
+
     return (
 
       <div>
@@ -480,7 +485,7 @@ class IntelligentTreeSelect extends Component {
           optionRenderer={optionRendererWrapper}
           valueRenderer={this._valueRenderer}
 
-          {...this.props}
+          {...propsToPass}
           expanded={this.state.expanded}
           renderAsTree={this.props.renderAsTree}
           multi={this.state.multi}

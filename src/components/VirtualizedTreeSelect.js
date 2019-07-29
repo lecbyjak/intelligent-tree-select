@@ -151,6 +151,7 @@ class VirtualizedTreeSelect extends Component {
         option,
         optionIndex: index,
         optionStyle,
+        renderAsTree,
         selectValue: onSelect,
         valueArray,
         valueKey

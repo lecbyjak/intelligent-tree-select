@@ -56,6 +56,7 @@ You can override the built-in option renderer by specifying your own `optionRend
 | labelKey | `string` | Attribute of option that contains the display text. |
 | option | `Object` | The option to be rendered. |
 | optionIndex | `number` | Index of the option to be rendered. |
+| renderAsTree | `bool` | Whether the options should be render as a tree. |
 | searchString | `string` | Current content of the search input. |
 | selectValue | `Function` | Callback to update the selected values; for example, you may want to call this function on click. |
 | optionStyle | `Object` | Styles that must be passed to the rendered option. These styles are specifying the position of each option (required for correct option displaying in the dropdown).
