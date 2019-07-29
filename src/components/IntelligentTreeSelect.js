@@ -449,7 +449,7 @@ class IntelligentTreeSelect extends Component {
     const me = this;
 
     function optionRendererWrapper(params) {
-      const args = Object.assign(params, {onOptionToggle: me._onOptionToggle.bind(me), searchString: me.searchString});
+      const args = Object.assign(params, {toggleOption: me._onOptionToggle.bind(me), searchString: me.searchString});
       return optionRenderer(args);
     }
 
@@ -458,7 +458,6 @@ class IntelligentTreeSelect extends Component {
       <div>
         {this.props.showSettings &&
         <Settings onOptionCreate={this._onOptionCreate}
-                  onSettingsChange={this._onSettingsChange}
                   formComponent={this.props.formComponent}
                   openButtonLabel={this.props.openButtonLabel}
                   openButtonTooltipLabel={this.props.openButtonTooltipLabel}
