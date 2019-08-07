@@ -229,7 +229,7 @@ class IntelligentTreeSelect extends Component {
 
     if ((scrollHeight - scrollTop <= 2.5 * clientHeight) && !this.fetching) {
 
-      this.fetching = true;
+      // this.fetching = true;
       let totalOptionsHeight = 0;
       let topOptionIndex = 0;
 
