@@ -177,8 +177,8 @@ class IntelligentTreeSelect extends Component {
     return count
   }
 
-  async _getResponse(searchString, optionID, limit, offset) {
-    return this.props.fetchOptions ? await this.props.fetchOptions({searchString, optionID, limit, offset}) : [];
+  async _getResponse(searchString, optionID, limit, offset, option) {
+    return this.props.fetchOptions ? await this.props.fetchOptions({searchString, optionID, limit, offset, option}) : [];
   }
 
   _onInputChange(searchString) {
@@ -254,7 +254,7 @@ class IntelligentTreeSelect extends Component {
       if (!this.completedNodes[parentOptionValue]) {
         this.setState({isLoadingExternally: true});
         //fetch child options that are not completed
-        this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit, offset).then(response => {
+        this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit, offset, topOption).then(response => {
 
           if (!this.props.simpleTreeData) {
             data = this._simplifyData(response);
@@ -287,7 +287,7 @@ class IntelligentTreeSelect extends Component {
         option.fetchingChild = true;
         let data = [];
 
-        this._getResponse('', option[this.props.valueKey], this.props.fetchLimit, 0).then(response => {
+        this._getResponse('', option[this.props.valueKey], this.props.fetchLimit, 0, option).then(response => {
 
             if (!this.props.simpleTreeData) {
               data = this._simplifyData(response);
