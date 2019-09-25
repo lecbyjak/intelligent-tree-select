@@ -179,8 +179,6 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _filterOptions(options, filter, selectedOptions) {
-    //let now = new Date().getTime();
-
     let filtered = options.filter(option => {
       let label = option[this.props.labelKey];
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
@@ -203,7 +201,7 @@ class VirtualizedTreeSelect extends Component {
 
     // get parent options for filtered options
     filtered.forEach(option => {
-      let parent = option.parent ? option.parent.length > 0 ? this.data[option.parent] : null : null;
+      let parent = option.parent && option.parent.length > 0 ? this.data[option.parent] : null;
       const toInsert = [];
       let parentIndex = -1;
 
@@ -234,7 +232,8 @@ class VirtualizedTreeSelect extends Component {
       const item = filteredWithParents[i];
       let parent = item.parent;
       while (parent && parent.length > 0) {
-        if (!this.data[parent].expanded) {
+        // Consider option hidden also if its parent cannot be found (workaround for multiple parents)
+        if (!this.data[parent] || !this.data[parent].expanded) {
           hidden.push(item);
           break;
         }
@@ -306,8 +305,7 @@ class VirtualizedTreeSelect extends Component {
     const menuRenderer = this.props.menuRenderer || this._renderMenu;
     const filterOptions = this.props.filterOptions || this._filterOptions;
 
-    return (
-      <Select
+    return <Select
         joinValues={!!this.props.multi}
         menuStyle={menuStyle}
         menuContainerStyle={menuContainerStyle}
@@ -316,8 +314,7 @@ class VirtualizedTreeSelect extends Component {
         {...this.props}
         onInputChange={(input) => this._onInputChange(input)}
         options={this.state.options}
-      />
-    )
+      />;
   }
 
 
