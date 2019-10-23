@@ -11,6 +11,11 @@ class IntelligentTreeSelect extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.fetching = false;
+    this.completedNodes = {};
+    this.history = [];
+    this.searchString = '';
+
     this._onOptionCreate = this._onOptionCreate.bind(this);
     this._valueRenderer = this._valueRenderer.bind(this);
     this._optionRenderer = this._optionRenderer.bind(this);
@@ -28,32 +33,30 @@ class IntelligentTreeSelect extends Component {
     };
   }
 
-  componentWillMount() {
-    this.fetching = false;
-    this.completedNodes = {};
-    this.history = [];
+  componentDidMount() {
     let data = [];
-    this.searchString = '';
-
-    if (!this.props.name && this.props.fetchOptions) {
-      let cashedData = window.localStorage.getItem(this.props.name);
-      if (cashedData) {
-        cashedData = JSON.parse(cashedData);
-        if (cashedData.validTo > Date.now()) data = cashedData.data;
-      }
+    if (this.props.name && this.props.fetchOptions) {
+      data = this._retrieveCachedData();
     }
 
+    if (data.length === 0) {
+      data = this.props.options;
+    }
 
-    if (data.length === 0) data = this.props.options;
-
-    if (!this.props.simpleTreeData) data = this._simplifyData(this.props.options);
+    if (!this.props.simpleTreeData) {
+      data = this._simplifyData(this.props.options);
+    }
 
     this._addNewOptions(data);
-    this.setState({isLoadingExternally: false});
+    this._loadOptions();
   }
 
-  componentDidMount() {
-    this._loadOptions();
+  _retrieveCachedData() {
+    let cachedData = window.localStorage.getItem(this.props.name);
+    if (cachedData) {
+      cachedData = JSON.parse(cachedData);
+      return cachedData.validTo > Date.now() ? cachedData.data : [];
+    }
   }
 
   _loadOptions() {
@@ -381,7 +384,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   _addNewOptions(newOptions) {
-    const {valueKey, childrenKey, fetchOptions} = this.props;
+    const {valueKey, childrenKey, fetchOptions, name} = this.props;
     const _toArray = (object) => {
 
       if (!Array.isArray(object[childrenKey])) {

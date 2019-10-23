@@ -103,25 +103,22 @@ class Select extends React.Component {
         this.state = {
             inputValue: '',
             isFocused: false,
-            isOpen: this.props.isMenuOpen,
+            isOpen: props.isMenuOpen,
             isPseudoFocused: false,
             required: false,
         };
         this.input = React.createRef();
-    }
-
-    componentWillMount () {
-        this._instancePrefix = `react-select-${(this.props.instanceId || ++instanceId)}-`;
-        const valueArray = this.getValueArray(this.props.value);
-
-        if (this.props.required) {
-            this.setState({
-                required: handleRequired(valueArray[0], this.props.multi),
-            });
-        }
+      this._instancePrefix = `react-select-${(props.instanceId || ++instanceId)}-`;
     }
 
     componentDidMount () {
+      const valueArray = this.getValueArray(this.props.value);
+
+      if (this.props.required) {
+        this.setState({
+          required: handleRequired(valueArray[0], this.props.multi),
+        });
+      }
         if (typeof this.props.autofocus !== 'undefined' && typeof console !== 'undefined') {
             console.warn('Warning: The autofocus prop has changed to autoFocus, support will be removed after react-select@1.0');
         }
@@ -130,7 +127,7 @@ class Select extends React.Component {
         }
     }
 
-    componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps (nextProps) {
         const valueArray = this.getValueArray(nextProps.value, nextProps);
 
         if (nextProps.required) {
@@ -608,7 +605,7 @@ class Select extends React.Component {
             this.props.onChange(value);
         }
     }
-  
+
   selectValue(value) {
     // NOTE: we actually add/set the value in a callback to make sure the
     // input value is empty to avoid styling issues in Chrome
