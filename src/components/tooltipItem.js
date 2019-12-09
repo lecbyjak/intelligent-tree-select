@@ -48,7 +48,7 @@ class TooltipItem extends Component {
                 <Highlighter
                     highlightClassName='highlighted'
                     searchWords={[this.props.searchString]}
-                    autoEscape={false}
+                    autoEscape={true}
                     textToHighlight={this.props.label}
                     highlightTag={"span"}
                 />
