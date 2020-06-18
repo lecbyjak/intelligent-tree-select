@@ -73,6 +73,20 @@ const handleRequired = (value, multi) => {
     return (multi ? value.length === 0 : Object.keys(value).length === 0);
 };
 
+const arraysEqual = (arr1, arr2) => {
+  if (!arr1) {
+    return !arr2;
+  }
+  if (!arr2) {
+    return !arr1;
+  }
+  if (arr1.length !== arr2.length) return false;
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+  return true;
+};
+
 class Select extends React.Component {
     constructor (props) {
         super(props);
@@ -139,7 +153,7 @@ class Select extends React.Component {
             this.setState({ required: false });
         }
 
-        if (this.state.inputValue && this.props.value !== nextProps.value && nextProps.onSelectResetsInput) {
+        if (this.state.inputValue && !arraysEqual(this.props.value, nextProps.value) && nextProps.onSelectResetsInput) {
             this.setState({ inputValue: this.handleInputValueChange('') });
         }
     }
