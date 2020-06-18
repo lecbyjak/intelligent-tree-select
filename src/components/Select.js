@@ -1042,12 +1042,10 @@ class Select extends React.Component {
                 valueArray,
                 valueKey: this.props.valueKey,
             });
-        } else if (this.props.noResultsText) {
-            return (
-                <div className="Select-noresults">
+        } else if (this.props.noResultsText && !this.props.isLoading) {
+            return <div className="Select-noresults">
                     {this.props.noResultsText}
-                </div>
-            );
+                </div>;
         } else {
             return null;
         }
