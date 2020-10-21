@@ -528,6 +528,7 @@ IntelligentTreeSelect.propTypes = {
 };
 
 IntelligentTreeSelect.defaultProps = {
+  childrenKey: "children",
   displayInfoOnHover: false,
   showSettings: true,
   expanded: false,
