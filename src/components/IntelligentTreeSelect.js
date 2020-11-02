@@ -187,14 +187,14 @@ class IntelligentTreeSelect extends Component {
   _onInputChange(searchString) {
     if (searchString && this.props.fetchOptions) {
 
-      let dataCashed = false;
+      let dataCached = false;
       for (let i = searchString.length; i > 0; i--) {
-        if (dataCashed) break;
+        if (dataCached) break;
         let substring = searchString.substring(0, i);
-        dataCashed = this._isInHistory(substring);
+        dataCached = this._isInHistory(substring);
       }
 
-      if (!dataCashed && !this.fetching) {
+      if (!dataCached && !this.fetching) {
         this.setState({isLoadingExternally: true});
         let data = [];
         let offset = 0;

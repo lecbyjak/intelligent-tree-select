@@ -10,7 +10,6 @@ import 'react-virtualized-select/styles.css'
 import PropTypes from 'prop-types'
 import Select from './Select'
 
-
 class VirtualizedTreeSelect extends Component {
 
   constructor(props, context) {
@@ -179,10 +178,11 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _filterOptions(options, filter, selectedOptions) {
-    let filtered = options.filter(option => {
+    const doesMatch = option => {
       let label = option[this.props.labelKey];
-      return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
-    });
+      return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+    }
+    let filtered = filter.trim().length === 0 ? options : options.filter(doesMatch);
 
 
     let filteredWithParents = [];
@@ -207,9 +207,13 @@ class VirtualizedTreeSelect extends Component {
 
       while (parent) {
         if (filteredWithParents.includes(parent)) {
+          if (filter.trim().length > 0 && doesMatch(parent)) {
+            parent.expanded = true;
+          }
           parentIndex = filteredWithParents.indexOf(parent);
           break;
         }
+        parent.expanded = true;
         toInsert.unshift(parent);
         parent = parent.parent ? parent.parent.length > 0 ? this.data[parent.parent] : null : null;
       }
