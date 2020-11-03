@@ -5,6 +5,8 @@ import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
 import ResultItem from './resultItem';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
+import {getLabel} from "./utils/Utils";
+import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
 
@@ -345,7 +347,7 @@ class IntelligentTreeSelect extends Component {
         childrenKey={this.props.childrenKey}
         valueKey={this.props.valueKey}
         labelKey={this.props.labelKey}
-        labelValue={this.props.labelValue}
+        getOptionLabel={this.props.getOptionLabel}
         tooltipKey={this.props.tooltipKey}
         settings={{
           searchString,
@@ -361,9 +363,10 @@ class IntelligentTreeSelect extends Component {
     return str.startsWith("https://") || str.startsWith("http://")
   }
 
-  _valueRenderer(option, x) {
-    const value = option[this.props.valueKey];
-    const label = option[this.props.labelKey];
+  _valueRenderer(option) {
+    const {valueKey, labelKey, getOptionLabel} = this.props;
+    const value = option[valueKey];
+    const label = getLabel(option, labelKey, getOptionLabel);
 
     if (IntelligentTreeSelect._isURL(value)) return (
       <a href={value} target="_blank">{label}</a>
@@ -470,9 +473,9 @@ class IntelligentTreeSelect extends Component {
                   openButtonLabel={this.props.openButtonLabel}
                   openButtonTooltipLabel={this.props.openButtonTooltipLabel}
                   formData={{
-                    labelKey: this.props.labelKey || 'label',
-                    valueKey: this.props.valueKey || 'value',
-                    childrenKey: this.props.childrenKey || 'children',
+                    labelKey: this.props.labelKey,
+                    valueKey: this.props.valueKey,
+                    childrenKey: this.props.childrenKey,
                     options: this.state.options,
                     onOptionCreate: this._onOptionCreate
                   }}
@@ -512,7 +515,7 @@ IntelligentTreeSelect.propTypes = {
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
   labelKey: PropTypes.string,
-  labelValue: PropTypes.func,
+  getOptionLabel: PropTypes.func,
   multi: PropTypes.bool,
   name: PropTypes.string,
   onInputChange: PropTypes.func,
@@ -528,7 +531,9 @@ IntelligentTreeSelect.propTypes = {
 };
 
 IntelligentTreeSelect.defaultProps = {
-  childrenKey: "children",
+  childrenKey: Constants.CHILDREN_KEY,
+  labelKey: Constants.LABEL_KEY,
+  valueKey: Constants.VALUE_KEY,
   displayInfoOnHover: false,
   showSettings: true,
   expanded: false,

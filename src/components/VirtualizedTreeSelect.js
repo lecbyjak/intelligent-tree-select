@@ -9,6 +9,8 @@ import 'react-virtualized-select/styles.css'
 
 import PropTypes from 'prop-types'
 import Select from './Select'
+import {getLabel} from "./utils/Utils";
+import Constants from "./utils/Constants";
 
 class VirtualizedTreeSelect extends Component {
 
@@ -81,7 +83,7 @@ class VirtualizedTreeSelect extends Component {
     return sortedArr;
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, labelKey, selectValue, optionStyle, valueArray}) {
+  _optionRenderer({focusedOption, focusOption, key, option, labelKey, getOptionLabel, selectValue, optionStyle, valueArray}) {
 
     const className = ['VirtualizedSelectOption'];
 
@@ -116,7 +118,7 @@ class VirtualizedTreeSelect extends Component {
           highlightClassName='highlighted'
           searchWords={[this.searchString]}
           autoEscape={false}
-          textToHighlight={option[labelKey]}
+          textToHighlight={getLabel(option, labelKey, getOptionLabel)}
           highlightTag={"span"}
         />
 
@@ -125,7 +127,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   // See https://github.com/JedWatson/react-select/#effeciently-rendering-large-lists-with-windowing
-  _renderMenu({focusedOption, focusOption, labelKey, onSelect, options, selectValue, valueArray, valueKey}) {
+  _renderMenu({focusedOption, focusOption, labelKey, getOptionLabel, onSelect, options, selectValue, valueArray, valueKey}) {
     const {listProps, optionRenderer, childrenKey, optionLeftOffset, renderAsTree} = this.props;
     const focusedOptionIndex = options.indexOf(focusedOption);
     const height = this._calculateListHeight({options});
@@ -147,6 +149,7 @@ class VirtualizedTreeSelect extends Component {
         focusOption,
         key,
         labelKey,
+        getOptionLabel,
         option,
         optionIndex: index,
         optionStyle,
@@ -179,7 +182,7 @@ class VirtualizedTreeSelect extends Component {
 
   _filterOptions(options, filter, selectedOptions) {
     const doesMatch = option => {
-      let label = option[this.props.labelKey];
+      let label = getLabel(option, this.props.labelKey, this.props.getOptionLabel);
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
     }
     let filtered = filter.trim().length === 0 ? options : options.filter(doesMatch);
@@ -310,15 +313,15 @@ class VirtualizedTreeSelect extends Component {
     const filterOptions = this.props.filterOptions || this._filterOptions;
 
     return <Select
-        joinValues={!!this.props.multi}
-        menuStyle={menuStyle}
-        menuContainerStyle={menuContainerStyle}
-        menuRenderer={menuRenderer}
-        filterOptions={filterOptions}
-        {...this.props}
-        onInputChange={(input) => this._onInputChange(input)}
-        options={this.state.options}
-      />;
+      joinValues={!!this.props.multi}
+      menuStyle={menuStyle}
+      menuContainerStyle={menuContainerStyle}
+      menuRenderer={menuRenderer}
+      filterOptions={filterOptions}
+      {...this.props}
+      onInputChange={(input) => this._onInputChange(input)}
+      options={this.state.options}
+    />;
   }
 
 
@@ -330,6 +333,7 @@ VirtualizedTreeSelect.propTypes = {
   filterOptions: PropTypes.func,
   isMenuOpen: PropTypes.bool,
   labelKey: PropTypes.string,
+  getOptionLabel: PropTypes.func,
   maxHeight: PropTypes.number,
   menuContainerStyle: PropTypes.any,
   menuRenderer: PropTypes.func,
@@ -346,7 +350,9 @@ VirtualizedTreeSelect.propTypes = {
 };
 
 VirtualizedTreeSelect.defaultProps = {
-  childrenKey: 'children',
+  childrenKey: Constants.CHILDREN_KEY,
+  labelKey: Constants.LABEL_KEY,
+  valueKey: Constants.VALUE_KEY,
   options: [],
   optionHeight: 25,
   optionLeftOffset: 16,
