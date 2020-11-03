@@ -54,6 +54,7 @@ You can override the built-in option renderer by specifying your own `optionRend
 | focusOption | `Function` | Callback to update the focused option; for example, you may want to call this function on mouse-over. |
 | key | `string` | A unique identifier for each element created by the renderer. |
 | labelKey | `string` | Attribute of option that contains the display text. |
+| getOptionLabel | `Function` | Function to extract label from an option. If specified, overrides `labelKey`. |
 | option | `Object` | The option to be rendered. |
 | optionIndex | `number` | Index of the option to be rendered. |
 | renderAsTree | `bool` | Whether the options should be render as a tree. |
@@ -70,7 +71,8 @@ You can override the built-in option renderer by specifying your own `optionRend
 |:---|:---|:---|:---|
 | displayInfoOnHover | `bool` | false | Whether to render option information on hover. By default, this info is extracted by transforming the option to JSON and stringifying it. |
 | tooltipKey | `string` | -- | Attribute of option which will be used as content of hover tooltip (instead of stringified option itself). |
-| labelValue | `func` | -- | Return the label for option. Function with signature `({ option: Object }): string` |
+| labelKey | `string` | Attribute of option that contains the display text. |
+| getOptionLabel | `Function` | Function to extract label from an option. If specified, overrides `labelKey`. |
 | onOptionCreate | `function` | -- | callback when the new option is created. Signature `({ option: Object}): none`|
 | optionLifetime | `string` | '5m' | String representing how long the options should be cached. Syntax: `XdXhXmXs` where `X` is some number, `d` stands for days, `h` hours ,`m` minutes, `s` seconds|
 | showSettings | `bool` | 'true' | whether the section with settings and button for creating new option should be visible|
