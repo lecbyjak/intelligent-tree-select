@@ -379,18 +379,14 @@ class Select extends React.Component {
   }
 
   closeMenu() {
+    const update = {
+      isOpen: this.props.isMenuOpen ? true : false,
+      isPseudoFocused: this.state.isFocused && !this.props.multi
+    };
     if (this.props.onCloseResetsInput) {
-      this.setState({
-        inputValue: this.handleInputValueChange(''),
-        isOpen: this.props.isMenuOpen ? true : false,
-        isPseudoFocused: this.state.isFocused && !this.props.multi,
-      });
-    } else {
-      this.setState({
-        isOpen: this.props.isMenuOpen ? true : false,
-        isPseudoFocused: this.state.isFocused && !this.props.multi
-      });
+      update.inputValue = this.handleInputValueChange('');
     }
+    this.setState(update);
     this.hasScrolledToOption = false;
   }
 
@@ -542,20 +538,6 @@ class Select extends React.Component {
       case 34: // page down
         event.preventDefault();
         this.focusPageDownOption();
-        break;
-      case 35: // end key
-        if (event.shiftKey) {
-          break;
-        }
-        event.preventDefault();
-        this.focusEndOption();
-        break;
-      case 36: // home key
-        if (event.shiftKey) {
-          break;
-        }
-        event.preventDefault();
-        this.focusStartOption();
         break;
       case 46: // delete
         if (!this.state.inputValue && this.props.deleteRemoves) {
