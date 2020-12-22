@@ -101,7 +101,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.options && prevProps.options.length !== this.props.options.length) {
+    if (!this.props.fetchOptions && prevProps.options !== this.props.options) {
       this.setState({options: []}, () => {
         // Reset options from props
         this._addNewOptions(this.props.options);

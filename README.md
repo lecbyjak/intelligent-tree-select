@@ -78,6 +78,7 @@ You can override the built-in option renderer by specifying your own `optionRend
 | showSettings | `bool` | 'true' | whether the section with settings and button for creating new option should be visible|
 | simpleTreeData | `bool` | true | whether the options are in the simple format. (One node == one option) |
 | fetchOptions | `func` | -- | Signature: `({searchString, optionID, limit, offset, option}): Promise`. If the `optionID` is not an empty string then the function should return children options of that option (`option` is provided as well should it be needed). If the `searchString` is not an empty string then the function should return all options whose label value match the `searchStromg` + their parent options|
+| options      | `Array<Object>` | -- | Options to render in the menu list. If `fetchOptions` is not specified (it takes precedence over this property if specified), this property can be used to provide options to select from. Note that it is recommended to _memoize_ them.
 | fetchLimit | `number` | 100 | amount of data to be fetched |
 | multi | `bool` | true | whether the select in multi select or not |
 | name | `string` | -- | Unique name for the component. Whenever this prop is set then the options will be cached|
