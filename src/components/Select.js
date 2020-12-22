@@ -1048,7 +1048,6 @@ class Select extends React.Component {
         <input
           disabled={this.props.disabled}
           name={this.props.name}
-          ref={ref => this.value = ref}
           type="hidden"
           value={value}
         />
@@ -1059,7 +1058,6 @@ class Select extends React.Component {
         disabled={this.props.disabled}
         key={`hidden.${index}`}
         name={this.props.name}
-        ref={`value${index}`}
         type="hidden"
         value={stringifyValue(item[this.props.valueKey])}
       />
