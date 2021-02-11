@@ -452,6 +452,7 @@ class IntelligentTreeSelect extends Component {
     let listProps = {};
     listProps.onScroll = this.props.onScroll || this._onScroll;
     const optionRenderer = this.props.optionRenderer || this._optionRenderer;
+    const valueRenderer = this.props.valueRenderer || this._valueRenderer;
     const me = this;
 
     function optionRendererWrapper(params) {
@@ -462,6 +463,7 @@ class IntelligentTreeSelect extends Component {
     // Ensure optionRendererWrapper is not overridden by the props version
     const propsToPass = Object.assign({}, this.props);
     delete propsToPass.optionRenderer;
+    delete propsToPass.valueRenderer;
     delete propsToPass.onScroll;
 
     return (
@@ -489,7 +491,7 @@ class IntelligentTreeSelect extends Component {
           value={this.state.selectedOptions}
 
           optionRenderer={optionRendererWrapper}
-          valueRenderer={this._valueRenderer}
+          valueRenderer={valueRenderer}
 
           {...propsToPass}
           expanded={this.state.expanded}
@@ -527,7 +529,9 @@ IntelligentTreeSelect.propTypes = {
   simpleTreeData: PropTypes.bool,
   optionLifetime: PropTypes.string,
   valueKey: PropTypes.string,
-  tooltipKey: PropTypes.string
+  tooltipKey: PropTypes.string,
+  optionRenderer: PropTypes.func,
+  valueRenderer: PropTypes.func
 };
 
 IntelligentTreeSelect.defaultProps = {
