@@ -33,6 +33,7 @@ class IntelligentTreeSelect extends Component {
       isLoadingExternally: false,
       update: 0,
     };
+    this.select = React.createRef();
   }
 
   componentDidMount() {
@@ -97,6 +98,24 @@ class IntelligentTreeSelect extends Component {
         // Reset options from props
         this._addNewOptions(this.props.options);
       });
+    }
+  }
+
+  /**
+   * Focuses the select input.
+   */
+  focus() {
+    if (this.select.current) {
+      this.select.current.focus();
+    }
+  }
+
+  /**
+   * Blurs the select input.
+   */
+  blurInput() {
+    if (this.select.current) {
+      this.select.current.blurInput();
     }
   }
 
@@ -485,6 +504,7 @@ class IntelligentTreeSelect extends Component {
         }
 
         <VirtualizedTreeSelect
+          ref={this.select}
           name="react-virtualized-tree-select"
 
           onChange={this._addSelectedOption}

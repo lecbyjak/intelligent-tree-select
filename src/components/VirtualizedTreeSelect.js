@@ -26,6 +26,7 @@ class VirtualizedTreeSelect extends Component {
     this.state = {
       options: []
     };
+    this.select = React.createRef();
   }
 
   componentDidMount() {
@@ -35,6 +36,18 @@ class VirtualizedTreeSelect extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.update > prevProps.update) {
       this._processOptions();
+    }
+  }
+
+  focus() {
+    if (this.select.current) {
+      this.select.current.focus();
+    }
+  }
+
+  blurInput() {
+    if (this.select.current) {
+      this.select.current.blurInput();
     }
   }
 
@@ -313,6 +326,7 @@ class VirtualizedTreeSelect extends Component {
     const filterOptions = this.props.filterOptions || this._filterOptions;
 
     return <Select
+      ref={this.select}
       joinValues={!!this.props.multi}
       menuStyle={menuStyle}
       menuContainerStyle={menuContainerStyle}
