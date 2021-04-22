@@ -90,4 +90,6 @@ You can override the built-in option renderer by specifying your own `optionRend
 
 | Method | Description |
 |:---|:---|
-| `resetOptions` | Force reloading of options when `fetchOptions` property is used to specify how to load options. If options are specified in props, this reloads them from the current props. | 
+| `resetOptions` | Force reloading of options when `fetchOptions` property is used to specify how to load options. If options are specified in props, this reloads them from the current props. |
+| `focus` | Focus the tree select input. |
+| `blurInput` | Blur the tree select input. |
