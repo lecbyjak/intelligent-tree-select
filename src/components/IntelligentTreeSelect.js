@@ -66,10 +66,9 @@ class IntelligentTreeSelect extends Component {
     if (this.state.options.length === 0 && this.props.fetchOptions) {
       if (!this.fetching) {
         this.setState({isLoadingExternally: true});
-        let data = [];
 
         this.fetching = this._getResponse('', '', this.props.fetchLimit, 0).then(response => {
-
+          let data;
             if (!this.props.simpleTreeData) {
               data = this._simplifyData(response);
             } else {
@@ -202,7 +201,13 @@ class IntelligentTreeSelect extends Component {
   }
 
   async _getResponse(searchString, optionID, limit, offset, option) {
-    return this.props.fetchOptions ? await this.props.fetchOptions({searchString, optionID, limit, offset, option}) : [];
+    return this.props.fetchOptions ? await this.props.fetchOptions({
+      searchString,
+      optionID,
+      limit,
+      offset,
+      option
+    }) : [];
   }
 
   _onInputChange(searchString) {
@@ -216,7 +221,6 @@ class IntelligentTreeSelect extends Component {
       }
 
       if (!dataCached && !this.fetching) {
-        this.setState({isLoadingExternally: true});
         let data = [];
         let offset = 0;
 
@@ -224,21 +228,16 @@ class IntelligentTreeSelect extends Component {
           if (option.depth === 0) offset++;
         });
 
-        //TODO figure out how to get all parents for matching node
-        this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
-
-            if (!this.props.simpleTreeData) {
-              data = this._simplifyData(response);
-            } else {
-              data = response;
-            }
-
-            this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
-            this.fetching = false;
-            this._addNewOptions(data);
-            this.setState({isLoadingExternally: false});
-          },
-        );
+        if (this.searchTimer) {
+          clearTimeout(this.searchTimer);
+        }
+        if (this.props.searchDelay) {
+          this.searchTimer = setTimeout(() => {
+            this._invokeSearch(searchString, offset);
+          }, this.props.searchDelay);
+        } else {
+          this._invokeSearch(searchString, offset);
+        }
       }
     }
 
@@ -246,6 +245,24 @@ class IntelligentTreeSelect extends Component {
     if ('onInputChange' in this.props) {
       this.props.onInputChange(searchString);
     }
+  }
+
+  _invokeSearch(searchString, offset) {
+    this.setState({isLoadingExternally: true});
+    this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
+        let data;
+        if (!this.props.simpleTreeData) {
+          data = this._simplifyData(response);
+        } else {
+          data = response;
+        }
+
+        this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
+        this.fetching = false;
+        this._addNewOptions(data);
+        this.setState({isLoadingExternally: false});
+      },
+    );
   }
 
   _onScroll(data) {
@@ -343,7 +360,17 @@ class IntelligentTreeSelect extends Component {
     this.forceUpdate();
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, selectValue, optionStyle, valueArray, toggleOption, searchString}) {
+  _optionRenderer({
+                    focusedOption,
+                    focusOption,
+                    key,
+                    option,
+                    selectValue,
+                    optionStyle,
+                    valueArray,
+                    toggleOption,
+                    searchString
+                  }) {
 
     const className = classNames("VirtualizedSelectOption", {
       "VirtualizedSelectFocusedOption": option === focusedOption,
@@ -551,7 +578,8 @@ IntelligentTreeSelect.propTypes = {
   valueKey: PropTypes.string,
   tooltipKey: PropTypes.string,
   optionRenderer: PropTypes.func,
-  valueRenderer: PropTypes.func
+  valueRenderer: PropTypes.func,
+  searchDelay: PropTypes.number
 };
 
 IntelligentTreeSelect.defaultProps = {

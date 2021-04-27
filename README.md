@@ -84,6 +84,7 @@ You can override the built-in option renderer by specifying your own `optionRend
 | multi | `bool` | true | whether the select in multi select or not |
 | name | `string` | -- | Unique name for the component. Whenever this prop is set then the options will be cached|
 | formComponent | `func` | -- | Function returning React element representing form. Syntax `({onOptionCreate, toggleModal, options, labelKey, valueKey, childrenKey}): React.component`|
+| searchDelay | `number` | -- | Delay in milliseconds between the input change and `fetchOptions` invocation. Allows to wait for reasonable user input before actually invoking search on the server. By default the search is invoked with no delay. |
 
 
 ### IntelligentTreeSelect public API
