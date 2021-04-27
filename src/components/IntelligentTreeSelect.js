@@ -65,22 +65,28 @@ class IntelligentTreeSelect extends Component {
   _loadOptions() {
     if (this.state.options.length === 0 && this.props.fetchOptions) {
       if (!this.fetching) {
-        this.setState({isLoadingExternally: true});
-
-        this.fetching = this._getResponse('', '', this.props.fetchLimit, 0).then(response => {
-          let data;
-            if (!this.props.simpleTreeData) {
-              data = this._simplifyData(response);
-            } else {
-              data = response;
-            }
-            this.fetching = false;
-            this._addNewOptions(data);
-            this.setState({isLoadingExternally: false});
-          },
-        );
+        this._fetchOptions("", "", 0);
       }
     }
+  }
+
+  _fetchOptions(searchString, optionId, offset, topOption, callback) {
+    this.setState({isLoadingExternally: true});
+    this.fetching = this._getResponse(searchString, optionId, this.props.fetchLimit, offset, topOption).then(response => {
+        let data;
+        if (!this.props.simpleTreeData) {
+          data = this._simplifyData(response);
+        } else {
+          data = response;
+        }
+        this.fetching = false;
+        this._addNewOptions(data);
+        this.setState({isLoadingExternally: false});
+        if (callback) {
+          callback(data);
+        }
+      },
+    );
   }
 
   /**
@@ -248,21 +254,9 @@ class IntelligentTreeSelect extends Component {
   }
 
   _invokeSearch(searchString, offset) {
-    this.setState({isLoadingExternally: true});
-    this.fetching = this._getResponse(searchString, '', this.props.fetchLimit, offset).then(response => {
-        let data;
-        if (!this.props.simpleTreeData) {
-          data = this._simplifyData(response);
-        } else {
-          data = response;
-        }
-
-        this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
-        this.fetching = false;
-        this._addNewOptions(data);
-        this.setState({isLoadingExternally: false});
-      },
-    );
+    this._fetchOptions(searchString, "", offset, undefined, () => {
+      this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
+    });
   }
 
   _onScroll(data) {
@@ -293,26 +287,12 @@ class IntelligentTreeSelect extends Component {
       let parentOptionValue = parentOption ? parentOption[this.props.valueKey] : 'root';
 
       if (!this.completedNodes[parentOptionValue]) {
-        this.setState({isLoadingExternally: true});
         //fetch child options that are not completed
-        this.fetching = this._getResponse('', topOption.parent, this.props.fetchLimit, offset, topOption).then(response => {
-
-          if (!this.props.simpleTreeData) {
-            data = this._simplifyData(response);
-          } else {
-            data = response;
-          }
-
-
-          if (data.length < this.props.fetchLimit) {
+        this._fetchOptions("", topOption.parent, offset, topOption, (fetchedData) => {
+          if (fetchedData.length < this.props.fetchLimit) {
             //fetch parent options
             this.completedNodes[parentOptionValue] = true;
           }
-
-          this.fetching = false;
-          this._addNewOptions(data);
-          this.setState({isLoadingExternally: false});
-
         });
       }
     }
