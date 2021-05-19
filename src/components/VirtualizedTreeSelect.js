@@ -64,39 +64,57 @@ class VirtualizedTreeSelect extends Component {
     let options = [];
     keys.forEach(xkey => {
       let option = this.data[xkey];
-      if (!option.parent) this._calculateDepth(xkey, 0, null);
+      if (!option.parent) this._calculateDepth(xkey, 0, null, new Set());
     });
     keys.forEach(xkey => {
       let option = this.data[xkey];
-      if (option.depth === 0) this._sort(options, xkey);
+      if (option.depth === 0) this._sort(options, xkey, new Set());
     });
 
     this.setState({options: options});
   }
 
-  _calculateDepth(key, depth, parentKey) {
+  _calculateDepth(key, depth, parentKey, visited) {
     let option = this.data[key];
-    if (!option) return;
+    if (!option || visited.has(key)) {
+      return;
+    }
+    visited.add(key);
     option.depth = depth;
-    if (!option.parent) option.parent = parentKey;
+    if (!option.parent) {
+      option.parent = parentKey;
+    }
     option[this.props.childrenKey].forEach(childID => {
-      this._calculateDepth(childID, depth + 1, key);
+      this._calculateDepth(childID, depth + 1, key, visited);
     });
   }
 
-  _sort(sortedArr, key) {
+  _sort(sortedArr, key, visited) {
     let option = this.data[key];
-    if (!option) return;
+    if (!option || visited.has(key)) {
+      return;
+    }
+    visited.add(key);
     sortedArr.push(option);
 
     option[this.props.childrenKey].forEach(childID => {
-      this._sort(sortedArr, childID);
+      this._sort(sortedArr, childID, visited);
     });
 
     return sortedArr;
   }
 
-  _optionRenderer({focusedOption, focusOption, key, option, labelKey, getOptionLabel, selectValue, optionStyle, valueArray}) {
+  _optionRenderer({
+                    focusedOption,
+                    focusOption,
+                    key,
+                    option,
+                    labelKey,
+                    getOptionLabel,
+                    selectValue,
+                    optionStyle,
+                    valueArray
+                  }) {
 
     const className = ['VirtualizedSelectOption'];
 
@@ -140,7 +158,17 @@ class VirtualizedTreeSelect extends Component {
   }
 
   // See https://github.com/JedWatson/react-select/#effeciently-rendering-large-lists-with-windowing
-  _renderMenu({focusedOption, focusOption, labelKey, getOptionLabel, onSelect, options, selectValue, valueArray, valueKey}) {
+  _renderMenu({
+                focusedOption,
+                focusOption,
+                labelKey,
+                getOptionLabel,
+                onSelect,
+                options,
+                selectValue,
+                valueArray,
+                valueKey
+              }) {
     const {listProps, optionRenderer, childrenKey, optionLeftOffset, renderAsTree} = this.props;
     const focusedOptionIndex = options.indexOf(focusedOption);
     const height = this._calculateListHeight({options});
