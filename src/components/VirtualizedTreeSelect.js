@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 
-import Highlighter from 'react-highlight-words'
+import Highlighter from 'react-highlight-words';
 import {AutoSizer, List} from "react-virtualized";
 
 import 'react-select/dist/react-select.css';
-import 'react-virtualized/styles.css'
-import 'react-virtualized-select/styles.css'
+import 'react-virtualized/styles.css';
+import 'react-virtualized-select/styles.css';
 
 import PropTypes from 'prop-types'
 import Select from './Select'

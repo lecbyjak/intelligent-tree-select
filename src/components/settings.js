@@ -1,26 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ModalWindow from './modalWindow'
 import PropTypes from "prop-types";
 
-class Settings extends Component {
-
-
-  render() {
-    return <div className="d-flex justify-content-between">
-        <ModalWindow onOptionCreate={this.props.onOptionCreate}
-                     formData={this.props.formData}
-                     formComponent={this.props.formComponent}
-                     openButtonTooltipLabel={this.props.openButtonTooltipLabel}
-                     openButtonLabel={this.props.openButtonLabel}
-        />
-      </div>;
-  }
-}
-
-
-export default Settings;
+const Settings = props => {
+  const {onOptionCreate, formData, formComponent, openButtonTooltipLabel, openButtonLabel} = props;
+  return <div className="d-flex justify-content-between">
+    <ModalWindow onOptionCreate={onOptionCreate}
+                 formData={formData}
+                 formComponent={formComponent}
+                 openButtonTooltipLabel={openButtonTooltipLabel}
+                 openButtonLabel={openButtonLabel}
+    />
+  </div>;
+};
 
 Settings.propTypes = {
   formData: PropTypes.object.isRequired,
   onOptionCreate: PropTypes.func.isRequired,
 };
+
+export default Settings;
