@@ -124,6 +124,13 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
+  /**
+   * Gets the current options provided by this component.
+   */
+  getOptions() {
+    return this.state.options.slice();
+  }
+
   componentDidUpdate(prevProps) {
     if (!this.props.fetchOptions && prevProps.options !== this.props.options) {
       this.setState({options: []}, () => {
