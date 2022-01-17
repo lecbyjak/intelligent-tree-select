@@ -11,5 +11,5 @@ export function hashCode(str) {
 }
 
 export function isURL(str) {
-  return str.startsWith("https://") || str.startsWith("http://")
+  return str.startsWith("https://") || str.startsWith("http://");
 }

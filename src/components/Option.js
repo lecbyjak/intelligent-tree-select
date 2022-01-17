@@ -17,11 +17,11 @@ const Option = (props) => {
 
   let button = null;
   if (props.data[props.selectProps.childrenKey].length > 0) {
-    button = getExpandButton(() => props.selectProps.onOptionToggle(props.data), props.data.expanded);
+    button = getExpandButton(props.selectProps.onOptionToggle, props.data);
   }
   const value = props.data[props.selectProps.valueKey]
 
-  return <div ref={props.innerRef} className={classes}>
+  return <div ref={props.innerRef} className={classes} style={{marginLeft: `${props.data.depth * 16}px`}}>
 
     {props.selectProps.renderAsTree &&
     <div style={{width: '16px'}}>
@@ -33,10 +33,10 @@ const Option = (props) => {
                  option={props.data}
                  label={props.label}
                  value={value}
-                 onClick={() => props.selectOption(props.data)}
                  searchString={props.selectProps.inputValue}
                  hoverActive={props.selectProps.displayInfoOnHover}
                  tooltipKey={props.selectProps.tooltipKey}
+                 {...events}
     />
 
     {props.data.fetchingChild &&
@@ -47,9 +47,9 @@ const Option = (props) => {
   </div>;
 }
 
-function getExpandButton(onToggle, expanded) {
-  return <span onClick={onToggle} className="toggleButton">
-                {expanded ? <ToggleMinusIcon/> : <TogglePlusIcon/>}
+function getExpandButton(onToggle, option) {
+  return <span onClick={() => onToggle(option)} className="toggleButton">
+                {option.expanded ? <ToggleMinusIcon/> : <TogglePlusIcon/>}
   </span>;
 }
 
