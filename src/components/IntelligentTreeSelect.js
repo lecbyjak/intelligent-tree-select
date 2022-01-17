@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 
 import Settings from './settings';
 import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
-import ResultItem from './resultItem';
 import PropTypes from 'prop-types';
-import classNames from "classnames";
-import {getLabel} from "./utils/Utils";
+import {getLabel, isURL} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
@@ -20,10 +18,10 @@ class IntelligentTreeSelect extends Component {
 
     this._onOptionCreate = this._onOptionCreate.bind(this);
     this._valueRenderer = this._valueRenderer.bind(this);
-    this._optionRenderer = this._optionRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this._onScroll = this._onScroll.bind(this);
+    this._onOptionToggle = this._onOptionToggle.bind(this);
 
     this.state = {
       expanded: this.props.expanded,
@@ -347,61 +345,12 @@ class IntelligentTreeSelect extends Component {
     this.forceUpdate();
   }
 
-  _optionRenderer({
-                    focusedOption,
-                    focusOption,
-                    key,
-                    option,
-                    selectValue,
-                    optionStyle,
-                    valueArray,
-                    toggleOption,
-                    searchString
-                  }) {
-
-    const className = classNames("VirtualizedSelectOption", {
-      "VirtualizedSelectFocusedOption": option === focusedOption,
-      "VirtualizedSelectDisabledOption": option.disabled,
-      "VirtualizedSelectSelectedOption": valueArray && valueArray.indexOf(option) >= 0
-    }, option.className);
-
-    const events = option.disabled ? {} : {
-      onClick: () => selectValue(option),
-      onMouseEnter: () => focusOption(option),
-      onToggleClick: () => toggleOption(option),
-    };
-
-    return (
-      <ResultItem
-        className={className}
-        key={key}
-        style={optionStyle}
-        option={option}
-        childrenKey={this.props.childrenKey}
-        valueKey={this.props.valueKey}
-        labelKey={this.props.labelKey}
-        getOptionLabel={this.props.getOptionLabel}
-        tooltipKey={this.props.tooltipKey}
-        settings={{
-          searchString,
-          renderAsTree: this.props.renderAsTree,
-          displayInfoOnHover: this.props.displayInfoOnHover,
-        }}
-        {...events}
-      />
-    );
-  }
-
-  static _isURL(str) {
-    return str.startsWith("https://") || str.startsWith("http://")
-  }
-
   _valueRenderer(option) {
     const {valueKey, labelKey, getOptionLabel} = this.props;
     const value = option[valueKey];
     const label = getLabel(option, labelKey, getOptionLabel);
 
-    if (IntelligentTreeSelect._isURL(value)) return (
+    if (isURL(value)) return (
       <a href={value} target="_blank">{label}</a>
     );
     return label;
@@ -484,18 +433,9 @@ class IntelligentTreeSelect extends Component {
 
     let listProps = {};
     listProps.onScroll = this.props.onScroll || this._onScroll;
-    const optionRenderer = this.props.optionRenderer || this._optionRenderer;
     const valueRenderer = this.props.valueRenderer || this._valueRenderer;
-    const me = this;
 
-    function optionRendererWrapper(params) {
-      const args = Object.assign(params, {toggleOption: me._onOptionToggle.bind(me), searchString: me.searchString});
-      return optionRenderer(args);
-    }
-
-    // Ensure optionRendererWrapper is not overridden by the props version
     const propsToPass = Object.assign({}, this.props);
-    delete propsToPass.optionRenderer;
     delete propsToPass.valueRenderer;
     delete propsToPass.onScroll;
 
@@ -524,7 +464,6 @@ class IntelligentTreeSelect extends Component {
           onChange={this._addSelectedOption}
           value={this.state.selectedOptions}
 
-          optionRenderer={optionRendererWrapper}
           valueRenderer={valueRenderer}
 
           {...propsToPass}
@@ -536,6 +475,7 @@ class IntelligentTreeSelect extends Component {
           options={this.state.options}
           listProps={listProps}
           update={this.state.update}
+          onOptionToggle={this._onOptionToggle}
         />
       </div>
     );

@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
-
-import Highlighter from 'react-highlight-words';
-import {AutoSizer, List} from "react-virtualized";
-
-import 'react-select/dist/react-select.css';
+import Select from "react-select";
 import 'react-virtualized/styles.css';
-
 import PropTypes from 'prop-types'
-import Select from './Select'
+import Option from "./Option";
 import {getLabel} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
@@ -16,10 +11,9 @@ class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this._renderMenu = this._renderMenu.bind(this);
     this._processOptions = this._processOptions.bind(this);
     this._filterOptions = this._filterOptions.bind(this);
-    this._optionRenderer = this._optionRenderer.bind(this);
+    this._onInputChange = this._onInputChange.bind(this);
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -29,7 +23,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   componentDidMount() {
-    this._processOptions()
+    this._processOptions();
   }
 
   componentDidUpdate(prevProps) {
@@ -46,7 +40,7 @@ class VirtualizedTreeSelect extends Component {
 
   blurInput() {
     if (this.select.current) {
-      this.select.current.blurInput();
+      this.select.current.blur();
     }
   }
 
@@ -102,125 +96,15 @@ class VirtualizedTreeSelect extends Component {
 
     return sortedArr;
   }
-
-  _optionRenderer({
-                    focusedOption,
-                    focusOption,
-                    key,
-                    option,
-                    labelKey,
-                    getOptionLabel,
-                    selectValue,
-                    optionStyle,
-                    valueArray
-                  }) {
-
-    const className = ['VirtualizedSelectOption'];
-
-    if (option === focusedOption) {
-      className.push('VirtualizedSelectFocusedOption')
+  _filterOption(candidate, inputValue) {
+    const matches = inputValue.trim().length === 0 || candidate.label.toLowerCase().indexOf(inputValue.toLowerCase());
+    if (matches) {
+      return true;
     }
-
-    if (option.disabled) {
-      className.push('VirtualizedSelectDisabledOption')
-    }
-
-    if (valueArray && valueArray.indexOf(option) >= 0) {
-      className.push('VirtualizedSelectSelectedOption')
-    }
-
-    if (option.className) {
-      className.push(option.className)
-    }
-
-    const events = option.disabled ? {} : {
-      onClick: () => selectValue(option),
-      onMouseEnter: () => focusOption(option),
-    };
-
-    return (
-      <div style={optionStyle} className={className.join(' ')}
-           onMouseEnter={events.onMouseEnter}
-           onClick={events.onClick}
-           key={key}>
-
-        <Highlighter
-          highlightClassName='highlighted'
-          searchWords={[this.searchString]}
-          autoEscape={false}
-          textToHighlight={getLabel(option, labelKey, getOptionLabel)}
-          highlightTag={"span"}
-        />
-
-      </div>
-    )
+    // TODO Return true for options whose descendant matches.
   }
 
-  // See https://github.com/JedWatson/react-select/#effeciently-rendering-large-lists-with-windowing
-  _renderMenu({
-                focusedOption,
-                focusOption,
-                labelKey,
-                getOptionLabel,
-                onSelect,
-                options,
-                selectValue,
-                valueArray,
-                valueKey
-              }) {
-    const {listProps, optionRenderer, childrenKey, optionLeftOffset, renderAsTree} = this.props;
-    const focusedOptionIndex = options.indexOf(focusedOption);
-    const height = this._calculateListHeight({options});
-    const innerRowRenderer = optionRenderer || this._optionRenderer;
-
-    function wrappedRowRenderer({index, key, style}) {
-      const option = options[index];
-      let leftOffset = 0;
-      if (renderAsTree) leftOffset = option.depth * optionLeftOffset;
-      const optionStyle = {
-        ...style,
-        left: leftOffset
-      };
-
-      return innerRowRenderer({
-        childrenKey,
-        focusedOption,
-        focusedOptionIndex,
-        focusOption,
-        key,
-        labelKey,
-        getOptionLabel,
-        option,
-        optionIndex: index,
-        optionStyle,
-        renderAsTree,
-        selectValue: onSelect,
-        valueArray,
-        valueKey
-      })
-    }
-
-    return (
-      <AutoSizer disableHeight>
-        {({width}) => (
-          <List
-            className='VirtualSelectGrid'
-            height={height}
-            rowCount={options.length}
-            rowHeight={({index}) => this._getOptionHeight({
-              option: options[index]
-            })}
-            rowRenderer={wrappedRowRenderer}
-            scrollToIndex={focusedOptionIndex}
-            width={width}
-            {...listProps}
-          />
-        )}
-      </AutoSizer>
-    )
-  }
-
-  _filterOptions(options, filter, selectedOptions) {
+  _filterOptions(options, filter) {
     const doesMatch = option => {
       let label = getLabel(option, this.props.labelKey, this.props.getOptionLabel);
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
@@ -288,50 +172,8 @@ class VirtualizedTreeSelect extends Component {
       }
     }
     filteredWithParents = filteredWithParents.filter(v => !hidden.includes(v));
-
-    // Uncomment this to disable showing selected options
-
-    // if (Array.isArray(selectedOptions) && selectedOptions.length) {
-    //     const selectedValues = selectedOptions.map((option) => option[this.props.valueKey]);
-    //
-    //     return filtered.filter(
-    //         (option) => !selectedValues.includes(option[this.props.valueKey])
-    //     )
-    // }
-
-    //console.log("Filter options (",options.length ,") end in: ", new Date().getTime() - now, "ms");
     return filteredWithParents;
 
-  }
-
-  _calculateListHeight({options}) {
-    const {maxHeight, minHeight} = this.props;
-
-    let height = 0;
-
-    for (let optionIndex = 0; optionIndex < options.length; optionIndex++) {
-      let option = options[optionIndex];
-
-      height += this._getOptionHeight({option});
-
-      if (height > maxHeight) {
-        return maxHeight
-      }
-      if (height < minHeight) {
-        return minHeight
-      }
-    }
-
-
-    return height
-  }
-
-  _getOptionHeight({option}) {
-    const {optionHeight} = this.props;
-
-    return optionHeight instanceof Function
-      ? optionHeight({option})
-      : optionHeight
   }
 
   _onInputChange(input) {
@@ -342,30 +184,34 @@ class VirtualizedTreeSelect extends Component {
   }
 
   render() {
-    let menuStyle = this.props.menuStyle || {};
-    let menuContainerStyle = this.props.menuContainerStyle || {};
-    menuStyle.overflow = 'hidden';
-    menuStyle.maxHeight = this.props.maxHeight;
-    menuContainerStyle.maxHeight = this.props.maxHeight;
-    menuContainerStyle.position = this.props.isMenuOpen ? 'relative' : 'absolute';
+    const styles = this._prepareStyles();
+    const filterOptions = this.props.filterOptions || this._filterOption;
 
-    const menuRenderer = this.props.menuRenderer || this._renderMenu;
-    const filterOptions = this.props.filterOptions || this._filterOptions;
-
-    return <Select
-      ref={this.select}
-      joinValues={!!this.props.multi}
-      menuStyle={menuStyle}
-      menuContainerStyle={menuContainerStyle}
-      menuRenderer={menuRenderer}
-      filterOptions={filterOptions}
-      {...this.props}
-      onInputChange={(input) => this._onInputChange(input)}
-      options={this.state.options}
-    />;
+    return <Select ref={this.select}
+                   style={styles}
+                   filterOption={filterOptions}
+                   options={this.state.options}
+                   onInputChange={this._onInputChange}
+                   getOptionLabel={(option) => option[this.props.labelKey]}
+                   components={{Option: Option}}
+                   isMulti={this.props.multi}
+                   {...this.props}
+    />
   }
 
-
+  _prepareStyles() {
+    return {
+      menu: (provided) => ({
+        overflow: "hidden",
+        maxHeight: this.props.maxHeight,
+        ...provided
+      }),
+      menuContainer: (provided) => ({
+        maxHeight: this.props.maxHeight,
+        ...provided
+      })
+    };
+  }
 }
 
 VirtualizedTreeSelect.propTypes = {
@@ -376,8 +222,6 @@ VirtualizedTreeSelect.propTypes = {
   labelKey: PropTypes.string,
   getOptionLabel: PropTypes.func,
   maxHeight: PropTypes.number,
-  menuContainerStyle: PropTypes.any,
-  menuRenderer: PropTypes.func,
   menuStyle: PropTypes.object,
   minHeight: PropTypes.number,
   multi: PropTypes.bool,
