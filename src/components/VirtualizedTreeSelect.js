@@ -11,7 +11,7 @@ class VirtualizedTreeSelect extends Component {
     super(props, context);
 
     this._processOptions = this._processOptions.bind(this);
-    this.filterOption = this.filterOption.bind(this);
+    this._filterOption = this._filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this.data = {};
     this.searchString = '';
@@ -97,7 +97,7 @@ class VirtualizedTreeSelect extends Component {
     return sortedArr;
   }
 
-  filterOption(candidate, inputValue) {
+  _filterOption(candidate, inputValue) {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
     if (inputValue.length === 0) {
@@ -121,12 +121,11 @@ class VirtualizedTreeSelect extends Component {
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
-    const filterOptions = props.filterOptions || this.filterOption;
+    const filterOptions = props.filterOptions || this._filterOption;
 
     return <Select ref={this.select}
                    style={styles}
                    filterOption={filterOptions}
-                   options={this.state.options}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => option[props.labelKey]}
                    components={{Option: Option}}
@@ -134,6 +133,7 @@ class VirtualizedTreeSelect extends Component {
                    menuIsOpen={props.isMenuOpen}
                    blurInputOnSelect={false}
                    {...props}
+                   options={this.state.options}
     />
   }
 
