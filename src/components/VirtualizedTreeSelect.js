@@ -13,6 +13,7 @@ class VirtualizedTreeSelect extends Component {
     this._processOptions = this._processOptions.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
+    this._lookForTextInTree = this._lookForTextInTree.bind(this);
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -103,12 +104,26 @@ class VirtualizedTreeSelect extends Component {
     if (inputValue.length === 0) {
       return !option.parent || this.data[option.parent].expanded;
     } else {
-      if (candidate.label.toLowerCase().indexOf(inputValue)) {
-        return true;
-      }
-      // TODO Return true for options whose descendant matches.
-      return false;
+      const id = candidate.data[this.props.valueKey];
+      return this._lookForTextInTree(id, inputValue)
     }
+  }
+
+
+  _lookForTextInTree(startNode, inputValue) {
+    const curr = this.data[startNode]
+    if(!curr)
+      return false
+    if (curr[this.props.labelKey].toLowerCase().indexOf(inputValue) !== -1)
+      return true
+    let match = false;
+    for (const children of curr.subTerm) {
+      if (this._lookForTextInTree(children, inputValue)) {
+        match = true;
+        break;
+      }
+    }
+    return match;
   }
 
   _onInputChange(input) {
