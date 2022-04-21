@@ -506,7 +506,8 @@ IntelligentTreeSelect.propTypes = {
   tooltipKey: PropTypes.string,
   optionRenderer: PropTypes.func,
   valueRenderer: PropTypes.func,
-  searchDelay: PropTypes.number
+  searchDelay: PropTypes.number,
+  hideSelectedOptions: PropTypes.bool
 };
 
 IntelligentTreeSelect.defaultProps = {
@@ -524,6 +525,7 @@ IntelligentTreeSelect.defaultProps = {
   optionLifetime: '5m',
   fetchLimit: 100,
   optionHeight: 25,
+  hideSelectedOptions: false
 };
 
 export {IntelligentTreeSelect};
