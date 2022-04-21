@@ -65,6 +65,11 @@ class VirtualizedTreeSelect extends Component {
       this._sort(options, key, new Set());
     });
 
+    // Value property is needed for correct rendering of selected options
+    options.forEach((option) => {
+      option.value = option[this.props.valueKey]
+    })
+
     this.setState({options});
   }
 
@@ -110,9 +115,9 @@ class VirtualizedTreeSelect extends Component {
   }
 
 
-  _lookForTextInTree(startNode, inputValue) {
-    const curr = this.data[startNode]
-    if(!curr)
+  _lookForTextInTree(id, inputValue) {
+    const curr = this.data[id]
+    if (!curr)
       return false
     if (curr[this.props.labelKey].toLowerCase().indexOf(inputValue) !== -1)
       return true
@@ -149,6 +154,7 @@ class VirtualizedTreeSelect extends Component {
                    blurInputOnSelect={false}
                    {...props}
                    options={this.state.options}
+                   hideSelectedOptions={false}
     />
   }
 
