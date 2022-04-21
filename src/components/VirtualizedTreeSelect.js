@@ -154,7 +154,6 @@ class VirtualizedTreeSelect extends Component {
                    blurInputOnSelect={false}
                    {...props}
                    options={this.state.options}
-                   hideSelectedOptions={false}
     />
   }
 
