@@ -145,7 +145,7 @@ class VirtualizedTreeSelect extends Component {
 
     return <Select ref={this.select}
                    {...props}
-                   style={styles}
+                   styles={styles}
                    menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
@@ -167,7 +167,16 @@ class VirtualizedTreeSelect extends Component {
       menuContainer: (provided) => ({
         maxHeight: this.props.maxHeight,
         ...provided
-      })
+      }),
+      dropdownIndicator: (provided, state) => ({
+        ...provided,
+        transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
+        display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+      }),
+      indicatorSeparator: (provided, state) => ({
+        ...provided,
+        display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+      }),
     };
   }
 }
