@@ -146,6 +146,7 @@ class VirtualizedTreeSelect extends Component {
     return <Select ref={this.select}
                    {...props}
                    style={styles}
+                   menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => option[props.labelKey]}

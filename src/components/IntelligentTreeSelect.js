@@ -467,8 +467,7 @@ class IntelligentTreeSelect extends Component {
           valueRenderer={valueRenderer}
 
           {...propsToPass}
-          // This might seem odd but it is needed, false forces the menu component to never open
-          menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
+          menuIsOpen={this.props.isMenuOpen}
           expanded={this.state.expanded}
           renderAsTree={this.props.renderAsTree}
           multi={this.state.multi}
