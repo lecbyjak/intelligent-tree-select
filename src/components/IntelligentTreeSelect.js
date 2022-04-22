@@ -443,18 +443,18 @@ class IntelligentTreeSelect extends Component {
 
       <div>
         {this.props.showSettings &&
-        <Settings onOptionCreate={this._onOptionCreate}
-                  formComponent={this.props.formComponent}
-                  openButtonLabel={this.props.openButtonLabel}
-                  openButtonTooltipLabel={this.props.openButtonTooltipLabel}
-                  formData={{
-                    labelKey: this.props.labelKey,
-                    valueKey: this.props.valueKey,
-                    childrenKey: this.props.childrenKey,
-                    options: this.state.options,
-                    onOptionCreate: this._onOptionCreate
-                  }}
-        />
+          <Settings onOptionCreate={this._onOptionCreate}
+                    formComponent={this.props.formComponent}
+                    openButtonLabel={this.props.openButtonLabel}
+                    openButtonTooltipLabel={this.props.openButtonTooltipLabel}
+                    formData={{
+                      labelKey: this.props.labelKey,
+                      valueKey: this.props.valueKey,
+                      childrenKey: this.props.childrenKey,
+                      options: this.state.options,
+                      onOptionCreate: this._onOptionCreate
+                    }}
+          />
         }
 
         <VirtualizedTreeSelect
@@ -467,6 +467,8 @@ class IntelligentTreeSelect extends Component {
           valueRenderer={valueRenderer}
 
           {...propsToPass}
+          // This might seem odd but it is needed, false forces the menu component to never open
+          menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
           expanded={this.state.expanded}
           renderAsTree={this.props.renderAsTree}
           multi={this.state.multi}
@@ -520,7 +522,7 @@ IntelligentTreeSelect.defaultProps = {
   multi: true,
   options: [],
   renderAsTree: true,
-  isMenuOpen: false,
+  isMenuOpen: undefined,
   simpleTreeData: true,
   optionLifetime: '5m',
   fetchLimit: 100,

@@ -144,15 +144,14 @@ class VirtualizedTreeSelect extends Component {
     const filterOptions = props.filterOptions || this.filterOption;
 
     return <Select ref={this.select}
+                   {...props}
                    style={styles}
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => option[props.labelKey]}
                    components={{Option: Option}}
                    isMulti={props.multi}
-                   menuIsOpen={props.isMenuOpen}
                    blurInputOnSelect={false}
-                   {...props}
                    options={this.state.options}
     />
   }
@@ -189,7 +188,8 @@ VirtualizedTreeSelect.propTypes = {
   optionRenderer: PropTypes.func,
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
-  valueKey: PropTypes.string
+  valueKey: PropTypes.string,
+  hideSelectedOptions: PropTypes.bool
 };
 
 VirtualizedTreeSelect.defaultProps = {
@@ -200,11 +200,12 @@ VirtualizedTreeSelect.defaultProps = {
   optionHeight: 25,
   optionLeftOffset: 16,
   expanded: false,
-  isMenuOpen: false,
+  isMenuOpen: undefined,
   maxHeight: 300,
   minHeight: 0,
   multi: false,
   renderAsTree: true,
+  hideSelectedOptions: false
 };
 
 export {VirtualizedTreeSelect};
