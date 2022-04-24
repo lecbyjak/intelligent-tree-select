@@ -13,7 +13,7 @@ class VirtualizedTreeSelect extends Component {
     this._processOptions = this._processOptions.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
-    this._lookForTextInTree = this._lookForTextInTree.bind(this);
+    this._filterValues = this._filterValues.bind(this);
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -67,7 +67,7 @@ class VirtualizedTreeSelect extends Component {
 
     // Value property is needed for correct rendering of selected options
     options.forEach((option) => {
-      option.value = option[this.props.valueKey]
+      option.value = option[this.props.valueKey];
     })
 
     this.setState({options});
@@ -109,29 +109,32 @@ class VirtualizedTreeSelect extends Component {
     if (inputValue.length === 0) {
       return !option.parent || this.data[option.parent].expanded;
     } else {
-      const id = candidate.data[this.props.valueKey];
-      return this._lookForTextInTree(id, inputValue)
+      return option.visible;
     }
+
   }
 
-
-  _lookForTextInTree(id, inputValue) {
-    const curr = this.data[id]
-    if (!curr)
-      return false
-    if (curr[this.props.labelKey].toLowerCase().indexOf(inputValue) !== -1)
-      return true
-    let match = false;
-    for (const children of curr.subTerm) {
-      if (this._lookForTextInTree(children, inputValue)) {
-        match = true;
-        break;
+  _filterValues(searchInput) {
+    for (let option of this.state.options) {
+      if (option[this.props.labelKey].toLowerCase().indexOf(searchInput) !== -1) {
+        option.visible = true;
+        while (option.parent !== null) {
+          option = this.data[option.parent];
+          option.expanded = true;
+          option.visible = true;
+        }
+      } else {
+        option.visible = false;
       }
     }
-    return match;
   }
 
+
   _onInputChange(input) {
+    //Make the expensive calculation only when input has been really changed
+    if (this.searchString !== input && input.length !== 0) {
+      this._filterValues(input);
+    }
     this.searchString = input;
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
