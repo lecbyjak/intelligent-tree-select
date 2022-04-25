@@ -27,8 +27,8 @@ ReactDOM.render(
         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
         childrenKey={"subTerm"}
         simpleTreeData={true}
-        isMenuOpen={true}
         options={data}
+        isMenuOpen={true}
         displayInfoOnHover={true}
         onOptionCreate={(option) => {console.log('created', option)}}
   />,
