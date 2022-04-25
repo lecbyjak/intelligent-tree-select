@@ -161,6 +161,7 @@ class VirtualizedTreeSelect extends Component {
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
+                   formatOptionLabel={this.props.valueRenderer}
     />
   }
 
