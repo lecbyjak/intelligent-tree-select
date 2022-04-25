@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Select from "react-select";
+import Select, { components } from "react-select";
 import PropTypes from 'prop-types'
 import Option from "./Option";
 import Constants from "./utils/Constants";
@@ -162,6 +162,9 @@ class VirtualizedTreeSelect extends Component {
                    blurInputOnSelect={false}
                    options={this.state.options}
                    formatOptionLabel={this.props.valueRenderer}
+                   autoFocus={true}
+                   //multiValueLabel={this.props.valueRenderer}
+
     />
   }
 
@@ -175,6 +178,16 @@ class VirtualizedTreeSelect extends Component {
       indicatorSeparator: (provided, state) => ({
         ...provided,
         display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+      }),
+      valueContainer: (provided, state) => ({
+        ...provided,
+        display: state.hasValue ? 'flex' : 'inline-grid',
+      }),
+      input: (provided) => ({
+        ...provided,
+        input: {
+          opacity: "1 !important",
+        },
       }),
     };
   }
