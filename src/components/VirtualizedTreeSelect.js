@@ -4,6 +4,7 @@ import 'react-virtualized/styles.css';
 import PropTypes from 'prop-types'
 import Option from "./Option";
 import Constants from "./utils/Constants";
+import {FixedSizeList as List} from "react-window";
 
 class VirtualizedTreeSelect extends Component {
 
@@ -115,16 +116,20 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _filterValues(searchInput) {
+    const matches = []
     for (let option of this.state.options) {
       if (option[this.props.labelKey].toLowerCase().indexOf(searchInput) !== -1) {
         option.visible = true;
-        while (option.parent !== null) {
-          option = this.data[option.parent];
-          option.expanded = true;
-          option.visible = true;
-        }
+        matches.push(option)
       } else {
         option.visible = false;
+      }
+    }
+    for (let match of matches) {
+      while (match.parent !== null) {
+        match = this.data[match.parent];
+        match.expanded = true;
+        match.visible = true;
       }
     }
   }
@@ -153,7 +158,7 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => option[props.labelKey]}
-                   components={{Option: Option}}
+                   components={{Option: Option, MenuList: MenuList}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
@@ -162,15 +167,6 @@ class VirtualizedTreeSelect extends Component {
 
   _prepareStyles() {
     return {
-      menu: (provided) => ({
-        overflow: "hidden",
-        maxHeight: this.props.maxHeight,
-        ...provided
-      }),
-      menuContainer: (provided) => ({
-        maxHeight: this.props.maxHeight,
-        ...provided
-      }),
       dropdownIndicator: (provided, state) => ({
         ...provided,
         transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
@@ -181,6 +177,25 @@ class VirtualizedTreeSelect extends Component {
         display: !state.selectProps.isMenuOpen ? 'block' : 'none'
       }),
     };
+  }
+}
+
+// Component for efficient rendering
+class MenuList extends Component {
+  render() {
+    const {children, maxHeight} = this.props;
+    const {optionHeight} = this.props.selectProps;
+    // We need to check whether the children object contains valid data
+    const values = children.length ? children : [];
+    return (
+      <List
+        height={Math.min(maxHeight, optionHeight * values.length)}
+        itemCount={values.length}
+        itemSize={optionHeight}
+      >
+        {({index, style}) => <div style={style}>{values[index]}</div>}
+      </List>
+    );
   }
 }
 
