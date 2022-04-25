@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Select from "react-select";
-import 'react-virtualized/styles.css';
 import PropTypes from 'prop-types'
 import Option from "./Option";
 import Constants from "./utils/Constants";
