@@ -241,7 +241,7 @@ VirtualizedTreeSelect.defaultProps = {
   optionHeight: 25,
   optionLeftOffset: 16,
   expanded: false,
-  isMenuOpen: undefined,
+  isMenuOpen: false,
   maxHeight: 300,
   minHeight: 0,
   multi: false,

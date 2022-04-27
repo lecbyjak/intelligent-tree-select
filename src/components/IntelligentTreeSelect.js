@@ -22,6 +22,7 @@ class IntelligentTreeSelect extends Component {
     this._onInputChange = this._onInputChange.bind(this);
     this._onScroll = this._onScroll.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
+    this._onOptionClose = this._onOptionClose.bind(this);
 
     this.state = {
       expanded: this.props.expanded,
@@ -340,9 +341,17 @@ class IntelligentTreeSelect extends Component {
 
       }
     } else {
-      option.expanded = false;
+      this._onOptionClose(option)
     }
     this.forceUpdate();
+  }
+
+  _onOptionClose(option) {
+    option.expanded = false;
+    for (const subTermId of option.subTerm) {
+      const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
+      this._onOptionClose(subTerm)
+    }
   }
 
   _valueRenderer(option) {
@@ -521,7 +530,7 @@ IntelligentTreeSelect.defaultProps = {
   multi: true,
   options: [],
   renderAsTree: true,
-  isMenuOpen: undefined,
+  isMenuOpen: false,
   simpleTreeData: true,
   optionLifetime: '5m',
   fetchLimit: 100,
