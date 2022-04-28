@@ -15,6 +15,7 @@ class VirtualizedTreeSelect extends Component {
     this._onInputChange = this._onInputChange.bind(this);
     this._filterValues = this._filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
+    this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -118,7 +119,7 @@ class VirtualizedTreeSelect extends Component {
   _filterValues(searchInput) {
     const matches = []
     for (let option of this.state.options) {
-      if (option[this.props.labelKey].toLowerCase().indexOf(searchInput) !== -1) {
+      if (this.matchCheck(searchInput, option[this.props.labelKey])) {
         option.visible = true;
         matches.push(option)
       } else {
@@ -132,6 +133,10 @@ class VirtualizedTreeSelect extends Component {
         match.visible = true;
       }
     }
+  }
+
+  matchCheckFull(searchInput, optionLabel) {
+    return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
   }
 
 
@@ -174,6 +179,7 @@ class VirtualizedTreeSelect extends Component {
                    autoFocus={true}
                    onOptionToggle={this._onOptionToggle}
 
+
     />
   }
 
@@ -187,6 +193,10 @@ class VirtualizedTreeSelect extends Component {
       indicatorSeparator: (provided, state) => ({
         ...provided,
         display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+      }),
+      noOptionsMessage: (provided, state) => ({
+        ...provided,
+        paddingLeft: '16px',
       }),
       valueContainer: (provided, state) => ({
         ...provided,
@@ -207,8 +217,8 @@ class MenuList extends Component {
   render() {
     const {children, maxHeight} = this.props;
     const {optionHeight} = this.props.selectProps;
-    // We need to check whether the children object contains valid data
-    const values = children.length ? children : [];
+    // We need to check whether the passed object contains items or empty list component
+    const values = Array.isArray(children) ? children : [children.props.children];
     return (
       <List
         height={Math.min(maxHeight, optionHeight * values.length)}
@@ -225,6 +235,7 @@ VirtualizedTreeSelect.propTypes = {
   childrenKey: PropTypes.string,
   expanded: PropTypes.bool,
   filterOptions: PropTypes.func,
+  matchCheck: PropTypes.func,
   isMenuOpen: PropTypes.bool,
   labelKey: PropTypes.string,
   getOptionLabel: PropTypes.func,
