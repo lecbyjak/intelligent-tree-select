@@ -217,11 +217,21 @@ class MenuList extends Component {
   render() {
     const {children, maxHeight} = this.props;
     const {optionHeight} = this.props.selectProps;
-    // We need to check whether the passed object contains items or empty list component
-    const values = Array.isArray(children) ? children : [children.props.children];
+
+    // We need to check whether the passed object contains items or loading/empty message
+    let values;
+    let height;
+    if (Array.isArray(children)) {
+      values = children;
+      height = Math.min(maxHeight, optionHeight * values.length)
+    } else {
+      values = [<components.NoOptionsMessage {...children.props} children={children.props.children}/>];
+      height = 40;
+    }
+
     return (
       <List
-        height={Math.min(maxHeight, optionHeight * values.length)}
+        height={height}
         itemCount={values.length}
         itemSize={optionHeight}
       >
