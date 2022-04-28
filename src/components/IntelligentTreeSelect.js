@@ -500,6 +500,7 @@ IntelligentTreeSelect.propTypes = {
   expanded: PropTypes.bool,
   fetchLimit: PropTypes.number,
   fetchOptions: PropTypes.func,
+  matchCheck: PropTypes.func,
   labelKey: PropTypes.string,
   getOptionLabel: PropTypes.func,
   multi: PropTypes.bool,
