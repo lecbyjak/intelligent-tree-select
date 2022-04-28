@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Select, { components } from "react-select";
+import Select, {components} from "react-select";
 import PropTypes from 'prop-types'
 import Option from "./Option";
 import Constants from "./utils/Constants";
@@ -14,6 +14,7 @@ class VirtualizedTreeSelect extends Component {
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this._filterValues = this._filterValues.bind(this);
+    this._onOptionToggle = this._onOptionToggle.bind(this);
     this.data = {};
     this.searchString = '';
     this.state = {
@@ -145,6 +146,14 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  _onOptionToggle(option) {
+    // disables option expansion/collapsion when search string is present
+    if (this.searchString !== "") return;
+    if ("onOptionToggle" in this.props) {
+      this.props.onOptionToggle(option);
+    }
+  }
+
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
@@ -163,7 +172,7 @@ class VirtualizedTreeSelect extends Component {
                    options={this.state.options}
                    formatOptionLabel={this.props.valueRenderer}
                    autoFocus={true}
-                   //multiValueLabel={this.props.valueRenderer}
+                   onOptionToggle={this._onOptionToggle}
 
     />
   }
