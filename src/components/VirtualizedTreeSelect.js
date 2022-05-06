@@ -163,7 +163,6 @@ class VirtualizedTreeSelect extends Component {
     const props = this.props;
     const styles = this._prepareStyles();
     const filterOptions = props.filterOptions || this.filterOption;
-
     return <Select ref={this.select}
                    {...props}
                    styles={styles}
@@ -171,7 +170,7 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => option[props.labelKey]}
-                   components={{Option: Option, MenuList: MenuList}}
+                   components={{Option: Option, Menu: Menu, MenuList: MenuList}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
@@ -211,6 +210,24 @@ class VirtualizedTreeSelect extends Component {
     };
   }
 }
+
+// Wrapper for MenuList, it doesn't do anything, it is only needed for correct pass of the onScroll prop
+class Menu extends Component {
+  render() {
+    return (
+      <components.Menu
+        {...this.props}
+        innerProps={{
+          ...this.props.innerProps, onScrollCapture: (e) => {
+            this.props.selectProps.listProps.onScroll(e.target)
+          }
+        }}
+      >
+        {this.props.children}
+      </components.Menu>
+    );
+  }
+};
 
 // Component for efficient rendering
 class MenuList extends Component {
