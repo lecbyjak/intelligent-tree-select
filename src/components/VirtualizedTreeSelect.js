@@ -15,9 +15,11 @@ class VirtualizedTreeSelect extends Component {
     this._onInputChange = this._onInputChange.bind(this);
     this._filterValues = this._filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
+    this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
     this.searchString = '';
+    this.toggledOptions = [];
     this.state = {
       options: []
     };
@@ -141,13 +143,29 @@ class VirtualizedTreeSelect extends Component {
 
 
   _onInputChange(input) {
-    //Make the expensive calculation only when input has been really changed
+    // Make the expensive calculation only when input has been really changed
     if (this.searchString !== input && input.length !== 0) {
       this._filterValues(input);
     }
+
     this.searchString = input;
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
+    }
+    // Collapses items which were expanded by the search
+    if (input.length === 0) {
+      for (let option of this.state.options) {
+        option.expanded = !!this.toggledOptions.find(element => element[this.props.valueKey] === option[this.props.valueKey]);
+      }
+    }
+
+  }
+
+  _removeChildrenFromToggled(option) {
+    for (const subTermId of option.subTerm) {
+      const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
+      this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
+      this._removeChildrenFromToggled(subTerm)
     }
   }
 
@@ -156,6 +174,13 @@ class VirtualizedTreeSelect extends Component {
     if (this.searchString !== "") return;
     if ("onOptionToggle" in this.props) {
       this.props.onOptionToggle(option);
+    }
+    // Adds/removes references for toggled items
+    if (option.expanded) {
+      this.toggledOptions.push(option);
+    } else {
+      this.toggledOptions = this.toggledOptions.filter(el => el[this.props.valueKey] !== option[this.props.valueKey]);
+      this._removeChildrenFromToggled(option);
     }
   }
 
