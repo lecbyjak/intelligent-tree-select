@@ -16,6 +16,7 @@ class VirtualizedTreeSelect extends Component {
     this._filterValues = this._filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
+    this._onOptionSelect = this._onOptionSelect.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
     this.searchString = '';
@@ -158,7 +159,6 @@ class VirtualizedTreeSelect extends Component {
         option.expanded = !!this.toggledOptions.find(element => element[this.props.valueKey] === option[this.props.valueKey]);
       }
     }
-
   }
 
   _removeChildrenFromToggled(option) {
@@ -184,6 +184,20 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  //When selecting an option, we want to ensure that the path to it is expanded
+  //Path is saved in toggledOptions
+  _onOptionSelect(optionId) {
+    let option = this.data[optionId];
+    let parent = this.data[option.parent];
+    while (parent) {
+      if (!this.toggledOptions.find((el) => el[this.props.valueKey] === parent[this.props.valueKey])) {
+        parent.expanded = true;
+        this.toggledOptions.push(parent);
+      }
+      parent = this.data[parent.parent];
+    }
+  }
+
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
@@ -202,7 +216,7 @@ class VirtualizedTreeSelect extends Component {
                    formatOptionLabel={this.props.valueRenderer}
                    autoFocus={true}
                    onOptionToggle={this._onOptionToggle}
-
+                   onOptionSelect={this._onOptionSelect}
 
     />
   }
