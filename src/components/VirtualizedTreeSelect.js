@@ -186,7 +186,10 @@ class VirtualizedTreeSelect extends Component {
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
-  _onOptionSelect(optionId) {
+  _onOptionSelect(optionId, isSelected) {
+    if(isSelected)
+      return
+
     let option = this.data[optionId];
     let parent = this.data[option.parent];
     while (parent) {
