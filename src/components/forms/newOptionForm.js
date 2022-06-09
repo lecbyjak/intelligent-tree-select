@@ -4,6 +4,8 @@ import React, {Component} from "react";
 import {Form, BasicText, asField, Scope} from 'informed';
 import {Button, Collapse, FormFeedback, FormGroup, Input, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {validateLengthMin3, validateLengthMin5, validateNotSameAsParent} from "./newOptionValidate";
+import classNames from "classnames";
+import ResultItem from "../resultItem";
 
 const ErrorText = asField(({fieldState, ...props}) => {
     let attributes = {};
@@ -50,18 +52,20 @@ const TextInput = asField(({fieldState, ...props}) => {
   }
 );
 
-const Select = asField(({fieldState, ...props}) => (
-  <FormGroup>
-    <VirtualizedTreeSelect
-      onChange={(value) => props.fieldApi.setValue(value)}
-      value={props.fieldApi.getValue()}
-      {...props}
-      style={fieldState.error ? {border: 'solid 1px red'} : null}
-    />
-    {fieldState.error ? (
-      <FormFeedback style={{color: 'red', display: 'block'}}>{fieldState.error}</FormFeedback>) : null}
-  </FormGroup>
-));
+
+const Select = asField(({fieldState, ...props}) => {
+    return (<FormGroup>
+      <VirtualizedTreeSelect
+        // onChange={(value) => props.fieldApi.setValue(value)}
+        // value={props.fieldApi.getValue()}
+        {...props}
+        style={fieldState.error ? {border: 'solid 1px red'} : null}
+      />
+      {fieldState.error ? (
+        <FormFeedback style={{color: 'red', display: 'block'}}>{fieldState.error}</FormFeedback>) : null}
+    </FormGroup>)
+  }
+);
 
 
 class NewOptionForm extends Component {
@@ -74,6 +78,7 @@ class NewOptionForm extends Component {
     this.filterChildrenOptions = this.filterChildrenOptions.bind(this);
     this._addSelectedOptionParent = this._addSelectedOptionParent.bind(this);
     this._addSelectedOptionChildren = this._addSelectedOptionChildren.bind(this);
+    this._optionRenderer = this._optionRenderer.bind(this);
     this.state = {
       siblings: [],
       modalAdvancedSectionVisible: false,
@@ -104,6 +109,51 @@ class NewOptionForm extends Component {
 
   _addSelectedOptionChildren(optionsChildren) {
     this.setState({optionsChildren});
+  }
+
+  _optionRenderer({
+                    focusedOption,
+                    focusOption,
+                    key,
+                    option,
+                    selectValue,
+                    optionStyle,
+                    valueArray,
+                    toggleOption,
+                    searchString
+                  }) {
+
+    const className = classNames("VirtualizedSelectOption", {
+      "VirtualizedSelectFocusedOption": option === focusedOption,
+      "VirtualizedSelectDisabledOption": option.disabled,
+      "VirtualizedSelectSelectedOption": valueArray && valueArray.indexOf(option) >= 0
+    }, option.className);
+
+    const events = option.disabled ? {} : {
+      onClick: () => selectValue(option),
+      onMouseEnter: () => focusOption(option),
+      onToggleClick: () => toggleOption(option),
+    };
+
+    return (
+      <ResultItem
+        className={className}
+        key={key}
+        style={optionStyle}
+        option={option}
+        childrenKey={this.props.childrenKey}
+        valueKey={this.props.valueKey}
+        labelKey={this.props.labelKey}
+        getOptionLabel={this.props.getOptionLabel}
+        tooltipKey={this.props.tooltipKey}
+        settings={{
+          searchString,
+          renderAsTree: this.props.renderAsTree,
+          displayInfoOnHover: this.props.displayInfoOnHover,
+        }}
+        {...events}
+      />
+    );
   }
 
   _getIDs(children) {
@@ -198,6 +248,7 @@ class NewOptionForm extends Component {
                     renderAsTree={false}
                     onChange={this._addSelectedOptionParent}
                     value={this.state.optionsParent}
+                    optionRenderer={this._optionRenderer}
             />
 
             <Select field={"childOptions"}
@@ -215,6 +266,7 @@ class NewOptionForm extends Component {
                     validateOnBlur
                     onChange={this._addSelectedOptionChildren}
                     value={this.state.optionsChildren}
+                    optionRenderer={this._optionRenderer}
             />
 
             <FormGroup>
