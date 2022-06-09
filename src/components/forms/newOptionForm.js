@@ -58,7 +58,8 @@ const Select = asField(({fieldState, ...props}) => (
       {...props}
       style={fieldState.error ? {border: 'solid 1px red'} : null}
     />
-    {fieldState.error ? (<FormFeedback style={{color: 'red', display: 'block'}}>{fieldState.error}</FormFeedback>) : null}
+    {fieldState.error ? (
+      <FormFeedback style={{color: 'red', display: 'block'}}>{fieldState.error}</FormFeedback>) : null}
   </FormGroup>
 ));
 
@@ -71,14 +72,17 @@ class NewOptionForm extends Component {
     this._createNewOption = this._createNewOption.bind(this);
     this.filterParentOptions = this.filterParentOptions.bind(this);
     this.filterChildrenOptions = this.filterChildrenOptions.bind(this);
-
+    this._addSelectedOptionParent = this._addSelectedOptionParent.bind(this);
+    this._addSelectedOptionChildren = this._addSelectedOptionChildren.bind(this);
     this.state = {
       siblings: [],
       modalAdvancedSectionVisible: false,
+      optionsParent: '',
+      optionsChildren: '',
     }
   }
 
-  filterParentOptions(options, filter, selectedOptions){
+  filterParentOptions(options, filter, selectedOptions) {
     let filtered = options.filter(option => {
       let label = option[this.props.labelKey];
       return label.toLowerCase().indexOf(filter.toLowerCase()) !== -1
@@ -86,12 +90,20 @@ class NewOptionForm extends Component {
     return filtered
   }
 
-  filterChildrenOptions(options, filter, selectedOptions){
+  filterChildrenOptions(options, filter, selectedOptions) {
     let filtered = options.filter(option => {
       let label = option[this.props.labelKey];
       return (label.toLowerCase().indexOf(filter.toLowerCase()) !== -1) && !option.parent
     });
     return filtered
+  }
+
+  _addSelectedOptionParent(optionsParent) {
+    this.setState({optionsParent});
+  }
+
+  _addSelectedOptionChildren(optionsChildren) {
+    this.setState({optionsChildren});
   }
 
   _getIDs(children) {
@@ -184,6 +196,8 @@ class NewOptionForm extends Component {
                     filterOptions={this.filterParentOptions}
                     expanded={true}
                     renderAsTree={false}
+                    onChange={this._addSelectedOptionParent}
+                    value={this.state.optionsParent}
             />
 
             <Select field={"childOptions"}
@@ -199,6 +213,8 @@ class NewOptionForm extends Component {
                     validate={validateNotSameAsParent}
                     validateOnChange
                     validateOnBlur
+                    onChange={this._addSelectedOptionChildren}
+                    value={this.state.optionsChildren}
             />
 
             <FormGroup>
@@ -243,7 +259,7 @@ class NewOptionForm extends Component {
         </ModalBody>
 
         <ModalFooter>
-          <Button color="primary" type="submit">Submit</Button>{' '}
+          <Button color="primary" type="submit">Submit</Button>
           <Button color="secondary" type="button" onClick={this.props.toggleModal}>Cancel</Button>
         </ModalFooter>
 
