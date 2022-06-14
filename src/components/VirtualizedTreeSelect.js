@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
+import {getLabel} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
 
@@ -122,7 +123,7 @@ class VirtualizedTreeSelect extends Component {
   _filterValues(searchInput) {
     const matches = []
     for (let option of this.state.options) {
-      if (this.matchCheck(searchInput, option[this.props.labelKey])) {
+      if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
         option.visible = true;
         matches.push(option)
       } else {
@@ -187,7 +188,7 @@ class VirtualizedTreeSelect extends Component {
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
   _onOptionSelect(optionId, isSelected) {
-    if(isSelected)
+    if (isSelected)
       return
 
     let option = this.data[optionId];
@@ -211,7 +212,7 @@ class VirtualizedTreeSelect extends Component {
                    menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
-                   getOptionLabel={(option) => option[props.labelKey]}
+                   getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
                    components={{Option: Option, Menu: Menu, MenuList: MenuList}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
@@ -254,50 +255,46 @@ class VirtualizedTreeSelect extends Component {
 }
 
 // Wrapper for MenuList, it doesn't do anything, it is only needed for correct pass of the onScroll prop
-class Menu extends Component {
-  render() {
-    return (
-      <components.Menu
-        {...this.props}
-        innerProps={{
-          ...this.props.innerProps, onScrollCapture: (e) => {
-            this.props.selectProps.listProps.onScroll(e.target)
-          }
-        }}
-      >
-        {this.props.children}
-      </components.Menu>
-    );
-  }
+const Menu = (props) => {
+  return (
+    <components.Menu
+      {...props}
+      innerProps={{
+        ...props.innerProps, onScrollCapture: (e) => {
+          props.selectProps.listProps.onScroll(e.target)
+        }
+      }}
+    >
+      {props.children}
+    </components.Menu>
+  );
 };
 
 // Component for efficient rendering
-class MenuList extends Component {
-  render() {
-    const {children, maxHeight} = this.props;
-    const {optionHeight} = this.props.selectProps;
+const MenuList = (props) => {
+  const {children, maxHeight} = props;
+  const {optionHeight} = props.selectProps;
 
-    // We need to check whether the passed object contains items or loading/empty message
-    let values;
-    let height;
-    if (Array.isArray(children)) {
-      values = children;
-      height = Math.min(maxHeight, optionHeight * values.length)
-    } else {
-      values = [<components.NoOptionsMessage {...children.props} children={children.props.children}/>];
-      height = 40;
-    }
-
-    return (
-      <List
-        height={height}
-        itemCount={values.length}
-        itemSize={optionHeight}
-      >
-        {({index, style}) => <div style={style}>{values[index]}</div>}
-      </List>
-    );
+  // We need to check whether the passed object contains items or loading/empty message
+  let values;
+  let height;
+  if (Array.isArray(children)) {
+    values = children;
+    height = Math.min(maxHeight, optionHeight * values.length)
+  } else {
+    values = [<components.NoOptionsMessage {...children.props} children={children.props.children}/>];
+    height = 40;
   }
+
+  return (
+    <List
+      height={height}
+      itemCount={values.length}
+      itemSize={optionHeight}
+    >
+      {({index, style}) => <div style={style}>{values[index]}</div>}
+    </List>
+  );
 }
 
 VirtualizedTreeSelect.propTypes = {
