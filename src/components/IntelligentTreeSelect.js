@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import Settings from './settings';
 import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
 import PropTypes from 'prop-types';
 import {getLabel, isURL} from "./utils/Utils";
@@ -451,21 +450,6 @@ class IntelligentTreeSelect extends Component {
     return (
 
       <div>
-        {this.props.showSettings &&
-          <Settings onOptionCreate={this._onOptionCreate}
-                    formComponent={this.props.formComponent}
-                    openButtonLabel={this.props.openButtonLabel}
-                    openButtonTooltipLabel={this.props.openButtonTooltipLabel}
-                    formData={{
-                      labelKey: this.props.labelKey,
-                      valueKey: this.props.valueKey,
-                      childrenKey: this.props.childrenKey,
-                      options: this.state.options,
-                      onOptionCreate: this._onOptionCreate
-                    }}
-          />
-        }
-
         <VirtualizedTreeSelect
           ref={this.select}
           name="react-virtualized-tree-select"
@@ -510,7 +494,6 @@ IntelligentTreeSelect.propTypes = {
   optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
-  showSettings: PropTypes.bool,
   simpleTreeData: PropTypes.bool,
   optionLifetime: PropTypes.string,
   valueKey: PropTypes.string,
@@ -526,7 +509,6 @@ IntelligentTreeSelect.defaultProps = {
   labelKey: Constants.LABEL_KEY,
   valueKey: Constants.VALUE_KEY,
   displayInfoOnHover: false,
-  showSettings: true,
   expanded: false,
   multi: true,
   options: [],
