@@ -13,8 +13,7 @@ const Option = (props) => {
 
   const events = props.isDisabled ? {} : {
     onClick: () => {
-      props.selectOption(props.data);
-      props.selectProps.onOptionSelect(props.value, props.isSelected);
+      props.selectProps.onOptionSelect(props);
     }
   };
 

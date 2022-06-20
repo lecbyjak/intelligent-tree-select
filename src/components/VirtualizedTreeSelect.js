@@ -187,9 +187,18 @@ class VirtualizedTreeSelect extends Component {
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
-  _onOptionSelect(optionId, isSelected) {
+  _onOptionSelect(props) {
+    props.selectOption(props.data);
+    let optionId = props.value;
+    const isSelected = props.isSelected;
+
     if (isSelected)
       return
+
+    //TODO: Change ECMA script transpilation
+    if (optionId.iri !== undefined) {
+      optionId = optionId.iri;
+    }
 
     let option = this.data[optionId];
     let parent = this.data[option.parent];
@@ -206,6 +215,7 @@ class VirtualizedTreeSelect extends Component {
     const props = this.props;
     const styles = this._prepareStyles();
     const filterOptions = props.filterOptions || this.filterOption;
+    const optionRenderer = this.props.optionRenderer || Option;
     return <Select ref={this.select}
                    {...props}
                    styles={styles}
@@ -213,7 +223,7 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
-                   components={{Option: Option, Menu: Menu, MenuList: MenuList}}
+                   components={{Option: optionRenderer, Menu: Menu, MenuList: MenuList}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
