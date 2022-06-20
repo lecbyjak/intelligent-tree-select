@@ -195,11 +195,6 @@ class VirtualizedTreeSelect extends Component {
     if (isSelected)
       return
 
-    //TODO: Change ECMA script transpilation
-    if (optionId.iri !== undefined) {
-      optionId = optionId.iri;
-    }
-
     let option = this.data[optionId];
     let parent = this.data[option.parent];
     while (parent) {
