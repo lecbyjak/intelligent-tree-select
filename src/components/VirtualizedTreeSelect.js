@@ -163,7 +163,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _removeChildrenFromToggled(option) {
-    for (const subTermId of option.subTerm) {
+    for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
       this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
       this._removeChildrenFromToggled(subTerm)

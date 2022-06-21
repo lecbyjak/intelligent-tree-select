@@ -328,11 +328,7 @@ class IntelligentTreeSelect extends Component {
             this._addToHistory(option[this.props.valueKey], Date.now() + this._getValidForInSec(this.props.optionLifetime));
 
             delete option.fetchingChild;
-            this.state.options.forEach(o => {
-              if (o[this.props.valueKey] === option[this.props.valueKey]) {
-                o.expanded = true;
-              }
-            });
+
             this._addNewOptions(data);
             this.setState({isLoadingExternally: false});
           },
