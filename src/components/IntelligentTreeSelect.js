@@ -343,7 +343,7 @@ class IntelligentTreeSelect extends Component {
 
   _onOptionClose(option) {
     option.expanded = false;
-    for (const subTermId of option.subTerm) {
+    for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
       this._onOptionClose(subTerm)
     }
