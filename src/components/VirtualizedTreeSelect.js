@@ -154,6 +154,7 @@ class VirtualizedTreeSelect extends Component {
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
     }
+
     // Collapses items which were expanded by the search
     if (input.length === 0) {
       for (let option of this.state.options) {
@@ -163,6 +164,8 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _removeChildrenFromToggled(option) {
+    if (option === undefined)
+      return;
     for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
       this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
