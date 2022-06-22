@@ -14,7 +14,7 @@ class VirtualizedTreeSelect extends Component {
     this._processOptions = this._processOptions.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
-    this._filterValues = this._filterValues.bind(this);
+    this.filterValues = this.filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
@@ -120,7 +120,7 @@ class VirtualizedTreeSelect extends Component {
 
   }
 
-  _filterValues(searchInput) {
+  filterValues(searchInput) {
     const matches = []
     for (let option of this.state.options) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
@@ -137,6 +137,7 @@ class VirtualizedTreeSelect extends Component {
         match.visible = true;
       }
     }
+    this.forceUpdate();
   }
 
   matchCheckFull(searchInput, optionLabel) {
@@ -147,7 +148,7 @@ class VirtualizedTreeSelect extends Component {
   _onInputChange(input) {
     // Make the expensive calculation only when input has been really changed
     if (this.searchString !== input && input.length !== 0) {
-      this._filterValues(input);
+      this.filterValues(input);
     }
 
     this.searchString = input;

@@ -261,6 +261,7 @@ class IntelligentTreeSelect extends Component {
   _invokeSearch(searchString, offset) {
     this._fetchOptions(searchString, "", offset, undefined, () => {
       this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
+      this.select.current.filterValues(searchString);
     });
   }
 
