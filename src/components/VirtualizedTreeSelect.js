@@ -113,7 +113,7 @@ class VirtualizedTreeSelect extends Component {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
     if (inputValue.length === 0) {
-      return !option.parent || this.data[option.parent].expanded;
+      return !option.parent || this.data[option.parent]?.expanded;
     } else {
       return option.visible;
     }
