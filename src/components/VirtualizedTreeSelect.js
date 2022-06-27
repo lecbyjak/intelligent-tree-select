@@ -12,6 +12,7 @@ class VirtualizedTreeSelect extends Component {
     super(props, context);
 
     this._processOptions = this._processOptions.bind(this);
+    this._onOptionHover = this._onOptionHover.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this.filterValues = this.filterValues.bind(this);
@@ -210,6 +211,11 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  //When using custom option, it is needed to set focusedOption manually
+  _onOptionHover(option) {
+    this.select.current.setState({focusedOption: option});
+  }
+
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
@@ -230,6 +236,7 @@ class VirtualizedTreeSelect extends Component {
                    autoFocus={true}
                    onOptionToggle={this._onOptionToggle}
                    onOptionSelect={this._onOptionSelect}
+                   onOptionHover={this._onOptionHover}
 
     />
   }
@@ -295,13 +302,17 @@ const MenuList = (props) => {
     height = 40;
   }
 
+  const onMouseEnter = (index) => {
+    props.selectProps.onOptionHover(values[index].props.data);
+  }
+
   return (
     <List
       height={height}
       itemCount={values.length}
       itemSize={optionHeight}
     >
-      {({index, style}) => <div style={style}>{values[index]}</div>}
+      {({index, style}) => <div style={style} onMouseEnter={() => onMouseEnter(index)}>{values[index]}</div>}
     </List>
   );
 }

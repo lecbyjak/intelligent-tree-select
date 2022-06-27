@@ -14,7 +14,7 @@ const Option = (props) => {
   const events = props.isDisabled ? {} : {
     onClick: () => {
       props.selectProps.onOptionSelect(props);
-    }
+    },
   };
 
   let button = null;
