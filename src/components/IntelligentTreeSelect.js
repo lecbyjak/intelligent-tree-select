@@ -355,9 +355,14 @@ class IntelligentTreeSelect extends Component {
 
   _valueRenderer(option) {
     if (this.props.valueRenderer) {
-      if(typeof option == "string"){
+      if(typeof option == "string") {
         option = this.state.options.find((term) => term[this.props.valueKey] === option);
       }
+
+      //Due initial render, there can be empty options
+      if(option === undefined)
+        return;
+
       return this.props.valueRenderer(option);
     }
     const {valueKey, labelKey, getOptionLabel} = this.props;
