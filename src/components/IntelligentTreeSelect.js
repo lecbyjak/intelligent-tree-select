@@ -354,6 +354,12 @@ class IntelligentTreeSelect extends Component {
   }
 
   _valueRenderer(option) {
+    if (this.props.valueRenderer) {
+      if(typeof option == "string"){
+        option = this.state.options.find((term) => term[this.props.valueKey] === option);
+      }
+      return this.props.valueRenderer(option);
+    }
     const {valueKey, labelKey, getOptionLabel} = this.props;
     const value = option[valueKey];
     const label = getLabel(option, labelKey, getOptionLabel);
@@ -441,8 +447,7 @@ class IntelligentTreeSelect extends Component {
 
     let listProps = {};
     listProps.onScroll = this.props.onScroll || this._onScroll;
-    const valueRenderer = this.props.valueRenderer || this._valueRenderer;
-
+    const valueRenderer = this._valueRenderer;
     const propsToPass = Object.assign({}, this.props);
     delete propsToPass.valueRenderer;
     delete propsToPass.onScroll;
