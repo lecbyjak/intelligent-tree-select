@@ -19,6 +19,7 @@ class IntelligentTreeSelect extends Component {
     this._valueRenderer = this._valueRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
+    this._onChange = this._onChange.bind(this);
     this._onScroll = this._onScroll.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._onOptionClose = this._onOptionClose.bind(this);
@@ -30,6 +31,7 @@ class IntelligentTreeSelect extends Component {
       selectedOptions: '',
       isLoadingExternally: false,
       update: 0,
+      isDefaultSelected: false,
     };
     this.select = React.createRef();
   }
@@ -135,6 +137,19 @@ class IntelligentTreeSelect extends Component {
         // Reset options from props
         this._addNewOptions(this.props.options);
       });
+    }
+    if (this.props.value && !this.state.isDefaultSelected) {
+      if (this.state.options.length !== 0) {
+        let opt = [];
+        for (const valueElement of this.props.value) {
+          const key = valueElement[this.props.valueKey] ?? valueElement;
+          const el = this.state.options.find(element => element[this.props.valueKey] === key)
+          opt.push(el);
+        }
+        this._addSelectedOption(opt);
+        this.setState({isDefaultSelected: true});
+      }
+
     }
   }
 
@@ -355,12 +370,12 @@ class IntelligentTreeSelect extends Component {
 
   _valueRenderer(option) {
     if (this.props.valueRenderer) {
-      if(typeof option == "string") {
+      if (typeof option == "string") {
         option = this.state.options.find((term) => term[this.props.valueKey] === option);
       }
 
       //Due initial render, there can be empty options
-      if(option === undefined)
+      if (option === undefined)
         return;
 
       return this.props.valueRenderer(option);
@@ -440,6 +455,13 @@ class IntelligentTreeSelect extends Component {
     if (children.indexOf(childrenID) === -1) children.push(childrenID);
   }
 
+  _onChange(options) {
+    this._addSelectedOption(options);
+    if (this.props.onChange) {
+      this.props.onChange(options);
+    }
+  }
+
   _addSelectedOption(selectedOptions) {
     this.setState({selectedOptions});
   }
@@ -456,6 +478,8 @@ class IntelligentTreeSelect extends Component {
     const propsToPass = Object.assign({}, this.props);
     delete propsToPass.valueRenderer;
     delete propsToPass.onScroll;
+    delete propsToPass.value;
+    delete propsToPass.onChange;
 
     return (
 
@@ -464,7 +488,7 @@ class IntelligentTreeSelect extends Component {
           ref={this.select}
           name="react-virtualized-tree-select"
 
-          onChange={this._addSelectedOption}
+          onChange={this._onChange}
           value={this.state.selectedOptions}
 
           valueRenderer={valueRenderer}
