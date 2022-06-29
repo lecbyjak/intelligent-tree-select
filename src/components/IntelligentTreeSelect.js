@@ -23,6 +23,7 @@ class IntelligentTreeSelect extends Component {
     this._onScroll = this._onScroll.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._onOptionClose = this._onOptionClose.bind(this);
+    this._loadInitialValues = this._loadInitialValues.bind(this);
 
     this.state = {
       expanded: this.props.expanded,
@@ -138,19 +139,33 @@ class IntelligentTreeSelect extends Component {
         this._addNewOptions(this.props.options);
       });
     }
-    if (this.props.value && !this.state.isDefaultSelected) {
-      if (this.state.options.length !== 0) {
-        let opt = [];
-        for (const valueElement of this.props.value) {
-          const key = valueElement[this.props.valueKey] ?? valueElement;
-          const el = this.state.options.find(element => element[this.props.valueKey] === key)
-          opt.push(el);
-        }
-        this._addSelectedOption(opt);
-        this.setState({isDefaultSelected: true});
-      }
-
+    //If values are passed to the component it needs to load them into it's state
+    if (!this.state.isDefaultSelected && this.props.value) {
+      this._loadInitialValues();
     }
+
+  }
+
+  _loadInitialValues() {
+    if (this.state.options.length === 0)
+      return;
+
+    let opt = [];
+    if (Array.isArray(this.props.value)) {
+      for (const valueElement of this.props.value) {
+        const key = valueElement[this.props.valueKey] ?? valueElement;
+        const el = this.state.options.find(element => element[this.props.valueKey] === key)
+        opt.push(el);
+      }
+    } else {
+      const key = this.props.value;
+      const el = this.state.options.find(element => element[this.props.valueKey] === key)
+      opt.push(el);
+    }
+
+    this._addSelectedOption(opt);
+    this.setState({isDefaultSelected: true});
+
   }
 
   _isInHistory(searchString) {
@@ -463,6 +478,9 @@ class IntelligentTreeSelect extends Component {
   }
 
   _addSelectedOption(selectedOptions) {
+    //Workaround for some strange bug
+    if(Array.isArray(selectedOptions) && selectedOptions.includes(undefined))
+      return;
     this.setState({selectedOptions});
   }
 
