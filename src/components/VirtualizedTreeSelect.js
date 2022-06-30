@@ -122,6 +122,9 @@ class VirtualizedTreeSelect extends Component {
   }
 
   filterValues(searchInput) {
+    if(this.select.current.inputRef.value !== searchInput){
+      return;
+    }
     const matches = []
     for (let option of this.state.options) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
