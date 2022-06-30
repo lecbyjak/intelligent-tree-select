@@ -303,8 +303,8 @@ const Menu = (props) => {
 
 // Component for efficient rendering
 const MenuList = (props) => {
-  const {children, maxHeight} = props;
-  const {optionHeight} = props.selectProps;
+  const {children} = props;
+  const {optionHeight, maxHeight} = props.selectProps;
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
