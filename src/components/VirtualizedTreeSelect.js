@@ -252,6 +252,21 @@ class VirtualizedTreeSelect extends Component {
         ...provided,
         display: !state.selectProps.isMenuOpen ? 'block' : 'none'
       }),
+      multiValue: (base) => ({
+        ...base,
+        backgroundColor: 'rgba(0, 126, 255, 0.08)',
+        border: '1px solid #c2e0ff'
+      }),
+      multiValueRemove: (base) => ({
+        ...base,
+        color: '#007eff',
+        cursor: 'pointer',
+        borderLeft: '1px solid rgba(0,126,255,.24)',
+        "&:hover": {
+          backgroundColor: 'rgba(0,113,230,.08)',
+          color: '#0071e6'
+        }
+      }),
       noOptionsMessage: (provided, state) => ({
         ...provided,
         paddingLeft: '16px',
