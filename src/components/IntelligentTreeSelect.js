@@ -522,6 +522,8 @@ class IntelligentTreeSelect extends Component {
           listProps={listProps}
           update={this.state.update}
           onOptionToggle={this._onOptionToggle}
+          noOptionsMessage={()=>this.props.noResultsText}
+          loadingMessage={()=>this.props.loadingText}
         />
       </div>
     );
