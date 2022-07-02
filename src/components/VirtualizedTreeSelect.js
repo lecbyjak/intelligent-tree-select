@@ -322,18 +322,15 @@ const MenuList = (props) => {
     height = 40;
   }
 
-  const onMouseEnter = (index) => {
-    props.selectProps.onOptionHover(values[index].props.data);
-  }
 
   return (
     <List
       height={height}
       itemCount={values.length}
       itemSize={optionHeight}
-      overscanCount = {30}
+      overscanCount={30}
     >
-      {({index, style}) => <div style={style} onMouseEnter={() => onMouseEnter(index)}>{values[index]}</div>}
+      {({index, style}) => <div style={style}>{values[index]}</div>}
     </List>
   );
 }
