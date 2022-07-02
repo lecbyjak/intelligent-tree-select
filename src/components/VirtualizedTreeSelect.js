@@ -331,6 +331,7 @@ const MenuList = (props) => {
       height={height}
       itemCount={values.length}
       itemSize={optionHeight}
+      overscanCount = {30}
     >
       {({index, style}) => <div style={style} onMouseEnter={() => onMouseEnter(index)}>{values[index]}</div>}
     </List>
