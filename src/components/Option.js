@@ -6,7 +6,6 @@ import {hashCode} from "./utils/Utils";
 
 const Option = (props) => {
   const classes = classNames("VirtualizedSelectOption", {
-    "VirtualizedSelectFocusedOption": props.isFocused,
     "VirtualizedSelectDisabledOption": props.isDisabled,
     "VirtualizedSelectSelectedOption": props.isSelected
   })
