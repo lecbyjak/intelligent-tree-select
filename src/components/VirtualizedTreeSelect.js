@@ -276,6 +276,10 @@ class VirtualizedTreeSelect extends Component {
         ...provided,
         paddingLeft: '16px',
       }),
+      menu: (provided, state) => ({
+        ...provided,
+        position: state.selectProps.menuIsFloating? "absolute" : "relative"
+      }),
       valueContainer: (provided, state) => ({
         ...provided,
         display: state.hasValue ? 'flex' : 'inline-grid',
@@ -354,7 +358,8 @@ VirtualizedTreeSelect.propTypes = {
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
   valueKey: PropTypes.string,
-  hideSelectedOptions: PropTypes.bool
+  hideSelectedOptions: PropTypes.bool,
+  menuIsFloating: PropTypes.bool,
 };
 
 VirtualizedTreeSelect.defaultProps = {
@@ -370,7 +375,8 @@ VirtualizedTreeSelect.defaultProps = {
   minHeight: 0,
   multi: false,
   renderAsTree: true,
-  hideSelectedOptions: false
+  hideSelectedOptions: false,
+  menuIsFloating: true,
 };
 
 export {VirtualizedTreeSelect};
