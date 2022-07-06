@@ -30,7 +30,7 @@ class IntelligentTreeSelect extends Component {
       multi: this.props.multi,
       options: [],
       selectedOptions: [],
-      initialSelection: this.props.value || [],
+      passedValue: this.props.value || [],
       isLoadingExternally: false,
       update: 0,
     };
@@ -96,23 +96,23 @@ class IntelligentTreeSelect extends Component {
       return state;
 
     if (!props.value) {
-      state.initialSelection = [];
+      state.passedValue = [];
       state.selectedOptions = [];
       return state;
     }
 
     const values = sanitizeArray(props.value);
     const selectedOpt = sanitizeArray(state.selectedOptions);
-    const modifiedInitialSelection = [];
+    const modifiedPassedValue = [];
     const modifiedSelectedOptions = [];
     for (const valueElement of values) {
       const key = valueElement[props.valueKey] ?? valueElement;
       const opt = selectedOpt.find((term) => term[props.valueKey] === key);
       if (opt)
         modifiedSelectedOptions.push(opt)
-      else modifiedInitialSelection.push(key)
+      else modifiedPassedValue.push(key)
     }
-    state.initialSelection = modifiedInitialSelection;
+    state.passedValue = modifiedPassedValue;
     state.selectedOptions = modifiedSelectedOptions;
 
     return state;
@@ -474,7 +474,7 @@ class IntelligentTreeSelect extends Component {
   //Check if new options contain selected value
   _finalizeSelectedOptions(addedOptions, parsedOptions) {
     const foundOptions = [];
-    let previouslySelected = sanitizeArray(this.state.initialSelection);
+    let previouslySelected = sanitizeArray(this.state.passedValue);
     let newSelected = sanitizeArray(this.state.selectedOptions);
     for (const selectedOpt of previouslySelected) {
       const key = selectedOpt[this.props.valueKey] ?? selectedOpt;
@@ -495,7 +495,7 @@ class IntelligentTreeSelect extends Component {
       })
     }
 
-    this.setState({initialSelection: previouslySelected});
+    this.setState({passedValue: previouslySelected});
 
   }
 
