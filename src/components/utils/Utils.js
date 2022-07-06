@@ -13,3 +13,7 @@ export function hashCode(str) {
 export function isURL(str) {
   return str.startsWith("https://") || str.startsWith("http://");
 }
+
+export function sanitizeArray(arr) {
+  return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
+}

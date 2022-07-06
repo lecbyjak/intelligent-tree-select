@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
 import PropTypes from 'prop-types';
-import {getLabel, isURL} from "./utils/Utils";
+import {getLabel, isURL, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
@@ -23,16 +23,16 @@ class IntelligentTreeSelect extends Component {
     this._onScroll = this._onScroll.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._onOptionClose = this._onOptionClose.bind(this);
-    this._loadInitialValues = this._loadInitialValues.bind(this);
+    this._finalizeSelectedOptions = this._finalizeSelectedOptions.bind(this);
 
     this.state = {
       expanded: this.props.expanded,
       multi: this.props.multi,
       options: [],
-      selectedOptions: '',
+      selectedOptions: [],
+      initialSelection: this.props.value || [],
       isLoadingExternally: false,
       update: 0,
-      isDefaultSelected: false,
     };
     this.select = React.createRef();
   }
@@ -90,6 +90,34 @@ class IntelligentTreeSelect extends Component {
     );
   }
 
+  // If the values are controlled from the outside, it is needed to map them properly to options which Select knows
+  static getDerivedStateFromProps(props, state) {
+    if (!props.valueIsControlled)
+      return state;
+
+    if (!props.value) {
+      state.initialSelection = [];
+      state.selectedOptions = [];
+      return state;
+    }
+
+    const values = sanitizeArray(props.value);
+    const selectedOpt = sanitizeArray(state.selectedOptions);
+    const modifiedInitialSelection = [];
+    const modifiedSelectedOptions = [];
+    for (const valueElement of values) {
+      const key = valueElement[props.valueKey] ?? valueElement;
+      const opt = selectedOpt.find((term) => term[props.valueKey] === key);
+      if (opt)
+        modifiedSelectedOptions.push(opt)
+      else modifiedInitialSelection.push(key)
+    }
+    state.initialSelection = modifiedInitialSelection;
+    state.selectedOptions = modifiedSelectedOptions;
+
+    return state;
+  }
+
   /**
    * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
@@ -139,34 +167,9 @@ class IntelligentTreeSelect extends Component {
         this._addNewOptions(this.props.options);
       });
     }
-    //If values are passed to the component it needs to load them into it's state
-    if (!this.state.isDefaultSelected && this.props.value) {
-      this._loadInitialValues();
-    }
 
   }
 
-  _loadInitialValues() {
-    if (this.state.options.length === 0)
-      return;
-
-    let opt = [];
-    if (Array.isArray(this.props.value)) {
-      for (const valueElement of this.props.value) {
-        const key = valueElement[this.props.valueKey] ?? valueElement;
-        const el = this.state.options.find(element => element[this.props.valueKey] === key)
-        opt.push(el);
-      }
-    } else {
-      const key = this.props.value;
-      const el = this.state.options.find(element => element[this.props.valueKey] === key)
-      opt.push(el);
-    }
-
-    this._addSelectedOption(opt);
-    this.setState({isDefaultSelected: true});
-
-  }
 
   _isInHistory(searchString) {
     searchString = searchString.toLowerCase();
@@ -459,8 +462,43 @@ class IntelligentTreeSelect extends Component {
       );
     }
 
+    if (newOptions.length > 0) {
+      this._finalizeSelectedOptions(newOptions, mergedArr);
+    }
+
     this.setState({options: mergedArr, update: ++this.state.update});
+
+
   }
+
+  //Check if new options contain selected value
+  _finalizeSelectedOptions(addedOptions, parsedOptions) {
+    const foundOptions = [];
+    let previouslySelected = sanitizeArray(this.state.initialSelection);
+    let newSelected = sanitizeArray(this.state.selectedOptions);
+    for (const selectedOpt of previouslySelected) {
+      const key = selectedOpt[this.props.valueKey] ?? selectedOpt;
+      const option = addedOptions.find((term) => term[this.props.valueKey] === key);
+      if (!option)
+        continue;
+      foundOptions.push(key);
+      const optionParsed = parsedOptions.find((term) => term[this.props.valueKey] === key);
+      newSelected.push(optionParsed);
+
+    }
+    this._addSelectedOption(newSelected)
+
+    //remove already found options
+    for (const foundOption of foundOptions) {
+      previouslySelected = previouslySelected.filter((term) => {
+        return term !== foundOption
+      })
+    }
+
+    this.setState({initialSelection: previouslySelected});
+
+  }
+
 
   _addChildrenToParent(childrenID, parentID) {
 
@@ -478,9 +516,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   _addSelectedOption(selectedOptions) {
-    //Workaround for some strange bug
-    if(Array.isArray(selectedOptions) && selectedOptions.includes(undefined))
-      return;
     this.setState({selectedOptions});
   }
 
@@ -489,7 +524,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   render() {
-
     let listProps = {};
     listProps.onScroll = this.props.onScroll || this._onScroll;
     const valueRenderer = this._valueRenderer;
@@ -522,8 +556,8 @@ class IntelligentTreeSelect extends Component {
           listProps={listProps}
           update={this.state.update}
           onOptionToggle={this._onOptionToggle}
-          noOptionsMessage={()=>this.props.noResultsText}
-          loadingMessage={()=>this.props.loadingText}
+          noOptionsMessage={() => this.props.noResultsText}
+          loadingMessage={() => this.props.loadingText}
         />
       </div>
     );
@@ -556,7 +590,9 @@ IntelligentTreeSelect.propTypes = {
   valueRenderer: PropTypes.func,
   searchDelay: PropTypes.number,
   hideSelectedOptions: PropTypes.bool,
-  menuIsFloating: PropTypes.bool
+  menuIsFloating: PropTypes.bool,
+  valueIsControlled: PropTypes.bool,
+  isClearable: PropTypes.bool,
 };
 
 IntelligentTreeSelect.defaultProps = {
@@ -575,6 +611,8 @@ IntelligentTreeSelect.defaultProps = {
   optionHeight: 25,
   hideSelectedOptions: false,
   menuIsFloating: true,
+  valueIsControlled: true,
+  isClearable: true,
 };
 
 export {IntelligentTreeSelect};

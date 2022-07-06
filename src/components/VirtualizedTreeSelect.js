@@ -122,10 +122,14 @@ class VirtualizedTreeSelect extends Component {
   }
 
   filterValues(searchInput) {
+
     // when the fetch is delayed, it can cause incorrect filter render, this prevents it from happening
     if (this.select.current.inputRef.value !== searchInput) {
       searchInput = this.select.current.inputRef.value;
     }
+
+    if(searchInput === "")
+      return;
 
     const matches = []
     for (let option of this.state.options) {
