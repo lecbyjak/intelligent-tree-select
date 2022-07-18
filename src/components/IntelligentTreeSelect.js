@@ -388,26 +388,21 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
-  _valueRenderer(option) {
+  _valueRenderer({children, data}) {
     if (this.props.valueRenderer) {
-      if (typeof option == "string") {
-        option = this.state.options.find((term) => term[this.props.valueKey] === option);
-      }
+      // On initial render, there can be empty options
+      if (!children)
+        return null;
 
-      //Due initial render, there can be empty options
-      if (option === undefined)
-        return;
-
-      return this.props.valueRenderer(option);
+      return this.props.valueRenderer(children, data);
     }
     const {valueKey, labelKey, getOptionLabel} = this.props;
-    const value = option[valueKey];
-    const label = getLabel(option, labelKey, getOptionLabel);
+    const value = data[valueKey];
 
     if (isURL(value)) return (
-      <a href={value} target="_blank">{label}</a>
+      <a href={value} target="_blank" style={{margin: "0 0.25rem"}}>{children}</a>
     );
-    return label;
+    return children;
   }
 
   _onOptionCreate(option) {

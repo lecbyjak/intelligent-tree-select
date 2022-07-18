@@ -32,19 +32,19 @@ example of the usage in the `src/demo.js`
 Props types are same as the one introduced by [_react-select@1.x_ ](https://github.com/JedWatson/react-select/tree/v1.x)
 The additional parameters introduced by _virtualized-tree-select_ are optional. They are:
 
-| Property         | Type               | Default Value | Description                                                                                                     |
-|:-----------------|:-------------------|:--------------|:----------------------------------------------------------------------------------------------------------------|
-| childrenKey      | `string`           | 'children'    | path of the child value in option objects                                                                       |
-| expanded         | `bool`             | false         | whether the options are expanded by default                                                                     |
-| isMenuOpen       | `bool`             | false         | Whether the menu is open. Setting this to true force menu to me always opened                                   |
-| maxHeight        | `number`           | 300           | Maximum height of the dropdown menu                                                                             |
-| minHeight        | `number`           | 0             | Minimum height of the dropdown menu                                                                             |
-| menuRenderer     | `func`             | -             | overriding built-in drop-down menu render function                                                              |
-| optionRenderer   | `func`             | -             | overriding built-in option render function.                                                                     |
-| valueRenderer    | `func`             | -             | overriding built-in value render function. Receives the selected option as parameter.                           |
-| optionHeight     | `number` or `func` | 25px          | Option height. Dynamic height can be supported via a function with the signature `({ option: Object }): number` |
-| optionLeftOffset | `number`           | 16px          | Option base left offset. Left offset is calculated as `depth level of the option * optionLeftOffset`            |
-| renderAsTree     | `bool`             | true          | whether options should be rendered as a tree.                                                                   |
+| Property         | Type               | Default Value | Description                                                                                                         |
+|:-----------------|:-------------------|:--------------|:--------------------------------------------------------------------------------------------------------------------|
+| childrenKey      | `string`           | 'children'    | path of the child value in option objects                                                                           |
+| expanded         | `bool`             | false         | whether the options are expanded by default                                                                         |
+| isMenuOpen       | `bool`             | false         | Whether the menu is open. Setting this to true force menu to me always opened                                       |
+| maxHeight        | `number`           | 300           | Maximum height of the dropdown menu                                                                                 |
+| minHeight        | `number`           | 0             | Minimum height of the dropdown menu                                                                                 |
+| menuRenderer     | `func`             | -             | overriding built-in drop-down menu render function                                                                  |
+| optionRenderer   | `func`             | -             | overriding built-in option render function.                                                                         |
+| valueRenderer    | `func`             | -             | overriding built-in value render function. Receives the selected option's label and the option itself as parameter. |
+| optionHeight     | `number` or `func` | 25px          | Option height. Dynamic height can be supported via a function with the signature `({ option: Object }): number`     |
+| optionLeftOffset | `number`           | 16px          | Option base left offset. Left offset is calculated as `depth level of the option * optionLeftOffset`                |
+| renderAsTree     | `bool`             | true          | whether options should be rendered as a tree.                                                                       |
 
 #### Custom Option render
 

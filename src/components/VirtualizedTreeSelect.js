@@ -237,11 +237,10 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
-                   components={{Option: optionRenderer, Menu: Menu, MenuList: MenuList}}
+                   components={{Option: optionRenderer, Menu: Menu, MenuList: MenuList, MultiValueLabel: this.props.valueRenderer}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
-                   formatOptionLabel={this.props.valueRenderer}
                    autoFocus={true}
                    onOptionToggle={this._onOptionToggle}
                    onOptionSelect={this._onOptionSelect}
