@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Tooltip} from 'reactstrap';
-import Highlighter from 'react-highlight-words'
+import Highlighter from 'react-highlight-words';
 
 class TooltipItem extends Component {
 

@@ -108,9 +108,11 @@ class IntelligentTreeSelect extends Component {
     for (const valueElement of values) {
       const key = valueElement[props.valueKey] ?? valueElement;
       const opt = selectedOpt.find((term) => term[props.valueKey] === key);
-      if (opt)
-        modifiedSelectedOptions.push(opt)
-      else modifiedPassedValue.push(key)
+      if (opt) {
+        modifiedSelectedOptions.push(opt);
+      } else {
+        modifiedPassedValue.push(key)
+      }
     }
     state.passedValue = modifiedPassedValue;
     state.selectedOptions = modifiedSelectedOptions;
