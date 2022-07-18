@@ -6,16 +6,14 @@ import {hashCode} from "./utils/Utils";
 
 const Option = (props) => {
   const classes = classNames("VirtualizedSelectOption", {
-    "VirtualizedSelectFocusedOption": props.isFocused,
     "VirtualizedSelectDisabledOption": props.isDisabled,
     "VirtualizedSelectSelectedOption": props.isSelected
   })
 
   const events = props.isDisabled ? {} : {
     onClick: () => {
-      props.selectOption(props.data);
-      props.selectProps.onOptionSelect(props.value, props.isSelected);
-    }
+      props.selectProps.onOptionSelect(props);
+    },
   };
 
   let button = null;

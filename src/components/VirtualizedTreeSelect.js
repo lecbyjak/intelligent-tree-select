@@ -12,9 +12,10 @@ class VirtualizedTreeSelect extends Component {
     super(props, context);
 
     this._processOptions = this._processOptions.bind(this);
+    this._onOptionHover = this._onOptionHover.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
-    this._filterValues = this._filterValues.bind(this);
+    this.filterValues = this.filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
@@ -113,14 +114,23 @@ class VirtualizedTreeSelect extends Component {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
     if (inputValue.length === 0) {
-      return !option.parent || this.data[option.parent].expanded;
+      return !option.parent || this.data[option.parent]?.expanded;
     } else {
       return option.visible;
     }
 
   }
 
-  _filterValues(searchInput) {
+  filterValues(searchInput) {
+
+    // when the fetch is delayed, it can cause incorrect filter render, this prevents it from happening
+    if (this.select.current.inputRef.value !== searchInput) {
+      searchInput = this.select.current.inputRef.value;
+    }
+
+    if(searchInput === "")
+      return;
+
     const matches = []
     for (let option of this.state.options) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
@@ -137,6 +147,7 @@ class VirtualizedTreeSelect extends Component {
         match.visible = true;
       }
     }
+    this.forceUpdate();
   }
 
   matchCheckFull(searchInput, optionLabel) {
@@ -147,13 +158,14 @@ class VirtualizedTreeSelect extends Component {
   _onInputChange(input) {
     // Make the expensive calculation only when input has been really changed
     if (this.searchString !== input && input.length !== 0) {
-      this._filterValues(input);
+      this.filterValues(input);
     }
 
     this.searchString = input;
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
     }
+
     // Collapses items which were expanded by the search
     if (input.length === 0) {
       for (let option of this.state.options) {
@@ -163,7 +175,9 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _removeChildrenFromToggled(option) {
-    for (const subTermId of option.subTerm) {
+    if (option === undefined)
+      return;
+    for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
       this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
       this._removeChildrenFromToggled(subTerm)
@@ -187,7 +201,11 @@ class VirtualizedTreeSelect extends Component {
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
-  _onOptionSelect(optionId, isSelected) {
+  _onOptionSelect(props) {
+    props.selectOption(props.data);
+    let optionId = props.value;
+    const isSelected = props.isSelected;
+
     if (isSelected)
       return
 
@@ -202,11 +220,16 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  //When using custom option, it is needed to set focusedOption manually
+  _onOptionHover(option) {
+    this.select.current.setState({focusedOption: option});
+  }
+
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
     const filterOptions = props.filterOptions || this.filterOption;
-
+    const optionRenderer = this.props.optionRenderer || Option;
     return <Select ref={this.select}
                    {...props}
                    styles={styles}
@@ -214,7 +237,7 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
-                   components={{Option: Option, Menu: Menu, MenuList: MenuList}}
+                   components={{Option: optionRenderer, Menu: Menu, MenuList: MenuList}}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
@@ -222,6 +245,7 @@ class VirtualizedTreeSelect extends Component {
                    autoFocus={true}
                    onOptionToggle={this._onOptionToggle}
                    onOptionSelect={this._onOptionSelect}
+                   onOptionHover={this._onOptionHover}
 
     />
   }
@@ -237,9 +261,28 @@ class VirtualizedTreeSelect extends Component {
         ...provided,
         display: !state.selectProps.isMenuOpen ? 'block' : 'none'
       }),
+      multiValue: (base) => ({
+        ...base,
+        backgroundColor: 'rgba(0, 126, 255, 0.08)',
+        border: '1px solid #c2e0ff'
+      }),
+      multiValueRemove: (base) => ({
+        ...base,
+        color: '#007eff',
+        cursor: 'pointer',
+        borderLeft: '1px solid rgba(0,126,255,.24)',
+        "&:hover": {
+          backgroundColor: 'rgba(0,113,230,.08)',
+          color: '#0071e6'
+        }
+      }),
       noOptionsMessage: (provided, state) => ({
         ...provided,
         paddingLeft: '16px',
+      }),
+      menu: (provided, state) => ({
+        ...provided,
+        position: state.selectProps.menuIsFloating? "absolute" : "relative",
       }),
       valueContainer: (provided, state) => ({
         ...provided,
@@ -273,8 +316,8 @@ const Menu = (props) => {
 
 // Component for efficient rendering
 const MenuList = (props) => {
-  const {children, maxHeight} = props;
-  const {optionHeight} = props.selectProps;
+  const {children} = props;
+  const {optionHeight, maxHeight} = props.selectProps;
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
@@ -287,11 +330,13 @@ const MenuList = (props) => {
     height = 40;
   }
 
+
   return (
     <List
       height={height}
       itemCount={values.length}
       itemSize={optionHeight}
+      overscanCount={30}
     >
       {({index, style}) => <div style={style}>{values[index]}</div>}
     </List>
@@ -317,7 +362,8 @@ VirtualizedTreeSelect.propTypes = {
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,
   valueKey: PropTypes.string,
-  hideSelectedOptions: PropTypes.bool
+  hideSelectedOptions: PropTypes.bool,
+  menuIsFloating: PropTypes.bool,
 };
 
 VirtualizedTreeSelect.defaultProps = {
@@ -333,7 +379,8 @@ VirtualizedTreeSelect.defaultProps = {
   minHeight: 0,
   multi: false,
   renderAsTree: true,
-  hideSelectedOptions: false
+  hideSelectedOptions: false,
+  menuIsFloating: true,
 };
 
 export {VirtualizedTreeSelect};

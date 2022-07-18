@@ -12,7 +12,7 @@ ReactDOM.render(
         //name={"main_search"}
         fetchOptions={({searchString, optionID, limit, offset}) => new Promise((resolve) => {
           //console.log({searchString, optionID, limit, offset});
-          setTimeout(resolve, 1000, [
+          setTimeout(resolve, 4000, [
             {
               "@id": "http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-390/v-3000000",
               "http://www.w3.org/2000/01/rdf-schema#label": "3000000 - Consequential Events new",
@@ -23,7 +23,9 @@ ReactDOM.render(
             },
           ])
         })}
+        value={["http://onto.fel.cvut.cz/ontologies/eccairs/aviation-3.4.0.2/vl-a-390/v-3000000"]}
         valueKey={"@id"}
+        valueIsControlled={false}
         labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
         childrenKey={"subTerm"}
         simpleTreeData={true}
