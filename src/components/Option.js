@@ -1,8 +1,8 @@
 import React from "react";
 import classNames from "classnames";
 import {ToggleMinusIcon, TogglePlusIcon} from "./Icons";
-import TooltipItem from "./tooltipItem";
 import {hashCode} from "./utils/Utils";
+import Highlighter from "react-highlight-words";
 
 const Option = (props) => {
   const classes = classNames("VirtualizedSelectOption", {
@@ -25,23 +25,23 @@ const Option = (props) => {
   return <div ref={props.innerRef} className={classes} style={{marginLeft: `${props.data.depth * 16}px`}}>
 
     {props.selectProps.renderAsTree &&
-    <div style={{width: '16px'}}>
-      {button}
-    </div>
+      <div style={{width: '16px'}}>
+        {button}
+      </div>
     }
+    <div id={"item-" + hashCode(value)} className={"result-item"} onClick={events.onClick}>
 
-    <TooltipItem id={"tooltip-" + hashCode(value)}
-                 option={props.data}
-                 label={props.label}
-                 value={value}
-                 searchString={props.selectProps.inputValue}
-                 hoverActive={props.selectProps.displayInfoOnHover}
-                 tooltipKey={props.selectProps.tooltipKey}
-                 {...events}
-    />
+      <Highlighter
+        highlightClassName='highlighted'
+        searchWords={[props.selectProps.inputValue]}
+        autoEscape={true}
+        textToHighlight={props.label}
+        highlightTag={"span"}
+      />
+    </div>
 
     {props.data.fetchingChild &&
-    <span className="Select-loading-zone" aria-hidden="true" style={{'paddingLeft': '5px'}}>
+      <span className="Select-loading-zone" aria-hidden="true" style={{'paddingLeft': '5px'}}>
                 <span className="Select-loading"/>
     </span>
     }

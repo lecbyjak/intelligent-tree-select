@@ -6,11 +6,6 @@
   cursor: pointer;
   width: 100%;
 }
-.VirtualizedTreeSelectTooltip{
-  max-width: 300px;
-  text-align: start;
-  word-break: break-all;
-}
 
 .toggleButton{
   display: flex;
