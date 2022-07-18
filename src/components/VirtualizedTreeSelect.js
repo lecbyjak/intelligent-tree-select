@@ -255,11 +255,11 @@ class VirtualizedTreeSelect extends Component {
       dropdownIndicator: (provided, state) => ({
         ...provided,
         transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
-        display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+        display: !state.selectProps.isMenuOpen ? 'flex' : 'none'
       }),
       indicatorSeparator: (provided, state) => ({
         ...provided,
-        display: !state.selectProps.isMenuOpen ? 'block' : 'none'
+        display: !state.selectProps.isMenuOpen ? 'flex' : 'none'
       }),
       multiValue: (base) => ({
         ...base,
