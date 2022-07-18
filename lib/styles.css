@@ -6,11 +6,6 @@
   cursor: pointer;
   width: 100%;
 }
-.VirtualizedTreeSelectTooltip{
-  max-width: 300px;
-  text-align: start;
-  word-break: break-all;
-}
 
 .toggleButton{
   display: flex;
@@ -30,4 +25,26 @@
 
 .VirtualizedSelectOption{
   cursor: default;
+}
+
+.VirtualizedSelectOption {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 .5rem;
+  cursor: pointer;
+}
+
+
+.VirtualizedSelectFocusedOption, .VirtualizedSelectOption:hover {
+  background-color: rgba(0, 126, 255, 0.1);
+}
+.VirtualizedSelectDisabledOption {
+  opacity: 0.5;
+}
+.VirtualizedSelectSelectedOption {
+  font-weight: bold;
 }
