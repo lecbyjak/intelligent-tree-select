@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {VirtualizedTreeSelect} from './VirtualizedTreeSelect';
 import PropTypes from 'prop-types';
-import {getLabel, isURL, sanitizeArray} from "./utils/Utils";
+import {isURL, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
@@ -171,7 +171,6 @@ class IntelligentTreeSelect extends Component {
     }
 
   }
-
 
   _isInHistory(searchString) {
     searchString = searchString.toLowerCase();
@@ -572,6 +571,7 @@ IntelligentTreeSelect.propTypes = {
   matchCheck: PropTypes.func,
   labelKey: PropTypes.string,
   getOptionLabel: PropTypes.func,
+  getOptionValue: PropTypes.func,
   multi: PropTypes.bool,
   name: PropTypes.string,
   onInputChange: PropTypes.func,

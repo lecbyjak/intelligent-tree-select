@@ -128,7 +128,7 @@ class VirtualizedTreeSelect extends Component {
       searchInput = this.select.current.inputRef.value;
     }
 
-    if(searchInput === "")
+    if (searchInput === "")
       return;
 
     const matches = []
@@ -153,7 +153,6 @@ class VirtualizedTreeSelect extends Component {
   matchCheckFull(searchInput, optionLabel) {
     return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
   }
-
 
   _onInputChange(input) {
     // Make the expensive calculation only when input has been really changed
@@ -186,7 +185,9 @@ class VirtualizedTreeSelect extends Component {
 
   _onOptionToggle(option) {
     // disables option expansion/collapsion when search string is present
-    if (this.searchString !== "") return;
+    if (this.searchString !== "") {
+      return;
+    }
     if ("onOptionToggle" in this.props) {
       this.props.onOptionToggle(option);
     }
@@ -237,7 +238,13 @@ class VirtualizedTreeSelect extends Component {
                    filterOption={filterOptions}
                    onInputChange={this._onInputChange}
                    getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
-                   components={{Option: optionRenderer, Menu: Menu, MenuList: MenuList, MultiValueLabel: this.props.valueRenderer}}
+                   getOptionValue={props.getOptionValue ? props.getOptionValue : (option) => option[props.valueKey]}
+                   components={{
+                     Option: optionRenderer,
+                     Menu: Menu,
+                     MenuList: MenuList,
+                     MultiValueLabel: this.props.valueRenderer
+                   }}
                    isMulti={props.multi}
                    blurInputOnSelect={false}
                    options={this.state.options}
@@ -281,7 +288,7 @@ class VirtualizedTreeSelect extends Component {
       }),
       menu: (provided, state) => ({
         ...provided,
-        position: state.selectProps.menuIsFloating? "absolute" : "relative",
+        position: state.selectProps.menuIsFloating ? "absolute" : "relative",
       }),
       valueContainer: (provided, state) => ({
         ...provided,
@@ -350,6 +357,7 @@ VirtualizedTreeSelect.propTypes = {
   isMenuOpen: PropTypes.bool,
   labelKey: PropTypes.string,
   getOptionLabel: PropTypes.func,
+  getOptionValue: PropTypes.func,
   maxHeight: PropTypes.number,
   menuStyle: PropTypes.object,
   minHeight: PropTypes.number,
