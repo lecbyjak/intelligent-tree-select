@@ -2,7 +2,7 @@
   "author": {
     "name": "Jakub Lečbych"
   },
-  "description": "React tree select component  based on [react-select](https://github.com/JedWatson/react-select#react-select)\r and [react-virtualized-select](https://github.com/bvaughn/react-virtualized-select#react-virtualized-select)",
+  "description": "React tree select component based on [react-select](https://github.com/JedWatson/react-select#react-select) with [react-window](https://github.com/bvaughn/react-window)-based rendering of options.",
   "version": "0.9.2",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"

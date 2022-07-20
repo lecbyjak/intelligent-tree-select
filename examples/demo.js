@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import data from "../examples/data/data.json";
-import {IntelligentTreeSelect} from "./components/IntelligentTreeSelect";
-import "./styles.css";
+import data from "./data/data.json";
+import {IntelligentTreeSelect} from "../src/components/IntelligentTreeSelect";
+import "../src/styles.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
