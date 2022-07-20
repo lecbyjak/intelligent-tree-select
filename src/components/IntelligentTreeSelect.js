@@ -546,6 +546,7 @@ class IntelligentTreeSelect extends Component {
 }
 
 IntelligentTreeSelect.propTypes = {
+  autoFocus: PropTypes.bool,
   isMenuOpen: PropTypes.bool,
   childrenKey: PropTypes.string,
   displayInfoOnHover: PropTypes.bool,
@@ -577,6 +578,7 @@ IntelligentTreeSelect.propTypes = {
 };
 
 IntelligentTreeSelect.defaultProps = {
+  autoFocus: false,
   childrenKey: Constants.CHILDREN_KEY,
   labelKey: Constants.LABEL_KEY,
   valueKey: Constants.VALUE_KEY,

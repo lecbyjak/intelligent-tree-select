@@ -248,7 +248,6 @@ class VirtualizedTreeSelect extends Component {
         isMulti={props.multi}
         blurInputOnSelect={false}
         options={this.state.options}
-        autoFocus={true}
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._onOptionHover}
@@ -345,6 +344,7 @@ const MenuList = (props) => {
 };
 
 VirtualizedTreeSelect.propTypes = {
+  autoFocus: PropTypes.bool,
   childrenKey: PropTypes.string,
   expanded: PropTypes.bool,
   filterOptions: PropTypes.func,

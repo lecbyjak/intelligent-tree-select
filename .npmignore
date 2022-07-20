@@ -1,8 +1,12 @@
 examples
-src
 .babelrc
 .idea
 package-lock.json
 webpack.config.js
 lib/demo.js
 lib/index.html
+.prettierrc
+.husky
+.editorconfig
+.eslintignore
+.eslintrc
