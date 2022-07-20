@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import Select, {components} from "react-select";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
 import {getLabel} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
-
   constructor(props, context) {
     super(props, context);
 
@@ -21,10 +20,10 @@ class VirtualizedTreeSelect extends Component {
     this._onOptionSelect = this._onOptionSelect.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
-    this.searchString = '';
+    this.searchString = "";
     this.toggledOptions = [];
     this.state = {
-      options: []
+      options: [],
     };
     this.select = React.createRef();
   }
@@ -54,28 +53,30 @@ class VirtualizedTreeSelect extends Component {
   _processOptions() {
     this.data = {};
     const keys = [];
-    this.props.options.forEach(option => {
-      option.expanded = (option.expanded === undefined) ? this.props.expanded : option.expanded;
+    this.props.options.forEach((option) => {
+      option.expanded = option.expanded === undefined ? this.props.expanded : option.expanded;
       const optionID = option[this.props.valueKey];
       this.data[optionID] = option;
       keys.push(optionID);
     });
 
-    keys.forEach(key => {
+    keys.forEach((key) => {
       let option = this.data[key];
       if (!option.parent) {
         this._calculateDepth(key, 0, null, new Set());
       }
     });
     let options = [];
-    keys.filter(key => this.data[key].depth === 0).forEach(key => {
-      this._sort(options, key, new Set());
-    });
+    keys
+      .filter((key) => this.data[key].depth === 0)
+      .forEach((key) => {
+        this._sort(options, key, new Set());
+      });
 
     // Value property is needed for correct rendering of selected options
     options.forEach((option) => {
       option.value = option[this.props.valueKey];
-    })
+    });
 
     this.setState({options});
   }
@@ -90,7 +91,7 @@ class VirtualizedTreeSelect extends Component {
     if (!option.parent) {
       option.parent = parentKey;
     }
-    option[this.props.childrenKey].forEach(childID => {
+    option[this.props.childrenKey].forEach((childID) => {
       this._calculateDepth(childID, depth + 1, key, visited);
     });
   }
@@ -103,7 +104,7 @@ class VirtualizedTreeSelect extends Component {
     visited.add(key);
     sortedArr.push(option);
 
-    option[this.props.childrenKey].forEach(childID => {
+    option[this.props.childrenKey].forEach((childID) => {
       this._sort(sortedArr, childID, visited);
     });
 
@@ -118,24 +119,21 @@ class VirtualizedTreeSelect extends Component {
     } else {
       return option.visible;
     }
-
   }
 
   filterValues(searchInput) {
-
     // when the fetch is delayed, it can cause incorrect filter render, this prevents it from happening
     if (this.select.current.inputRef.value !== searchInput) {
       searchInput = this.select.current.inputRef.value;
     }
 
-    if (searchInput === "")
-      return;
+    if (searchInput === "") return;
 
-    const matches = []
+    const matches = [];
     for (let option of this.state.options) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
         option.visible = true;
-        matches.push(option)
+        matches.push(option);
       } else {
         option.visible = false;
       }
@@ -151,7 +149,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   matchCheckFull(searchInput, optionLabel) {
-    return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1
+    return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
   }
 
   _onInputChange(input) {
@@ -168,18 +166,19 @@ class VirtualizedTreeSelect extends Component {
     // Collapses items which were expanded by the search
     if (input.length === 0) {
       for (let option of this.state.options) {
-        option.expanded = !!this.toggledOptions.find(element => element[this.props.valueKey] === option[this.props.valueKey]);
+        option.expanded = !!this.toggledOptions.find(
+          (element) => element[this.props.valueKey] === option[this.props.valueKey]
+        );
       }
     }
   }
 
   _removeChildrenFromToggled(option) {
-    if (option === undefined)
-      return;
+    if (option === undefined) return;
     for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
       this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
-      this._removeChildrenFromToggled(subTerm)
+      this._removeChildrenFromToggled(subTerm);
     }
   }
 
@@ -195,7 +194,7 @@ class VirtualizedTreeSelect extends Component {
     if (option.expanded) {
       this.toggledOptions.push(option);
     } else {
-      this.toggledOptions = this.toggledOptions.filter(el => el[this.props.valueKey] !== option[this.props.valueKey]);
+      this.toggledOptions = this.toggledOptions.filter((el) => el[this.props.valueKey] !== option[this.props.valueKey]);
       this._removeChildrenFromToggled(option);
     }
   }
@@ -207,8 +206,7 @@ class VirtualizedTreeSelect extends Component {
     let optionId = props.value;
     const isSelected = props.isSelected;
 
-    if (isSelected)
-      return
+    if (isSelected) return;
 
     let option = this.data[optionId];
     let parent = this.data[option.parent];
@@ -231,60 +229,62 @@ class VirtualizedTreeSelect extends Component {
     const styles = this._prepareStyles();
     const filterOptions = props.filterOptions || this.filterOption;
     const optionRenderer = this.props.optionRenderer || Option;
-    return <Select ref={this.select}
-                   {...props}
-                   styles={styles}
-                   menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
-                   filterOption={filterOptions}
-                   onInputChange={this._onInputChange}
-                   getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
-                   getOptionValue={props.getOptionValue ? props.getOptionValue : (option) => option[props.valueKey]}
-                   components={{
-                     Option: optionRenderer,
-                     Menu: Menu,
-                     MenuList: MenuList,
-                     MultiValueLabel: this.props.valueRenderer
-                   }}
-                   isMulti={props.multi}
-                   blurInputOnSelect={false}
-                   options={this.state.options}
-                   autoFocus={true}
-                   onOptionToggle={this._onOptionToggle}
-                   onOptionSelect={this._onOptionSelect}
-                   onOptionHover={this._onOptionHover}
-
-    />
+    return (
+      <Select
+        ref={this.select}
+        {...props}
+        styles={styles}
+        menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
+        filterOption={filterOptions}
+        onInputChange={this._onInputChange}
+        getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
+        getOptionValue={props.getOptionValue ? props.getOptionValue : (option) => option[props.valueKey]}
+        components={{
+          Option: optionRenderer,
+          Menu: Menu,
+          MenuList: MenuList,
+          MultiValueLabel: this.props.valueRenderer,
+        }}
+        isMulti={props.multi}
+        blurInputOnSelect={false}
+        options={this.state.options}
+        autoFocus={true}
+        onOptionToggle={this._onOptionToggle}
+        onOptionSelect={this._onOptionSelect}
+        onOptionHover={this._onOptionHover}
+      />
+    );
   }
 
   _prepareStyles() {
     return {
       dropdownIndicator: (provided, state) => ({
         ...provided,
-        transform: state.selectProps.menuIsOpen && 'rotate(180deg)',
-        display: !state.selectProps.isMenuOpen ? 'flex' : 'none'
+        transform: state.selectProps.menuIsOpen && "rotate(180deg)",
+        display: !state.selectProps.isMenuOpen ? "flex" : "none",
       }),
       indicatorSeparator: (provided, state) => ({
         ...provided,
-        display: !state.selectProps.isMenuOpen ? 'flex' : 'none'
+        display: !state.selectProps.isMenuOpen ? "flex" : "none",
       }),
       multiValue: (base) => ({
         ...base,
-        backgroundColor: 'rgba(0, 126, 255, 0.08)',
-        border: '1px solid #c2e0ff'
+        backgroundColor: "rgba(0, 126, 255, 0.08)",
+        border: "1px solid #c2e0ff",
       }),
       multiValueRemove: (base) => ({
         ...base,
-        color: '#007eff',
-        cursor: 'pointer',
-        borderLeft: '1px solid rgba(0,126,255,.24)',
+        color: "#007eff",
+        cursor: "pointer",
+        borderLeft: "1px solid rgba(0,126,255,.24)",
         "&:hover": {
-          backgroundColor: 'rgba(0,113,230,.08)',
-          color: '#0071e6'
-        }
+          backgroundColor: "rgba(0,113,230,.08)",
+          color: "#0071e6",
+        },
       }),
       noOptionsMessage: (provided, state) => ({
         ...provided,
-        paddingLeft: '16px',
+        paddingLeft: "16px",
       }),
       menu: (provided, state) => ({
         ...provided,
@@ -292,7 +292,7 @@ class VirtualizedTreeSelect extends Component {
       }),
       valueContainer: (provided, state) => ({
         ...provided,
-        display: state.hasValue ? 'flex' : 'inline-grid',
+        display: state.hasValue ? "flex" : "inline-grid",
       }),
       input: (provided) => ({
         ...provided,
@@ -310,9 +310,10 @@ const Menu = (props) => {
     <components.Menu
       {...props}
       innerProps={{
-        ...props.innerProps, onScrollCapture: (e) => {
-          props.selectProps.listProps.onScroll(e.target)
-        }
+        ...props.innerProps,
+        onScrollCapture: (e) => {
+          props.selectProps.listProps.onScroll(e.target);
+        },
       }}
     >
       {props.children}
@@ -330,24 +331,18 @@ const MenuList = (props) => {
   let height;
   if (Array.isArray(children)) {
     values = children;
-    height = Math.min(maxHeight, optionHeight * values.length)
+    height = Math.min(maxHeight, optionHeight * values.length);
   } else {
-    values = [<components.NoOptionsMessage {...children.props} children={children.props.children}/>];
+    values = [<components.NoOptionsMessage {...children.props} children={children.props.children} />];
     height = 40;
   }
 
-
   return (
-    <List
-      height={height}
-      itemCount={values.length}
-      itemSize={optionHeight}
-      overscanCount={30}
-    >
+    <List height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
       {({index, style}) => <div style={style}>{values[index]}</div>}
     </List>
   );
-}
+};
 
 VirtualizedTreeSelect.propTypes = {
   childrenKey: PropTypes.string,

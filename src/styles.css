@@ -1,4 +1,4 @@
-.result-item{
+.result-item {
   padding-left: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.toggleButton{
+.toggleButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,12 +18,12 @@
   display: block;
 }
 
-.highlighted{
+.highlighted {
   font-weight: bold;
   background: none;
 }
 
-.VirtualizedSelectOption{
+.VirtualizedSelectOption {
   cursor: default;
 }
 
@@ -34,12 +34,12 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
   cursor: pointer;
 }
 
-
-.VirtualizedSelectFocusedOption, .VirtualizedSelectOption:hover {
+.VirtualizedSelectFocusedOption,
+.VirtualizedSelectOption:hover {
   background-color: rgba(0, 126, 255, 0.1);
 }
 .VirtualizedSelectDisabledOption {

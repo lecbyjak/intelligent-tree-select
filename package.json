@@ -1,73 +1,75 @@
 {
-    "author": {
-        "name": "Jakub Lečbych"
-    },
-    "description": "React tree select component  based on [react-select](https://github.com/JedWatson/react-select#react-select)\r and [react-virtualized-select](https://github.com/bvaughn/react-virtualized-select#react-virtualized-select)",
-    "version": "0.9.1",
-    "bugs": {
-        "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
-    },
-    "homepage": "https://github.com/lecbyjak/intelligent-tree-select#readme",
-    "keywords": [
-        "combobox",
-        "form",
-        "input",
-        "multiselect",
-        "react",
-        "react-component",
-        "select",
-        "ui"
-    ],
-    "license": "MIT",
-    "name": "intelligent-tree-select",
-    "private": false,
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/lecbyjak/intelligent-tree-select.git"
-    },
-    "main": "lib/index.js",
-    "dependencies": {
-        "classnames": "latest",
-        "react-highlight-words": "^0.17.0",
-        "react-input-autosize": "^3.0.0",
-        "react-select": "^5.3.2",
-        "react-window": "^1.8.7"
-    },
-    "peerDependencies": {
-        "react": "^17.0.0",
-        "react-dom": "^17.0.0"
-    },
-    "devDependencies": {
-        "@babel/cli": "^7.14.8",
-        "@babel/core": "^7.14.8",
-        "@babel/plugin-proposal-class-properties": "^7.14.5",
-        "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
-        "@babel/preset-env": "^7.14.9",
-        "@babel/preset-react": "^7.14.5",
-        "@babel/runtime": "^7.14.8",
-        "babel-loader": "^8.2.2",
-        "bootstrap": "^5.1.3",
-        "concurrently": "^3.5.1",
-        "css-loader": "^0.28.11",
-        "html-loader": "^1.3.2",
-        "html-webpack-plugin": "^4.5.1",
-        "husky": "^8.0.0",
-        "prettier": "^2.7.1",
-        "pretty-quick": "^3.1.3",
-        "prop-types": "^15.8.1",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "style-loader": "^1.3.0",
-        "webpack": "^5.73.0",
-        "webpack-cli": "^4.10.0",
-        "webpack-dev-server": "^4.9.3"
-    },
-    "scripts": {
-        "dev": "concurrently \"npm run lib:watch\" \"npm start\"",
-        "lib": "babel src -d lib --copy-files",
-        "lib:watch": "babel src -w -d lib --copy-files",
-        "build": "webpack --mode production",
-        "start": "webpack-dev-server --open --mode development",
-        "prepare": "husky install"
-    }
+  "author": {
+    "name": "Jakub Lečbych"
+  },
+  "description": "React tree select component  based on [react-select](https://github.com/JedWatson/react-select#react-select)\r and [react-virtualized-select](https://github.com/bvaughn/react-virtualized-select#react-virtualized-select)",
+  "version": "0.9.1",
+  "bugs": {
+    "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
+  },
+  "homepage": "https://github.com/lecbyjak/intelligent-tree-select#readme",
+  "keywords": [
+    "combobox",
+    "form",
+    "input",
+    "multiselect",
+    "react",
+    "react-component",
+    "select",
+    "ui"
+  ],
+  "license": "MIT",
+  "name": "intelligent-tree-select",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lecbyjak/intelligent-tree-select.git"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "classnames": "latest",
+    "react-highlight-words": "^0.17.0",
+    "react-input-autosize": "^3.0.0",
+    "react-select": "^5.3.2",
+    "react-window": "^1.8.7"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.14.8",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.14.7",
+    "@babel/preset-env": "^7.14.9",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/runtime": "^7.14.8",
+    "babel-loader": "^8.2.2",
+    "bootstrap": "^5.1.3",
+    "concurrently": "^3.5.1",
+    "css-loader": "^0.28.11",
+    "html-loader": "^1.3.2",
+    "html-webpack-plugin": "^4.5.1",
+    "husky": "^8.0.0",
+    "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3",
+    "prop-types": "^15.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "style-loader": "^1.3.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run lib:watch\" \"npm start\"",
+    "lib": "babel src -d lib --copy-files",
+    "lib:watch": "babel src -w -d lib --copy-files",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --open --mode development",
+    "prepare": "husky install",
+    "prettier:check": "prettier --check ./src",
+    "prettier:fix": "prettier --write ./src"
+  }
 }
