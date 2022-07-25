@@ -16,6 +16,9 @@ class VirtualizedTreeSelect extends Component {
     this._onInputChange = this._onInputChange.bind(this);
     this.filterValues = this.filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
+    this._findOption = this._findOption.bind(this);
+    this._findOptionWithParent = this._findOptionWithParent.bind(this);
+    this._onOptionClose = this._onOptionClose.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
@@ -54,24 +57,19 @@ class VirtualizedTreeSelect extends Component {
     this.data = {};
     const keys = [];
     this.props.options.forEach((option) => {
-      option.expanded = option.expanded === undefined ? this.props.expanded : option.expanded;
       const optionID = option[this.props.valueKey];
       this.data[optionID] = option;
       keys.push(optionID);
     });
-
+    const sortedArr = [];
     keys.forEach((key) => {
       let option = this.data[key];
       if (!option.parent) {
-        this._calculateDepth(key, 0, null, new Set());
+        this._calculateDepth(key, 0, null, new Set(), sortedArr);
       }
     });
-    let options = [];
-    keys
-      .filter((key) => this.data[key].depth === 0)
-      .forEach((key) => {
-        this._sort(options, key, new Set());
-      });
+
+    let options = sortedArr;
 
     // Value property is needed for correct rendering of selected options
     options.forEach((option) => {
@@ -81,41 +79,56 @@ class VirtualizedTreeSelect extends Component {
     this.setState({options});
   }
 
-  _calculateDepth(key, depth, parentKey, visited) {
-    let option = this.data[key];
-    if (!option || visited.has(key)) {
-      return;
+  _findOption(dataset, searchedOption) {
+    let options = dataset.filter((el) => el[this.props.valueKey] === searchedOption[this.props.valueKey]);
+    let existingOption;
+    if (options && searchedOption.parent) {
+      existingOption = options.find(
+        (el) => el?.parent[this.props.valueKey] === searchedOption.parent[this.props.valueKey]
+      );
+    } else {
+      existingOption = options.length === 1 ? options[0] : null;
     }
-    visited.add(key);
-    option.depth = depth;
-    if (!option.parent) {
-      option.parent = parentKey;
-    }
-    option[this.props.childrenKey].forEach((childID) => {
-      this._calculateDepth(childID, depth + 1, key, visited);
-    });
+    return existingOption;
   }
 
-  _sort(sortedArr, key, visited) {
+  _findOptionWithParent(dataset, searchedOptionKey, parent) {
+    let options = dataset.filter((el) => el[this.props.valueKey] === searchedOptionKey);
+    return options.find((el) => el?.parent[this.props.valueKey] === parent[this.props.valueKey]);
+  }
+
+  _calculateDepth(key, depth, parent, visited, sortedArr) {
     let option = this.data[key];
     if (!option || visited.has(key)) {
       return;
     }
-    visited.add(key);
+
+    if (sortedArr.includes(option)) {
+      //Deep copy of option, needed to distinguish option for multiple subtrees
+      option = JSON.parse(JSON.stringify(option));
+    }
+
     sortedArr.push(option);
+    visited.add(key);
+    option.depth = depth;
+    option.parent = parent;
+
+    //If the item already present, set the correct expanded value
+    let existingOption = this._findOption(this.state.options, option);
+    if (existingOption) {
+      option.expanded = existingOption.expanded;
+    }
 
     option[this.props.childrenKey].forEach((childID) => {
-      this._sort(sortedArr, childID, visited);
+      this._calculateDepth(childID, depth + 1, option, visited, sortedArr);
     });
-
-    return sortedArr;
   }
 
   filterOption(candidate, inputValue) {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
     if (inputValue.length === 0) {
-      return !option.parent || this.data[option.parent]?.expanded;
+      return !option.parent || option.parent?.expanded;
     } else {
       return option.visible;
     }
@@ -140,7 +153,7 @@ class VirtualizedTreeSelect extends Component {
     }
     for (let match of matches) {
       while (match.parent !== null) {
-        match = this.data[match.parent];
+        match = match.parent;
         match.expanded = true;
         match.visible = true;
       }
@@ -162,13 +175,10 @@ class VirtualizedTreeSelect extends Component {
     if ("onInputChange" in this.props) {
       this.props.onInputChange(input);
     }
-
     // Collapses items which were expanded by the search
     if (input.length === 0) {
       for (let option of this.state.options) {
-        option.expanded = !!this.toggledOptions.find(
-          (element) => element[this.props.valueKey] === option[this.props.valueKey]
-        );
+        option.expanded = !!this._findOption(this.toggledOptions, option);
       }
     }
   }
@@ -176,9 +186,19 @@ class VirtualizedTreeSelect extends Component {
   _removeChildrenFromToggled(option) {
     if (option === undefined) return;
     for (const subTermId of option[this.props.childrenKey]) {
-      const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
-      this.toggledOptions = this.toggledOptions.filter((term) => term[this.props.valueKey] !== subTermId);
+      const subTerm = this._findOptionWithParent(this.state.options, subTermId, option);
+      const toggledItem = this._findOption(this.toggledOptions, subTerm);
+      this.toggledOptions = this.toggledOptions.filter((term) => term !== toggledItem);
       this._removeChildrenFromToggled(subTerm);
+    }
+  }
+
+  _onOptionClose(option) {
+    if (option === undefined) return;
+    option.expanded = false;
+    for (const subTermId of option[this.props.childrenKey]) {
+      const subTerm = this._findOptionWithParent(this.state.options, subTermId, option);
+      this._onOptionClose(subTerm);
     }
   }
 
@@ -190,11 +210,19 @@ class VirtualizedTreeSelect extends Component {
     if ("onOptionToggle" in this.props) {
       this.props.onOptionToggle(option);
     }
+
+    if (option.expanded) {
+      this._onOptionClose(option);
+    } else {
+      option.expanded = true;
+    }
+
     // Adds/removes references for toggled items
     if (option.expanded) {
       this.toggledOptions.push(option);
     } else {
-      this.toggledOptions = this.toggledOptions.filter((el) => el[this.props.valueKey] !== option[this.props.valueKey]);
+      const toggledItem = this._findOption(this.toggledOptions, option);
+      this.toggledOptions = this.toggledOptions.filter((el) => el !== toggledItem);
       this._removeChildrenFromToggled(option);
     }
   }
@@ -208,14 +236,14 @@ class VirtualizedTreeSelect extends Component {
 
     if (isSelected) return;
 
-    let option = this.data[optionId];
-    let parent = this.data[option.parent];
+    let parent = props.data.parent;
+
     while (parent) {
-      if (!this.toggledOptions.find((el) => el[this.props.valueKey] === parent[this.props.valueKey])) {
+      if (!this.toggledOptions.includes(parent)) {
         parent.expanded = true;
         this.toggledOptions.push(parent);
       }
-      parent = this.data[parent.parent];
+      parent = parent.parent;
     }
   }
 

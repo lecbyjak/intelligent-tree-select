@@ -21,7 +21,6 @@ class IntelligentTreeSelect extends Component {
     this._onChange = this._onChange.bind(this);
     this._onScroll = this._onScroll.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
-    this._onOptionClose = this._onOptionClose.bind(this);
     this._finalizeSelectedOptions = this._finalizeSelectedOptions.bind(this);
 
     this.state = {
@@ -336,7 +335,6 @@ class IntelligentTreeSelect extends Component {
 
   _onOptionToggle(option) {
     if (!option.expanded) {
-      option.expanded = true;
       let dataCached = this._isInHistory(option[this.props.valueKey]);
 
       if (!dataCached) {
@@ -366,20 +364,8 @@ class IntelligentTreeSelect extends Component {
           this.setState({isLoadingExternally: false});
         });
       }
-    } else {
-      this._onOptionClose(option);
     }
     this.forceUpdate();
-  }
-
-  _onOptionClose(option) {
-    if (option === undefined) return;
-
-    option.expanded = false;
-    for (const subTermId of option[this.props.childrenKey]) {
-      const subTerm = this.state.options.find((term) => term[this.props.valueKey] === subTermId);
-      this._onOptionClose(subTerm);
-    }
   }
 
   _valueRenderer({children, data}) {
