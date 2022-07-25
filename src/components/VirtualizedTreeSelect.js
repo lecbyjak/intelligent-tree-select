@@ -242,7 +242,7 @@ class VirtualizedTreeSelect extends Component {
         parent.expanded = true;
         this.toggledOptions.push(parent);
       }
-      parent = option.parent;
+      parent = option?.parent ?? parent.parent;
     }
   }
 
