@@ -239,8 +239,8 @@ class VirtualizedTreeSelect extends Component {
     while (parent) {
       let option = this._findOption(this.toggledOptions, parent);
       if (!option) {
-        option.expanded = true;
-        this.toggledOptions.push(option);
+        parent.expanded = true;
+        this.toggledOptions.push(parent);
       }
       parent = option.parent;
     }
