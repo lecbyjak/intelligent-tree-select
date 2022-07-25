@@ -231,19 +231,18 @@ class VirtualizedTreeSelect extends Component {
   //Path is saved in toggledOptions
   _onOptionSelect(props) {
     props.selectOption(props.data);
-    let optionId = props.value;
     const isSelected = props.isSelected;
 
     if (isSelected) return;
 
     let parent = props.data.parent;
-
     while (parent) {
-      if (!this.toggledOptions.includes(parent)) {
-        parent.expanded = true;
-        this.toggledOptions.push(parent);
+      let option = this._findOption(this.toggledOptions, parent);
+      if (!option) {
+        option.expanded = true;
+        this.toggledOptions.push(option);
       }
-      parent = parent.parent;
+      parent = option.parent;
     }
   }
 
