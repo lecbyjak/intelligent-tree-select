@@ -36,6 +36,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   componentDidMount() {
+    console.log("NEW SELECT MOUNTED");
     let data = [];
     if (this.props.name && this.props.fetchOptions) {
       data = this._retrieveCachedData();
@@ -372,7 +373,6 @@ class IntelligentTreeSelect extends Component {
     if (this.props.valueRenderer) {
       // On initial render, there can be empty options
       if (!children) return null;
-
       return this.props.valueRenderer(children, data);
     }
     const {valueKey, labelKey, getOptionLabel} = this.props;

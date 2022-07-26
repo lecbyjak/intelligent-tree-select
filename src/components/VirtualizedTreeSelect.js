@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
-import {getLabel} from "./utils/Utils";
+import {getLabel, arraysAreEqual} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
@@ -81,20 +81,17 @@ class VirtualizedTreeSelect extends Component {
 
   _findOption(dataset, searchedOption) {
     let options = dataset.filter((el) => el[this.props.valueKey] === searchedOption[this.props.valueKey]);
-    let existingOption;
-    if (options && searchedOption.parent) {
-      existingOption = options.find(
-        (el) => el?.parent[this.props.valueKey] === searchedOption.parent[this.props.valueKey]
-      );
-    } else {
-      existingOption = options.length === 1 ? options[0] : null;
+    for (const option of options) {
+      if (arraysAreEqual(option.path, searchedOption.path)) {
+        return option;
+      }
     }
-    return existingOption;
+    return null;
   }
 
   _findOptionWithParent(dataset, searchedOptionKey, parent) {
     let options = dataset.filter((el) => el[this.props.valueKey] === searchedOptionKey);
-    return options.find((el) => el?.parent[this.props.valueKey] === parent[this.props.valueKey]);
+    return options.find((el) => el?.parent === parent);
   }
 
   _calculateDepth(key, depth, parent, visited, sortedArr) {
@@ -112,7 +109,7 @@ class VirtualizedTreeSelect extends Component {
     visited.add(key);
     option.depth = depth;
     option.parent = parent;
-
+    option.path = [...visited];
     //If the item already present, set the correct expanded value
     let existingOption = this._findOption(this.state.options, option);
     if (existingOption) {
