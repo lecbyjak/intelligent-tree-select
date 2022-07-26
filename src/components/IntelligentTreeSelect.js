@@ -36,7 +36,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   componentDidMount() {
-    console.log("NEW SELECT MOUNTED");
     let data = [];
     if (this.props.name && this.props.fetchOptions) {
       data = this._retrieveCachedData();
