@@ -80,6 +80,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _findOption(dataset, searchedOption) {
+    if (!searchedOption || !dataset) return null;
     let options = dataset.filter((el) => el[this.props.valueKey] === searchedOption[this.props.valueKey]);
     for (const option of options) {
       if (arraysAreEqual(option.path, searchedOption.path)) {
@@ -110,6 +111,7 @@ class VirtualizedTreeSelect extends Component {
     option.depth = depth;
     option.parent = parent;
     option.path = [...visited];
+    option.expanded = false;
     //If the item already present, set the correct expanded value
     let existingOption = this._findOption(this.state.options, option);
     if (existingOption) {
