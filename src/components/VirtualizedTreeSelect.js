@@ -100,7 +100,7 @@ class VirtualizedTreeSelect extends Component {
     if (!option || visited.has(key)) {
       return;
     }
-
+    //Checks whether the array of items already contain an option with the same valueKey (ID)
     if (sortedArr.includes(option)) {
       //Deep copy of option, needed to distinguish option for multiple subtrees
       option = JSON.parse(JSON.stringify(option));
@@ -108,11 +108,16 @@ class VirtualizedTreeSelect extends Component {
 
     sortedArr.push(option);
     visited.add(key);
+
+    //Sets the idempotent properties
     option.depth = depth;
     option.parent = parent;
     option.path = [...visited];
     option.expanded = false;
-    //If the item already present, set the correct expanded value
+
+    //It can happen that the option is already loaded in the state
+    //If so, set the correct expanded value from the state options
+    //It is needed to check it's full path to determine whether it is the correct option
     let existingOption = this._findOption(this.state.options, option);
     if (existingOption) {
       option.expanded = existingOption.expanded;
@@ -206,9 +211,7 @@ class VirtualizedTreeSelect extends Component {
     if (this.searchString !== "") {
       return;
     }
-    if ("onOptionToggle" in this.props) {
-      this.props.onOptionToggle(option);
-    }
+    this.props.onOptionToggle(option);
 
     if (option.expanded) {
       this._onOptionClose(option);
