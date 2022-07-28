@@ -21,6 +21,7 @@ class VirtualizedTreeSelect extends Component {
     this._onOptionClose = this._onOptionClose.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
+    this.focus = this.focus.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
     this.searchString = "";
@@ -42,9 +43,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   focus() {
-    if (this.select.current) {
-      this.select.current.focus();
-    }
+    this.select.current.focus();
   }
 
   blurInput() {
@@ -280,6 +279,7 @@ class VirtualizedTreeSelect extends Component {
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._onOptionHover}
+        focus={this.focus}
       />
     );
   }
@@ -342,6 +342,7 @@ const Menu = (props) => {
         onScrollCapture: (e) => {
           props.selectProps.listProps.onScroll(e.target);
         },
+        onMouseEnter: () => props.selectProps.focus(),
       }}
     >
       {props.children}
