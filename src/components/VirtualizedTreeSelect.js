@@ -342,7 +342,14 @@ const Menu = (props) => {
         onScrollCapture: (e) => {
           props.selectProps.listProps.onScroll(e.target);
         },
-        onMouseEnter: () => props.selectProps.focus(),
+        //Enables option selection even when input is not focused
+        onMouseDown: (event) => {
+          if (event.button !== 0) {
+            return;
+          }
+          event.stopPropagation();
+          event.preventDefault();
+        },
       }}
     >
       {props.children}
