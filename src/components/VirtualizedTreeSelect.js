@@ -28,6 +28,7 @@ class VirtualizedTreeSelect extends Component {
     this.toggledOptions = [];
     this.state = {
       options: [],
+      initialExpansion: false,
     };
     this.select = React.createRef();
   }
@@ -74,6 +75,15 @@ class VirtualizedTreeSelect extends Component {
     options.forEach((option) => {
       option.value = option[this.props.valueKey];
     });
+
+    // Expands the whole tree on the initial render
+    if (this.props.expanded && !this.state.initialExpansion && options.length > 0) {
+      for (const option of options) {
+        this.toggledOptions.push(option);
+        option.expanded = true;
+      }
+      this.setState({initialExpansion: true});
+    }
 
     this.setState({options});
   }
