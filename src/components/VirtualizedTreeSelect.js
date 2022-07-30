@@ -272,6 +272,7 @@ class VirtualizedTreeSelect extends Component {
           Menu: Menu,
           MenuList: MenuList,
           MultiValueLabel: this.props.valueRenderer,
+          SingleValue: this.props.valueRenderer,
         }}
         isMulti={props.multi}
         blurInputOnSelect={false}
