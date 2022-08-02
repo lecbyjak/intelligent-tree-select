@@ -5,7 +5,7 @@ and virtualization with [react-window](https://github.com/bvaughn/react-window).
 
 #### Before start
 
-Before you can use this component you will need [Node.js](https://nodejs.org/en/) in version 6.5+, but we recommend
+Before you can use this component you will need [Node.js](https://nodejs.org/en/) in version 14+, but we recommend
 using the latest available version.
 
 ### Getting started
