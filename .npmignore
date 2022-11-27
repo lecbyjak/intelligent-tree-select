@@ -10,3 +10,4 @@ lib/index.html
 .editorconfig
 .eslintignore
 .eslintrc
+.gradle
