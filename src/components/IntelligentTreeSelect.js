@@ -360,7 +360,9 @@ class IntelligentTreeSelect extends Component {
 
           delete option.fetchingChild;
 
-          this._addNewOptions(data);
+          if (data.length > 0) {
+            this._addNewOptions(data);
+          }
           this.setState({isLoadingExternally: false});
         });
       }
