@@ -409,27 +409,12 @@ class IntelligentTreeSelect extends Component {
       return object;
     };
 
-    const x = this.state.options;
-    let options = x.concat(newOptions);
-    let mergedArr = [];
-
-    //merge options
-    while (options.length > 0) {
-      let currOption = options.shift();
-
-      currOption = _toArray(currOption);
-
-      let conflicts = options.filter((object) => {
-        return object[valueKey] === currOption[valueKey];
-      });
-      conflicts.forEach((conflict) => {
-        conflict = _toArray(conflict);
-        options.splice(
-          options.findIndex((el) => el[valueKey] === conflict[valueKey]),
-          1
-        );
-      });
-      mergedArr.push(Object.assign({}, currOption, ...conflicts.reverse()));
+    let mergedArr;
+    if (this.state.options.length === 0) {
+      newOptions.forEach((no) => (no[childrenKey] = sanitizeArray(no[childrenKey])));
+      mergedArr = newOptions;
+    } else {
+      mergedArr = this._mergeOptionArrays(this.state.options, newOptions);
     }
 
     if (name && fetchOptions) {
@@ -447,6 +432,34 @@ class IntelligentTreeSelect extends Component {
     }
 
     this.setState({options: mergedArr, update: ++this.state.update});
+  }
+
+  _mergeOptionArrays(originalOptions, newOptions) {
+    const {valueKey, childrenKey} = this.props;
+    let options = originalOptions.concat(newOptions);
+    let mergedArr = [];
+
+    //merge options
+    while (options.length > 0) {
+      let currOption = options.shift();
+
+      currOption[childrenKey] = sanitizeArray(currOption[childrenKey]);
+
+      const conflictIndices = [];
+      const conflicts = [];
+      options.forEach((object, index) => {
+        if (object[valueKey] === currOption[valueKey]) {
+          conflicts.push(object);
+          conflictIndices.push(index);
+        }
+      });
+      conflicts.forEach((conflict, index) => {
+        conflict[childrenKey] = sanitizeArray(conflict[childrenKey]);
+        options.splice(conflictIndices[index], 1);
+      });
+      mergedArr.push(Object.assign({}, currOption, ...conflicts.reverse()));
+    }
+    return mergedArr;
   }
 
   //Check if new options contain selected value
