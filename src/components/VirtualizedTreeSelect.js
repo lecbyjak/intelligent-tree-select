@@ -58,10 +58,13 @@ class VirtualizedTreeSelect extends Component {
     const keys = [];
     this.props.options.forEach((option) => {
       const optionID = option[this.props.valueKey];
+      // Value property is needed for correct rendering of selected options
+      option.value = optionID;
       this.data[optionID] = option;
       keys.push(optionID);
     });
-    const sortedArr = [];
+    // Utilize the fact that set has stable iteration order (~ insertion order)
+    const sortedArr = new Set();
     keys.forEach((key) => {
       let option = this.data[key];
       if (!option.parent) {
@@ -69,12 +72,7 @@ class VirtualizedTreeSelect extends Component {
       }
     });
 
-    let options = sortedArr;
-
-    // Value property is needed for correct rendering of selected options
-    options.forEach((option) => {
-      option.value = option[this.props.valueKey];
-    });
+    let options = [...sortedArr];
 
     // Expands the whole tree on the initial render
     if (this.props.expanded && !this.state.initialExpansion && options.length > 0) {
@@ -110,12 +108,12 @@ class VirtualizedTreeSelect extends Component {
       return;
     }
     //Checks whether the array of items already contain an option with the same valueKey (ID)
-    if (sortedArr.includes(option)) {
+    if (sortedArr.has(option)) {
       //Deep copy of option, needed to distinguish option for multiple subtrees
       option = JSON.parse(JSON.stringify(option));
     }
 
-    sortedArr.push(option);
+    sortedArr.add(option);
     visited.add(key);
 
     //Sets the idempotent properties
