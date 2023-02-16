@@ -110,7 +110,7 @@ class VirtualizedTreeSelect extends Component {
     //Checks whether the array of items already contain an option with the same valueKey (ID)
     if (sortedArr.has(option)) {
       //Deep copy of option, needed to distinguish option for multiple subtrees
-      option = JSON.parse(JSON.stringify(option));
+      option = structuredClone(option);
     }
 
     sortedArr.add(option);
