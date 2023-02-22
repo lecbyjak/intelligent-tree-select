@@ -27,3 +27,11 @@ export function arraysAreEqual(a, b) {
   }
   return true;
 }
+
+export function monotonicAssign(target, ...sources) {
+  // Note that this does not handle empty arrays, only attributes with explicitly undefined values
+  return Object.assign(
+    target,
+    ...sources.map((x) => Object.fromEntries(Object.entries(x).filter(([key, value]) => value !== undefined)))
+  );
+}

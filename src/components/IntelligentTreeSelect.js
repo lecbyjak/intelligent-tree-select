@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
-import {isURL, sanitizeArray} from "./utils/Utils";
+import {isURL, monotonicAssign, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
@@ -438,19 +438,18 @@ class IntelligentTreeSelect extends Component {
 
       currOption[childrenKey] = sanitizeArray(currOption[childrenKey]);
 
-      const conflictIndices = [];
       const conflicts = [];
+      const optionsToReplace = [];
       options.forEach((object, index) => {
         if (object[valueKey] === currOption[valueKey]) {
+          object[childrenKey] = sanitizeArray(object[childrenKey]);
           conflicts.push(object);
-          conflictIndices.push(index);
+        } else {
+          optionsToReplace.push(object);
         }
       });
-      conflicts.forEach((conflict, index) => {
-        conflict[childrenKey] = sanitizeArray(conflict[childrenKey]);
-        options.splice(conflictIndices[index], 1);
-      });
-      mergedArr.push(Object.assign({}, currOption, ...conflicts.reverse()));
+      mergedArr.push(monotonicAssign({}, currOption, ...conflicts.reverse()));
+      options = optionsToReplace;
     }
     return mergedArr;
   }
