@@ -192,11 +192,10 @@ class IntelligentTreeSelect extends Component {
       //deep clone
       let data = JSON.parse(JSON.stringify(responseData[i]));
       result = result.concat(data);
-      result = result.concat(this._simplifyData(data[childrenKey]));
-      if (data[childrenKey]) {
-        data[childrenKey] = Array.isArray(data[childrenKey])
-          ? data[childrenKey].map((xdata) => xdata[valueKey])
-          : data[childrenKey][valueKey];
+      const childrenArr = sanitizeArray(data[childrenKey]);
+      if (childrenArr.length > 0) {
+        result = result.concat(this._simplifyData(childrenArr));
+        data[childrenKey] = childrenArr.map((xdata) => xdata[valueKey]);
       }
     }
 

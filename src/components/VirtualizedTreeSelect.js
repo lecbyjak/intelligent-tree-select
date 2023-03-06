@@ -124,7 +124,7 @@ class VirtualizedTreeSelect extends Component {
 
     //It can happen that the option is already loaded in the state
     //If so, set the correct expanded value from the state options
-    //It is needed to check it's full path to determine whether it is the correct option
+    //It is needed to check its full path to determine whether it is the correct option
     let existingOption = this._findOption(this.state.options, option);
     if (existingOption) {
       option.expanded = existingOption.expanded;
