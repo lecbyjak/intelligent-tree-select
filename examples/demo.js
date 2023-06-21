@@ -1,12 +1,14 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 
 import data from "./data/data.json";
 import {IntelligentTreeSelect} from "../src/components/IntelligentTreeSelect";
 import "../src/styles.css";
 import "bootstrap/dist/css/bootstrap.css";
 
-ReactDOM.render(
+const container = document.getElementById("app");
+const root = createRoot(container);
+root.render(
   <IntelligentTreeSelect
     //name={"main_search"}
     fetchOptions={({searchString, optionID, limit, offset}) =>
@@ -34,6 +36,5 @@ ReactDOM.render(
     onOptionCreate={(option) => {
       console.log("created", option);
     }}
-  />,
-  document.getElementById("app")
+  />
 );
