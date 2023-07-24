@@ -263,7 +263,7 @@ class VirtualizedTreeSelect extends Component {
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
-    const filterOptions = props.filterOptions || this.filterOption;
+    const filterOptions = props.filterOption || this.filterOption;
     const optionRenderer = this.props.optionRenderer || Option;
     return (
       <Select
@@ -393,7 +393,7 @@ VirtualizedTreeSelect.propTypes = {
   autoFocus: PropTypes.bool,
   childrenKey: PropTypes.string,
   expanded: PropTypes.bool,
-  filterOptions: PropTypes.func,
+  filterOption: PropTypes.func,
   matchCheck: PropTypes.func,
   isMenuOpen: PropTypes.bool,
   labelKey: PropTypes.string,
