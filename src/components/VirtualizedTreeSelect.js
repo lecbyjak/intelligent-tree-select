@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import Select, {components} from "react-select";
+import WindowedSelect, {components} from "react-windowed-select";
 import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
-import {FixedSizeList as List} from "react-window";
 import {getLabel, arraysAreEqual} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
@@ -266,7 +265,7 @@ class VirtualizedTreeSelect extends Component {
     const filterOptions = props.filterOption || this.filterOption;
     const optionRenderer = this.props.optionRenderer || Option;
     return (
-      <Select
+      <WindowedSelect
         ref={this.select}
         {...props}
         styles={styles}
@@ -278,7 +277,6 @@ class VirtualizedTreeSelect extends Component {
         components={{
           Option: optionRenderer,
           Menu: Menu,
-          MenuList: MenuList,
           MultiValueLabel: this.props.valueRenderer,
           SingleValue: this.props.valueRenderer,
         }}
@@ -363,29 +361,6 @@ const Menu = (props) => {
     >
       {props.children}
     </components.Menu>
-  );
-};
-
-// Component for efficient rendering
-const MenuList = (props) => {
-  const {children} = props;
-  const {optionHeight, maxHeight} = props.selectProps;
-
-  // We need to check whether the passed object contains items or loading/empty message
-  let values;
-  let height;
-  if (Array.isArray(children)) {
-    values = children;
-    height = Math.min(maxHeight, optionHeight * values.length);
-  } else {
-    values = [<components.NoOptionsMessage {...children.props} children={children.props.children} />];
-    height = 40;
-  }
-
-  return (
-    <List height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
-      {({index, style}) => <div style={style}>{values[index]}</div>}
-    </List>
   );
 };
 
