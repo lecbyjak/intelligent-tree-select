@@ -352,9 +352,13 @@ const Menu = (props) => {
           props.selectProps.listProps.onScroll(e.target);
         },
         //Enables option selection even when input is not focused
-        onMouseDown: (event) => {
+        onMouseEnter: (event) => {
           if (event.button !== 0) {
             return;
+          }
+          // Focus the Select component to enable keyboard navigation
+          if (props.selectProps.listProps.ref.current) {
+            props.selectProps.listProps.ref.current.focus();
           }
           event.stopPropagation();
           event.preventDefault();
