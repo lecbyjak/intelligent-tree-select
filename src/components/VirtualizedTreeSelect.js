@@ -277,7 +277,6 @@ class VirtualizedTreeSelect extends Component {
         getOptionValue={props.getOptionValue ? props.getOptionValue : (option) => option[props.valueKey]}
         components={{
           Option: optionRenderer,
-          Menu: Menu,
           MenuList: MenuList,
           MultiValueLabel: this.props.valueRenderer,
           SingleValue: this.props.valueRenderer,
@@ -340,31 +339,6 @@ class VirtualizedTreeSelect extends Component {
     };
   }
 }
-
-// Wrapper for MenuList, it doesn't do anything, it is only needed for correct pass of the onScroll prop
-const Menu = (props) => {
-  return (
-    <components.Menu
-      {...props}
-      innerProps={{
-        ...props.innerProps,
-        onScrollCapture: (e) => {
-          props.selectProps.listProps.onScroll(e.target);
-        },
-        //Enables option selection even when input is not focused
-        onMouseDown: (event) => {
-          if (event.button !== 0) {
-            return;
-          }
-          event.stopPropagation();
-          event.preventDefault();
-        },
-      }}
-    >
-      {props.children}
-    </components.Menu>
-  );
-};
 
 // Component for efficient rendering
 const MenuList = (props) => {

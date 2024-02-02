@@ -501,7 +501,6 @@ class IntelligentTreeSelect extends Component {
 
   render() {
     let listProps = {};
-    listProps.onScroll = this.props.onScroll || this._onScroll;
     const valueRenderer = this._valueRenderer;
     const propsToPass = Object.assign({}, this.props);
     delete propsToPass.valueRenderer;

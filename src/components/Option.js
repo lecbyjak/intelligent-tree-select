@@ -8,6 +8,7 @@ const Option = (props) => {
   const classes = classNames("VirtualizedSelectOption", {
     VirtualizedSelectDisabledOption: props.isDisabled,
     VirtualizedSelectSelectedOption: props.isSelected,
+    VirtualizedSelectFocusedOption: props.isFocused,
   });
 
   const events = props.isDisabled
