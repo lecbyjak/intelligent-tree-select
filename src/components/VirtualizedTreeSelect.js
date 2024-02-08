@@ -307,6 +307,7 @@ class VirtualizedTreeSelect extends Component {
         ...base,
         backgroundColor: "rgba(0, 126, 255, 0.08)",
         border: "1px solid #c2e0ff",
+        paddingLeft: Constants.VALUE_MARGIN_X,
       }),
       multiValueRemove: (base) => ({
         ...base,
@@ -317,6 +318,7 @@ class VirtualizedTreeSelect extends Component {
           backgroundColor: "rgba(0,113,230,.08)",
           color: "#0071e6",
         },
+        marginLeft: Constants.VALUE_MARGIN_X,
       }),
       noOptionsMessage: (provided, state) => ({
         ...provided,

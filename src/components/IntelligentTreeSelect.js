@@ -378,12 +378,13 @@ class IntelligentTreeSelect extends Component {
     const {valueKey, labelKey, getOptionLabel} = this.props;
     const value = data[valueKey];
 
-    if (isURL(value))
+    if (isURL(value)) {
       return (
-        <a href={value} target="_blank" style={{margin: "0 0.25rem"}}>
+        <a href={value} target="_blank">
           {children}
         </a>
       );
+    }
     return children;
   }
 
