@@ -29,8 +29,8 @@
   "dependencies": {
     "classnames": "latest",
     "react-highlight-words": "^0.20.0",
-    "react-select": "^5.7.3",
-    "react-window": "^1.8.9"
+    "react-select": "^5.8.0",
+    "react-window": "^1.8.10"
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
