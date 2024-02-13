@@ -154,10 +154,15 @@ class VirtualizedTreeSelect extends Component {
     if (searchInput === "") return;
 
     const matches = [];
+    let firstMatch = true;
     for (let option of this.state.options) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
         option.visible = true;
         matches.push(option);
+        if (firstMatch) {
+          this._onOptionHover(option);
+          firstMatch = false;
+        }
       } else {
         option.visible = false;
       }
