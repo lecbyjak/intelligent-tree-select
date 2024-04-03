@@ -515,7 +515,7 @@ class IntelligentTreeSelect extends Component {
       <div>
         <VirtualizedTreeSelect
           ref={this.select}
-          classname={this.props.classname}
+          styles={this.props.styles}
           name="react-virtualized-tree-select"
           onChange={this._onChange}
           value={this.state.selectedOptions}
@@ -567,7 +567,7 @@ IntelligentTreeSelect.propTypes = {
   menuIsFloating: PropTypes.bool,
   valueIsControlled: PropTypes.bool,
   isClearable: PropTypes.bool,
-  classname: PropTypes.string,
+  styles: PropTypes.object,
 };
 
 IntelligentTreeSelect.defaultProps = {
@@ -588,7 +588,7 @@ IntelligentTreeSelect.defaultProps = {
   menuIsFloating: true,
   valueIsControlled: true,
   isClearable: true,
-  classname: "",
+  styles: {},
 };
 
 export {IntelligentTreeSelect};

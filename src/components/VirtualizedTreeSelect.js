@@ -312,17 +312,8 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _prepareStyles() {
-    let {borderColor, boxShadow} = this._getControlValidationStyle();
     return {
-      control: (provided, state) => ({
-        ...provided,
-        border: borderColor ? `1px solid ${borderColor}` : provided.border,
-        boxShadow: state.isFocused ? "none" : provided.boxShadow,
-        "&:hover": {
-          border: `1px solid ${borderColor}`,
-          boxShadow: boxShadow ? boxShadow : provided.boxShadow,
-        },
-      }),
+      ...this.props.styles,
       dropdownIndicator: (provided, state) => ({
         ...provided,
         transform: state.selectProps.menuIsOpen && "rotate(180deg)",
@@ -434,7 +425,7 @@ VirtualizedTreeSelect.propTypes = {
   valueKey: PropTypes.string,
   hideSelectedOptions: PropTypes.bool,
   menuIsFloating: PropTypes.bool,
-  classname: PropTypes.string,
+  styles: PropTypes.object,
 };
 
 VirtualizedTreeSelect.defaultProps = {
@@ -452,7 +443,7 @@ VirtualizedTreeSelect.defaultProps = {
   renderAsTree: true,
   hideSelectedOptions: false,
   menuIsFloating: true,
-  classname: "",
+  styles: {},
 };
 
 export {VirtualizedTreeSelect};
