@@ -265,19 +265,6 @@ class VirtualizedTreeSelect extends Component {
     this.select.current.setState({focusedOption: option});
   }
 
-  _getControlValidationStyle() {
-    let borderColor;
-    let boxShadow;
-    if (this.props.classname === "is-warning") {
-      borderColor = "#dc9135";
-      boxShadow = "0 0 0 0.2rem rgba(203, 127, 16, 0.25)";
-    } else if (this.props.classname === "is-invalid") {
-      borderColor = "#dc3545";
-      boxShadow = "0 0 0 .2rem rgba(220,53,69,.25)";
-    }
-    return {borderColor, boxShadow};
-  }
-
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
