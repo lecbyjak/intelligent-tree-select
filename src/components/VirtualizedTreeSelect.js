@@ -300,7 +300,6 @@ class VirtualizedTreeSelect extends Component {
 
   _prepareStyles() {
     return {
-      ...this.props.styles,
       dropdownIndicator: (provided, state) => ({
         ...provided,
         transform: state.selectProps.menuIsOpen && "rotate(180deg)",
@@ -345,6 +344,7 @@ class VirtualizedTreeSelect extends Component {
           opacity: "1 !important",
         },
       }),
+      ...this.props.styles,
     };
   }
 }
