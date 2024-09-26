@@ -3,7 +3,7 @@
     "name": "Jakub Lečbych"
   },
   "description": "React tree select component based on [react-select](https://github.com/JedWatson/react-select#react-select) with [react-window](https://github.com/bvaughn/react-window)-based rendering of options.",
-  "version": "0.11.5",
+  "version": "0.11.6",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
   },
