@@ -3,7 +3,7 @@
     "name": "Jakub Lečbych"
   },
   "description": "React tree select component based on [react-select](https://github.com/JedWatson/react-select#react-select) with [react-window](https://github.com/bvaughn/react-window)-based rendering of options.",
-  "version": "0.11.6",
+  "version": "0.11.7",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
   },
@@ -67,6 +67,7 @@
     "lib:watch": "babel src -w -d lib --copy-files",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open --mode development",
+    "prepublish": "babel src -d lib --copy-files",
     "prepare": "husky install",
     "prettier:check": "prettier --check ./src",
     "prettier:fix": "prettier --write ./src"
