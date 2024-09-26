@@ -28,7 +28,12 @@ const Option = (props) => {
   return (
     <div ref={props.innerRef} className={classes} style={{marginLeft: `${props.data.depth * 16}px`}}>
       {props.selectProps.renderAsTree && <div style={{width: "16px"}}>{button}</div>}
-      <div id={"item-" + hashCode(value)} className={"result-item"} onClick={events.onClick} title={props.data.title}>
+      <div
+        id={"item-" + hashCode(value)}
+        className={"result-item"}
+        onClick={events.onClick}
+        title={props.data[props.selectProps.titleKey]}
+      >
         <Highlighter
           highlightClassName="highlighted"
           searchWords={[props.selectProps.inputValue]}
