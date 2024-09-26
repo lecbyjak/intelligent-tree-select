@@ -568,6 +568,7 @@ IntelligentTreeSelect.propTypes = {
   valueIsControlled: PropTypes.bool,
   isClearable: PropTypes.bool,
   styles: PropTypes.object,
+  titleKey: PropTypes.string,
 };
 
 IntelligentTreeSelect.defaultProps = {
@@ -589,6 +590,7 @@ IntelligentTreeSelect.defaultProps = {
   valueIsControlled: true,
   isClearable: true,
   styles: {},
+  titleKey: "title",
 };
 
 export {IntelligentTreeSelect};
