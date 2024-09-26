@@ -29,6 +29,7 @@ root.render(
     valueIsControlled={false}
     labelKey={"http://www.w3.org/2000/01/rdf-schema#label"}
     childrenKey={"subTerm"}
+    titleKey="http://www.w3.org/2000/01/rdf-schema#comment"
     simpleTreeData={true}
     options={data}
     isMenuOpen={true}
