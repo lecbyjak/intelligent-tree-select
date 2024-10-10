@@ -169,11 +169,11 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
-  _isInHistory(searchString) {
-    searchString = searchString.toLowerCase();
+  _isInHistory(searchValue) {
+    searchValue = searchValue.toString().toLowerCase();
 
     for (let i = 0; i < this.history.length; i++) {
-      if (this.history[i].searchString.toLowerCase() === searchString) {
+      if (this.history[i].searchString.toLowerCase() === searchValue) {
         if (Date.now() < this.history[i].validTo) {
           return true;
         }
@@ -376,7 +376,7 @@ class IntelligentTreeSelect extends Component {
       return this.props.valueRenderer(children, data);
     }
     const {valueKey, labelKey, getOptionLabel} = this.props;
-    const value = data[valueKey];
+    const value = data[valueKey].toString();
 
     if (isURL(value)) {
       return (
@@ -497,7 +497,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   _addToHistory(searchString, validTo) {
-    this.history.unshift({searchString, validTo});
+    this.history.unshift({searchString: searchString.toString(), validTo});
   }
 
   render() {

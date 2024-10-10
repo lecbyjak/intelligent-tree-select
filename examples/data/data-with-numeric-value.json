@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1234,
+    "label": "Option 1",
+    "children": [1236]
+  },
+  {
+    "id": 1235,
+    "label": "Option 2"
+  },
+  {
+    "id": 1236,
+    "label": "Option 3",
+    "parent": 1234
+  }
+]
