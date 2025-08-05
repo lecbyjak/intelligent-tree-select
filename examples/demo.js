@@ -32,6 +32,7 @@ root.render(
     titleKey="http://www.w3.org/2000/01/rdf-schema#comment"
     simpleTreeData={true}
     options={data}
+    renderAsTree={true}
     isMenuOpen={true}
     displayInfoOnHover={true}
     onOptionCreate={(option) => {
