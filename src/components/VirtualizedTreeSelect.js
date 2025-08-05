@@ -67,24 +67,39 @@ class VirtualizedTreeSelect extends Component {
       this.data[optionID] = option;
       keys.push(optionID);
     });
-    // Utilize the fact that set has stable iteration order (~ insertion order)
-    const sortedArr = new Set();
-    keys.forEach((key) => {
-      let option = this.data[key];
-      if (!option.parent) {
-        this._calculateDepth(key, 0, null, new Set(), sortedArr);
-      }
-    });
 
-    let options = [...sortedArr];
+    let options;
 
-    // Expands the whole tree on the initial render
-    if (this.props.expanded && !this.state.initialExpansion && options.length > 0) {
-      for (const option of options) {
-        this.toggledOptions.push(option);
-        option.expanded = true;
+    if (this.props.renderAsTree) {
+      // Utilize the fact that set has stable iteration order (~ insertion order)
+      const sortedArr = new Set();
+      keys.forEach((key) => {
+        let option = this.data[key];
+        if (!option.parent) {
+          this._calculateDepth(key, 0, null, new Set(), sortedArr);
+        }
+      });
+
+      options = [...sortedArr];
+
+      // Expands the whole tree on the initial render
+      if (this.props.expanded && !this.state.initialExpansion && options.length > 0) {
+        for (const option of options) {
+          this.toggledOptions.push(option);
+          option.expanded = true;
+        }
+        this.setState({initialExpansion: true});
       }
-      this.setState({initialExpansion: true});
+    } else {
+      // Flat list processing - just use all options without hierarchy
+      options = this.props.options.map((option) => {
+        const processedOption = {...option};
+        processedOption.depth = 0;
+        processedOption.parent = null;
+        processedOption.expanded = false;
+        processedOption.visible = true;
+        return processedOption;
+      });
     }
 
     this.setState({options});
@@ -142,6 +157,11 @@ class VirtualizedTreeSelect extends Component {
   filterOption(candidate, inputValue) {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
+
+    if (!this.props.renderAsTree) {
+      return inputValue.length === 0 || option.visible !== false;
+    }
+
     if (inputValue.length === 0) {
       return !option.parent || option.parent?.expanded;
     } else {
