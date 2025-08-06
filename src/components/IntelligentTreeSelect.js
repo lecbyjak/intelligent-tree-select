@@ -122,6 +122,7 @@ class IntelligentTreeSelect extends Component {
    * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
   resetOptions() {
+    this.history = [];
     if (this.props.fetchOptions) {
       this.setState({options: []}, () => {
         // Reload options after reset
