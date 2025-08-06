@@ -188,9 +188,7 @@ class VirtualizedTreeSelect extends Component {
     }
 
     this.searchString = input;
-    if ("onInputChange" in this.props) {
-      this.props.onInputChange(input);
-    }
+    this.props.onInputChange(input);
     // Collapses items which were expanded by the search
     if (input.length === 0) {
       for (let option of this.state.options) {
@@ -326,7 +324,7 @@ class VirtualizedTreeSelect extends Component {
         },
         marginLeft: Constants.VALUE_MARGIN_X,
       }),
-      noOptionsMessage: (provided, state) => ({
+      noOptionsMessage: (provided) => ({
         ...provided,
         paddingLeft: "16px",
       }),
@@ -403,7 +401,7 @@ VirtualizedTreeSelect.propTypes = {
   menuStyle: PropTypes.object,
   minHeight: PropTypes.number,
   multi: PropTypes.bool,
-  onInputChange: PropTypes.func,
+  onInputChange: PropTypes.func.isRequired,
   optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   optionLeftOffset: PropTypes.number,
   optionRenderer: PropTypes.func,

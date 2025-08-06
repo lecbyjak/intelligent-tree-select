@@ -14,7 +14,6 @@ class IntelligentTreeSelect extends Component {
     this.history = [];
     this.searchString = "";
 
-    this._onOptionCreate = this._onOptionCreate.bind(this);
     this._valueRenderer = this._valueRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
@@ -284,7 +283,7 @@ class IntelligentTreeSelect extends Component {
     }
 
     this.searchString = searchString;
-    if ("onInputChange" in this.props) {
+    if (this.props.onInputChange !== undefined) {
       this.props.onInputChange(searchString);
     }
   }
@@ -385,17 +384,6 @@ class IntelligentTreeSelect extends Component {
       );
     }
     return children;
-  }
-
-  _onOptionCreate(option) {
-    if (option.parent) {
-      this._addChildrenToParent(option[this.props.valueKey], option.parent);
-    }
-    this._addNewOptions([option]);
-
-    if ("onOptionCreate" in this.props) {
-      this.props.onOptionCreate(option);
-    }
   }
 
   _addNewOptions(newOptions) {
