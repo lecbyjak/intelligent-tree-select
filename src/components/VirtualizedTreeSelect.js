@@ -53,6 +53,10 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  resetOptions() {
+    this.setState({options: []});
+  }
+
   _processOptions() {
     this.data = {};
     const keys = [];
