@@ -264,7 +264,6 @@ class IntelligentTreeSelect extends Component {
       }
 
       if (!dataCached && !this.fetching) {
-        let data = [];
         let offset = 0;
 
         this.state.options.forEach((option) => {
@@ -376,8 +375,7 @@ class IntelligentTreeSelect extends Component {
       if (!children) return null;
       return this.props.valueRenderer(children, data);
     }
-    const {valueKey, labelKey, getOptionLabel} = this.props;
-    const value = data[valueKey].toString();
+    const value = data[this.props.valueKey].toString();
 
     if (isURL(value)) {
       return (
@@ -416,7 +414,7 @@ class IntelligentTreeSelect extends Component {
         name,
         JSON.stringify({
           validTo: Date.now() + this._getValidForInSec(optionLifetime),
-          data: options,
+          data: mergedArr,
         })
       );
     }
@@ -441,7 +439,7 @@ class IntelligentTreeSelect extends Component {
 
       const conflicts = [];
       const optionsToReplace = [];
-      options.forEach((object, index) => {
+      options.forEach((object) => {
         if (object[valueKey] === currOption[valueKey]) {
           object[childrenKey] = sanitizeArray(object[childrenKey]);
           conflicts.push(object);
@@ -541,6 +539,7 @@ class IntelligentTreeSelect extends Component {
 }
 
 IntelligentTreeSelect.propTypes = {
+  onChange: PropTypes.func,
   autoFocus: PropTypes.bool,
   isMenuOpen: PropTypes.bool,
   childrenKey: PropTypes.string,
