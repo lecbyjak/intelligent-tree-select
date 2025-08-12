@@ -92,14 +92,13 @@ class VirtualizedTreeSelect extends Component {
       }
     } else {
       // Flat list processing - just use all options without hierarchy
-      options = this.props.options.map((option) => {
-        const processedOption = {...option};
-        processedOption.depth = 0;
-        processedOption.parent = null;
-        processedOption.expanded = false;
-        processedOption.visible = true;
-        return processedOption;
-      });
+      options = this.props.options.slice();
+      for (const option of options) {
+        option.depth = 0;
+        option.parent = null;
+        option.expanded = false;
+        option.visible = true;
+      }
     }
 
     this.setState({options});
