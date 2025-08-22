@@ -26,6 +26,7 @@
     "url": "git+https://github.com/lecbyjak/intelligent-tree-select.git"
   },
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "dependencies": {
     "classnames": "^2.5.1",
     "react-highlight-words": "^0.21.0",
