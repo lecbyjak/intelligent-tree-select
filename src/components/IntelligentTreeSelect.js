@@ -540,7 +540,6 @@ IntelligentTreeSelect.propTypes = {
   multi: PropTypes.bool,
   name: PropTypes.string,
   onInputChange: PropTypes.func,
-  onOptionCreate: PropTypes.func,
   optionHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
   options: PropTypes.array,
   renderAsTree: PropTypes.bool,

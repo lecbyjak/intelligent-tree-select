@@ -64,8 +64,6 @@ export interface CommonTreeSelectProps<T extends TreeOption = TreeOption> {
   name?: string;
   /** Callback when the input value changes. */
   onInputChange?: (input: string) => void;
-  /** Callback when a new option is created (currently disabled). */
-  onOptionCreate?: (label: string) => void;
   /** Option row height. Supports number or function returning height per option. Default: 25 */
   optionHeight?: number | ((ctx: {option: T}) => number);
   /** Initial / externally provided option set (ignored if fetchOptions). */
