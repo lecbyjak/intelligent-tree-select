@@ -82,15 +82,15 @@ export interface CommonTreeSelectProps<T extends TreeOption = TreeOption> {
   valueRenderer?: (children: React.ReactNode, option: T) => React.ReactNode;
   /** Debounce delay (ms) before triggering fetch (immediate if unset). */
   searchDelay?: number;
-
+  /** Hides already selected options from the menu. */
   hideSelectedOptions?: boolean;
   /** Sets if the dropdown is rendered above other content (absolute) or as part of layout (relative). Default: true */
   menuIsFloating?: boolean;
   /** Sets if the passed value is controlled externally and may change over time. Default: true */
   valueIsControlled?: boolean;
-
+  /** Allows clearing the current selection via the clear indicator. */
   isClearable?: boolean;
-
+  /** react-select style overrides; same shape as react-select StylesConfig. */
   styles?: Record<string, any>;
   /** Attribute of an option that contains tooltip text. Default: 'title' */
   titleKey?: string;
@@ -98,7 +98,7 @@ export interface CommonTreeSelectProps<T extends TreeOption = TreeOption> {
   maxHeight?: number;
   /** Minimum height of the dropdown menu. Default: 0 */
   minHeight?: number;
-
+  /** Inline styles applied to the menu container. */
   menuStyle?: React.CSSProperties;
   /** Base left indent applied per depth level (depth * optionLeftOffset). Default: 16 */
   optionLeftOffset?: number;
@@ -125,11 +125,14 @@ export interface VirtualizedTreeSelectProps<T extends TreeOption = TreeOption> e
     [k: string]: any;
   };
 
+  /** Increment to force the component to re-process options and re-render. */
   update?: number;
   /** Toggle expand/collapse of a tree option */
   onOptionToggle?: (option: T) => void;
 
+  /** Custom renderer for the "no options" state in the menu. */
   noOptionsMessage?: () => React.ReactNode;
+  /** Custom renderer for the "loading" state in the menu. */
   loadingMessage?: () => React.ReactNode;
 }
 
