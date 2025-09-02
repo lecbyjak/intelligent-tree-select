@@ -13,6 +13,7 @@ class IntelligentTreeSelect extends Component {
     this.completedNodes = {};
     this.history = [];
     this.searchString = "";
+    this.searchPage = 0;
 
     this._valueRenderer = this._valueRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
@@ -253,30 +254,52 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onInputChange(searchString) {
-    if (searchString && this.props.fetchOptions) {
-      let dataCached = false;
-      for (let i = searchString.length; i > 0; i--) {
-        if (dataCached) break;
-        let substring = searchString.substring(0, i);
-        dataCached = this._isInHistory(substring);
-      }
+    if (this.searchTimer) {
+      clearTimeout(this.searchTimer);
+    }
 
-      if (!dataCached && !this.fetching) {
-        let offset = 0;
-
-        this.state.options.forEach((option) => {
-          if (option.depth === 0) offset++;
-        });
-
-        if (this.searchTimer) {
-          clearTimeout(this.searchTimer);
+    if (this.props.fetchOptions) {
+      if (searchString) {
+        let dataCached = false;
+        for (let i = searchString.length; i > 0; i--) {
+          if (dataCached) break;
+          let substring = searchString.substring(0, i);
+          dataCached = this._isInHistory(substring);
         }
-        if (this.props.searchDelay) {
-          this.searchTimer = setTimeout(() => {
+
+        if (!dataCached && !this.fetching) {
+          if (searchString !== this.searchString) {
+            this.searchPage = 0;
+            this.completedNodes = {};
+          }
+          const offset = 0;
+
+          if (this.props.searchDelay) {
+            this.searchTimer = setTimeout(() => {
+              this._invokeSearch(searchString, offset);
+            }, this.props.searchDelay);
+          } else {
             this._invokeSearch(searchString, offset);
-          }, this.props.searchDelay);
+          }
         } else {
-          this._invokeSearch(searchString, offset);
+          if (this.select?.current) {
+            this.select.current.filterValues(searchString);
+          }
+        }
+      } else {
+        const rootCached = this._isInHistory("");
+        this.searchPage = 0;
+        this.completedNodes = {};
+        if (!rootCached && !this.fetching) {
+          if (this.props.searchDelay) {
+            this.searchTimer = setTimeout(() => {
+              this._invokeSearch("", 0);
+            }, this.props.searchDelay);
+          } else {
+            this._invokeSearch("", 0);
+          }
+        } else if (this.select?.current) {
+          this.select.current.filterValues("");
         }
       }
     }
@@ -288,7 +311,17 @@ class IntelligentTreeSelect extends Component {
   }
 
   _invokeSearch(searchString, offset) {
-    this._fetchOptions(searchString, "", offset, undefined, () => {
+    const isSearch = !!searchString;
+    const computedOffset = isSearch ? this.searchPage * this.props.fetchLimit : offset;
+    this._fetchOptions(searchString, "", computedOffset, undefined, (data) => {
+      if (isSearch) {
+        const pageIsFull = Array.isArray(data) && data.length === this.props.fetchLimit;
+        if (pageIsFull) {
+          this.searchPage += 1;
+        } else {
+          this.completedNodes["root"] = true;
+        }
+      }
       this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
       this.select.current.filterValues(searchString);
     });
@@ -315,12 +348,20 @@ class IntelligentTreeSelect extends Component {
 
       const topOption = this.state.options[topOptionIndex];
       let parentOption = this.state.options.find((option) => option[this.props.valueKey] === topOption.parent);
-      let offset = parentOption ? parentOption[this.props.childrenKey].length : this._getRootNodesCount();
+      let offset = parentOption
+        ? parentOption[this.props.childrenKey].length
+        : this.searchString
+        ? this.searchPage * this.props.fetchLimit
+        : this._getRootNodesCount();
       let parentOptionValue = parentOption ? parentOption[this.props.valueKey] : "root";
 
       if (!this.completedNodes[parentOptionValue]) {
-        //fetch child options that are not completed
-        this._fetchOptions("", topOption.parent, offset, topOption, (fetchedData) => {
+        this._fetchOptions(this.searchString || "", topOption.parent, offset, topOption, (fetchedData) => {
+          if (!topOption.parent && this.searchString) {
+            if (Array.isArray(fetchedData) && fetchedData.length === this.props.fetchLimit) {
+              this.searchPage += 1;
+            }
+          }
           if (fetchedData.length < this.props.fetchLimit) {
             //fetch parent options
             this.completedNodes[parentOptionValue] = true;
@@ -339,29 +380,31 @@ class IntelligentTreeSelect extends Component {
         option.fetchingChild = true;
         let data = [];
 
-        this._getResponse("", option[this.props.valueKey], this.props.fetchLimit, 0, option).then((response) => {
-          if (!this.props.simpleTreeData) {
-            data = this._simplifyData(response);
-          } else {
-            data = response;
+        this._getResponse(this.searchString || "", option[this.props.valueKey], this.props.fetchLimit, 0, option).then(
+          (response) => {
+            if (!this.props.simpleTreeData) {
+              data = this._simplifyData(response);
+            } else {
+              data = response;
+            }
+
+            if (data.length < this.props.fetchLimit) {
+              this.completedNodes[option[this.props.valueKey]] = true;
+            }
+
+            this._addToHistory(
+              option[this.props.valueKey],
+              Date.now() + this._getValidForInSec(this.props.optionLifetime)
+            );
+
+            delete option.fetchingChild;
+
+            if (data.length > 0) {
+              this._addNewOptions(data);
+            }
+            this.setState({isLoadingExternally: false});
           }
-
-          if (data.length < this.props.fetchLimit) {
-            this.completedNodes[option[this.props.valueKey]] = true;
-          }
-
-          this._addToHistory(
-            option[this.props.valueKey],
-            Date.now() + this._getValidForInSec(this.props.optionLifetime)
-          );
-
-          delete option.fetchingChild;
-
-          if (data.length > 0) {
-            this._addNewOptions(data);
-          }
-          this.setState({isLoadingExternally: false});
-        });
+        );
       }
     }
     this.forceUpdate();
