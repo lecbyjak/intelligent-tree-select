@@ -271,6 +271,9 @@ class IntelligentTreeSelect extends Component {
           if (searchString !== this.searchString) {
             this.searchPage = 0;
             this.completedNodes = {};
+            if (this.state.options.length > 0) {
+              this.setState({options: []});
+            }
           }
           const offset = 0;
 
@@ -290,6 +293,9 @@ class IntelligentTreeSelect extends Component {
         const rootCached = this._isInHistory("");
         this.searchPage = 0;
         this.completedNodes = {};
+        if (this.searchString) {
+          this.setState({options: []});
+        }
         if (!rootCached && !this.fetching) {
           if (this.props.searchDelay) {
             this.searchTimer = setTimeout(() => {
@@ -329,6 +335,8 @@ class IntelligentTreeSelect extends Component {
 
   _onScroll(data) {
     const {clientHeight, scrollHeight, scrollTop} = data;
+
+    if (!this.state.options.length) return;
 
     if (scrollHeight - scrollTop <= 2.5 * clientHeight && !this.fetching && this.props.fetchOptions) {
       // this.fetching = true;
