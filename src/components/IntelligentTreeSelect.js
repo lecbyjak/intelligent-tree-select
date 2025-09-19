@@ -285,7 +285,7 @@ class IntelligentTreeSelect extends Component {
             this._invokeSearch(searchString, offset);
           }
         } else {
-          if (this.select?.current) {
+          if (this.select.current) {
             this.select.current.filterValues(searchString);
           }
         }
@@ -304,7 +304,7 @@ class IntelligentTreeSelect extends Component {
           } else {
             this._invokeSearch("", 0);
           }
-        } else if (this.select?.current) {
+        } else if (this.select.current) {
           this.select.current.filterValues("");
         }
       }
@@ -329,7 +329,9 @@ class IntelligentTreeSelect extends Component {
         }
       }
       this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
-      this.select.current.filterValues(searchString);
+      if (this.select.current) {
+        this.select.current.filterValues(searchString);
+      }
     });
   }
 
