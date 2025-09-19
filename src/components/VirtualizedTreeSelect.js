@@ -206,7 +206,10 @@ class VirtualizedTreeSelect extends Component {
 
   _onInputChange(input) {
     // Make the expensive calculation only when input has been really changed
-    if (this.searchString !== input && input.length !== 0) {
+    if (this.searchString === input) {
+      return;
+    }
+    if (input.length !== 0) {
       this.filterValues(input);
     }
 
