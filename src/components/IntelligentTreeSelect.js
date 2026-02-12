@@ -357,16 +357,16 @@ class IntelligentTreeSelect extends Component {
       }
 
       const topOption = this.state.options[topOptionIndex];
-      let parentOption = this.state.options.find((option) => option[this.props.valueKey] === topOption.parent);
+      let topOptionParentValue = topOption.parent ? topOption.parent[this.props.valueKey] : undefined;
+      let parentOption = this.state.options.find((option) => option[this.props.valueKey] === topOptionParentValue);
       let offset = parentOption
         ? parentOption[this.props.childrenKey].length
         : this.searchString
         ? this.searchPage * this.props.fetchLimit
         : this._getRootNodesCount();
-      let parentOptionValue = parentOption ? parentOption[this.props.valueKey] : "root";
 
-      if (!this.completedNodes[parentOptionValue]) {
-        this._fetchOptions(this.searchString || "", topOption.parent, offset, topOption, (fetchedData) => {
+      if (!this.completedNodes[topOptionParentValue || "root"]) {
+        this._fetchOptions(this.searchString || "", topOptionParentValue, offset, topOption, (fetchedData) => {
           if (!topOption.parent && this.searchString) {
             if (Array.isArray(fetchedData) && fetchedData.length === this.props.fetchLimit) {
               this.searchPage += 1;
@@ -374,7 +374,7 @@ class IntelligentTreeSelect extends Component {
           }
           if (fetchedData.length < this.props.fetchLimit) {
             //fetch parent options
-            this.completedNodes[parentOptionValue] = true;
+            this.completedNodes[topOptionParentValue || "root"] = true;
           }
         });
       }
@@ -516,12 +516,6 @@ class IntelligentTreeSelect extends Component {
     }
 
     this.setState({passedValue: previouslySelected});
-  }
-
-  _addChildrenToParent(childrenID, parentID) {
-    let parentOption = this.state.options.find((x) => x[this.props.valueKey] === parentID);
-    let children = parentOption[this.props.childrenKey];
-    if (children.indexOf(childrenID) === -1) children.push(childrenID);
   }
 
   _onChange(options) {
