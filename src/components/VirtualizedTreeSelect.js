@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
-import {getLabel, arraysAreEqual} from "./utils/Utils";
+import {arraysAreEqual, getLabel} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
@@ -149,7 +149,8 @@ class VirtualizedTreeSelect extends Component {
     }
 
     option[this.props.childrenKey].forEach((childID) => {
-      this._calculateDepth(childID, depth + 1, option, visited, sortedArr);
+      // Create a new set for each child to avoid modifying the parent's visited set - prevent only loops in one tree branch
+      this._calculateDepth(childID, depth + 1, option, new Set(visited), sortedArr);
     });
   }
 
