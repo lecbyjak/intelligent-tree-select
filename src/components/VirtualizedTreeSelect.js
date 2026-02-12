@@ -244,7 +244,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _onOptionToggle(option) {
-    // disables option expansion/collapsion when search string is present
+    // disables option expansion/collapse when search string is present
     if (this.searchString !== "") {
       return;
     }
