@@ -13,7 +13,6 @@ class IntelligentTreeSelect extends Component {
     this.fetching = false;
     this.completedNodes = {};
     this.toggledNodes = {};
-    this.history = [];
     this.searchString = "";
     this.searchPage = 0;
 
@@ -128,7 +127,6 @@ class IntelligentTreeSelect extends Component {
    * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
   resetOptions() {
-    this.history = [];
     this.toggledNodes = {};
     this.setState({options: []}, () => {
       if (this.select.current) {
@@ -174,19 +172,6 @@ class IntelligentTreeSelect extends Component {
         this._addNewOptions(this.props.options);
       });
     }
-  }
-
-  _isInHistory(searchValue) {
-    searchValue = searchValue.toString().toLowerCase();
-
-    for (let i = 0; i < this.history.length; i++) {
-      if (this.history[i].searchString.toLowerCase() === searchValue) {
-        if (Date.now() < this.history[i].validTo) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   _simplifyData(responseData) {
@@ -263,14 +248,7 @@ class IntelligentTreeSelect extends Component {
   _onInputChange(searchString) {
     if (this.props.fetchOptions) {
       if (searchString) {
-        let dataCached = false;
-        for (let i = searchString.length; i > 0; i--) {
-          if (dataCached) break;
-          let substring = searchString.substring(0, i);
-          dataCached = this._isInHistory(substring);
-        }
-
-        if (!dataCached && !this.fetching) {
+        if (!this.fetching) {
           if (searchString !== this.searchString) {
             this.searchPage = 0;
             this.completedNodes = {};
@@ -287,13 +265,12 @@ class IntelligentTreeSelect extends Component {
           }
         }
       } else {
-        const rootCached = this._isInHistory("");
         this.searchPage = 0;
         this.completedNodes = {};
         if (this.searchString) {
           this.setState({options: []});
         }
-        if (!rootCached && !this.fetching) {
+        if (!this.fetching) {
           this.debouncedSearch.cancel();
           this.debouncedSearch("", 0);
           this.debouncedSearch.flush();
@@ -321,7 +298,6 @@ class IntelligentTreeSelect extends Component {
           this.completedNodes["root"] = true;
         }
       }
-      this._addToHistory(searchString, Date.now() + this._getValidForInSec(this.props.optionLifetime));
       if (this.select.current) {
         this.select.current.filterValues(searchString);
       }
@@ -517,10 +493,6 @@ class IntelligentTreeSelect extends Component {
 
   _addSelectedOption(selectedOptions) {
     this.setState({selectedOptions});
-  }
-
-  _addToHistory(searchString, validTo) {
-    this.history.unshift({searchString: searchString.toString(), validTo});
   }
 
   render() {
