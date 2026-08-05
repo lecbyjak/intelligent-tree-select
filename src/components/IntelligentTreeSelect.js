@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import debounce from "lodash.debounce";
 
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
@@ -11,6 +12,7 @@ class IntelligentTreeSelect extends Component {
 
     this.fetching = false;
     this.completedNodes = {};
+    this.toggledNodes = {};
     this.history = [];
     this.searchString = "";
     this.searchPage = 0;
@@ -33,6 +35,10 @@ class IntelligentTreeSelect extends Component {
       update: 0,
     };
     this.select = React.createRef();
+    this.debouncedSearch = debounce(
+      (searchString, offset) => this._invokeSearch(searchString, offset),
+      props.searchDelay
+    );
   }
 
   componentDidMount() {
@@ -123,6 +129,7 @@ class IntelligentTreeSelect extends Component {
    */
   resetOptions() {
     this.history = [];
+    this.toggledNodes = {};
     this.setState({options: []}, () => {
       if (this.select.current) {
         this.select.current.resetOptions();
@@ -254,10 +261,6 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onInputChange(searchString) {
-    if (this.searchTimer) {
-      clearTimeout(this.searchTimer);
-    }
-
     if (this.props.fetchOptions) {
       if (searchString) {
         let dataCached = false;
@@ -277,13 +280,7 @@ class IntelligentTreeSelect extends Component {
           }
           const offset = 0;
 
-          if (this.props.searchDelay) {
-            this.searchTimer = setTimeout(() => {
-              this._invokeSearch(searchString, offset);
-            }, this.props.searchDelay);
-          } else {
-            this._invokeSearch(searchString, offset);
-          }
+          this.debouncedSearch(searchString, offset);
         } else {
           if (this.select.current) {
             this.select.current.filterValues(searchString);
@@ -297,13 +294,9 @@ class IntelligentTreeSelect extends Component {
           this.setState({options: []});
         }
         if (!rootCached && !this.fetching) {
-          if (this.props.searchDelay) {
-            this.searchTimer = setTimeout(() => {
-              this._invokeSearch("", 0);
-            }, this.props.searchDelay);
-          } else {
-            this._invokeSearch("", 0);
-          }
+          this.debouncedSearch.cancel();
+          this.debouncedSearch("", 0);
+          this.debouncedSearch.flush();
         } else if (this.select.current) {
           this.select.current.filterValues("");
         }
@@ -383,7 +376,7 @@ class IntelligentTreeSelect extends Component {
 
   _onOptionToggle(option) {
     if (!option.expanded) {
-      let dataCached = this._isInHistory(option[this.props.valueKey]);
+      let dataCached = this.toggledNodes[option[this.props.valueKey]] || false;
 
       if (!dataCached) {
         this.setState({isLoadingExternally: true});
@@ -402,10 +395,7 @@ class IntelligentTreeSelect extends Component {
               this.completedNodes[option[this.props.valueKey]] = true;
             }
 
-            this._addToHistory(
-              option[this.props.valueKey],
-              Date.now() + this._getValidForInSec(this.props.optionLifetime)
-            );
+            this.toggledNodes[option[this.props.valueKey]] = true;
 
             delete option.fetchingChild;
 
@@ -624,6 +614,7 @@ IntelligentTreeSelect.defaultProps = {
   isClearable: true,
   styles: {},
   titleKey: "title",
+  searchDelay: 0,
 };
 
 export {IntelligentTreeSelect};
