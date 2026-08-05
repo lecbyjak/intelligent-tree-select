@@ -20,7 +20,7 @@ Then import it
 
 ```
 import { IntelligentTreeSelect } from "intelligent-tree-select"
-import "intelligent-tree-select/lib/styles.css"
+import "intelligent-tree-select/styles.css"
 ```
 
 Usage example can be found in `examples/demo.js`

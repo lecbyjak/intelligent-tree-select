@@ -3,7 +3,7 @@
     "name": "Jakub Lečbych"
   },
   "description": "React tree select component based on [react-select](https://github.com/JedWatson/react-select#react-select) with [react-window](https://github.com/bvaughn/react-window)-based rendering of options.",
-  "version": "0.12.4",
+  "version": "0.13.0",
   "bugs": {
     "url": "https://github.com/lecbyjak/intelligent-tree-select/issues"
   },
@@ -25,8 +25,18 @@
     "type": "git",
     "url": "git+https://github.com/lecbyjak/intelligent-tree-select.git"
   },
-  "main": "lib/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "classnames": "2.5.1",
     "lodash.debounce": "4.0.8",
@@ -64,12 +74,17 @@
     "webpack-dev-server": "^5.2.6"
   },
   "scripts": {
-    "dev": "concurrently \"npm run lib:watch\" \"npm start\"",
-    "lib": "babel src -d lib --copy-files",
-    "lib:watch": "babel src -w -d lib --copy-files",
+    "dev": "concurrently \"npm run build:cjs:watch\" \"npm run build:esm:watch\" \"npm start\"",
+    "build:cjs": "BABEL_ENV=cjs babel src -d dist/cjs --copy-files",
+    "build:cjs:watch": "BABEL_ENV=cjs babel src -w -d dist/cjs --copy-files",
+    "build:esm": "BABEL_ENV=esm babel src -d dist/esm --copy-files",
+    "build:esm:watch": "BABEL_ENV=esm babel src -w -d dist/esm --copy-files",
+    "build:styles": "mkdir -p dist && cp src/styles.css dist/styles.css",
+    "lib": "npm run build:cjs && npm run build:esm && npm run build:styles",
+    "lib:watch": "npm run build:cjs:watch && npm run build:esm:watch",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open --mode development",
-    "prepublish": "babel src -d lib --copy-files",
+    "prepublishOnly": "npm run lib",
     "prepare": "husky install",
     "prettier:check": "prettier --check ./src",
     "prettier:fix": "prettier --write ./src"

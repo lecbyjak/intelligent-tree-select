@@ -1,10 +1,45 @@
 {
-  "presets": [ [
-    "@babel/preset-env", {
-      "targets": {
-        "node": "current"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        },
+        "modules": false
       }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": ["@babel/plugin-proposal-object-rest-spread"],
+  "env": {
+    "cjs": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            },
+            "modules": "commonjs"
+          }
+        ],
+        "@babel/preset-react"
+      ]
+    },
+    "esm": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            },
+            "modules": false
+          }
+        ],
+        "@babel/preset-react"
+      ]
     }
-  ], "@babel/preset-react"],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
+  }
 }
