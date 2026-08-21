@@ -11,6 +11,7 @@ class VirtualizedTreeSelect extends Component {
     super(props, context);
 
     this._processOptions = this._processOptions.bind(this);
+    this._expandSelectedValues = this._expandSelectedValues.bind(this);
     this._onOptionHover = this._onOptionHover.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
@@ -25,6 +26,9 @@ class VirtualizedTreeSelect extends Component {
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
     this.searchString = "";
+    /**
+     * List of expanded options
+     */
     this.toggledOptions = [];
     this.state = {
       options: [],
@@ -35,11 +39,13 @@ class VirtualizedTreeSelect extends Component {
 
   componentDidMount() {
     this._processOptions();
+    this._expandSelectedValues();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.update > prevProps.update) {
       this._processOptions();
+      this._expandSelectedValues();
     }
   }
 
@@ -102,6 +108,29 @@ class VirtualizedTreeSelect extends Component {
     }
 
     this.setState({options});
+  }
+
+  /**
+   * Iterates all selected values
+   * and expands all their ancestors.
+   *
+   * @private
+   */
+  _expandSelectedValues() {
+    if (!this.props.value) return;
+
+    for (let option of this.props.value) {
+      const optionId = option[this.props.valueKey];
+      let parentOption = this.data[optionId]?.parent;
+
+      while (parentOption) {
+        if (!this.toggledOptions.includes(parentOption)) {
+          this.toggledOptions.push(parentOption);
+          parentOption.expanded = true;
+        }
+        parentOption = parentOption.parent;
+      }
+    }
   }
 
   _findOption(dataset, searchedOption) {
