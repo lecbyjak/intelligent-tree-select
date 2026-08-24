@@ -35,3 +35,15 @@ export function monotonicAssign(target, ...sources) {
     ...sources.map((x) => Object.fromEntries(Object.entries(x).filter(([key, value]) => value !== undefined)))
   );
 }
+
+export function optionListsAreEqual(a, b, valueKey) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; ++i) {
+    const keyA = a[i]?.[valueKey] ?? a[i];
+    const keyB = b[i]?.[valueKey] ?? b[i];
+    if (keyA !== keyB) return false;
+  }
+  return true;
+}
