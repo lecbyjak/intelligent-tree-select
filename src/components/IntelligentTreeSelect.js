@@ -96,35 +96,40 @@ class IntelligentTreeSelect extends Component {
 
   // If the values are controlled from the outside, it is needed to map them properly to options which Select knows
   static getDerivedStateFromProps(props, state) {
-    if (!props.valueIsControlled) return state;
+    if (!props.valueIsControlled) {
+      return null;
+    }
 
     if (!props.value) {
-      state.passedValue = [];
-      state.selectedOptions = [];
-      return state;
+      return {
+        passedValue: [],
+        selectedOptions: [],
+      };
     }
 
     const values = sanitizeArray(props.value);
-    const selectedOpt = sanitizeArray(state.selectedOptions);
+    const existingOptions = sanitizeArray(state.options);
     const modifiedPassedValue = [];
     const modifiedSelectedOptions = [];
+
     for (const valueElement of values) {
       const key = valueElement[props.valueKey] ?? valueElement;
-      const opt = selectedOpt.find((term) => term[props.valueKey] === key);
-      // const opt =
-      //   (state.options && state.options.find((term) => term[props.valueKey] === key)) ||
-      //   selectedOpt.find((term) => term[props.valueKey] === key) ||
-      //   (typeof valueElement === "object" ? valueElement : undefined);
+      const opt =
+        existingOptions.find((term) => term[props.valueKey] === key) ||
+        (typeof valueElement === "object" && valueElement[props.valueKey] ? valueElement : null);
+
       if (opt) {
         modifiedSelectedOptions.push(opt);
       } else {
         modifiedPassedValue.push(key);
       }
     }
-    state.passedValue = modifiedPassedValue;
-    state.selectedOptions = modifiedSelectedOptions;
 
-    return state;
+    return {
+      passedValue: !props.multi && modifiedPassedValue.length > 0 ? [modifiedPassedValue[0]] : modifiedPassedValue,
+      selectedOptions:
+        !props.multi && modifiedSelectedOptions.length > 0 ? [modifiedSelectedOptions[0]] : modifiedSelectedOptions,
+    };
   }
 
   /**
@@ -471,13 +476,18 @@ class IntelligentTreeSelect extends Component {
     const foundOptions = [];
     let previouslySelected = sanitizeArray(this.state.passedValue);
     let newSelected = sanitizeArray(this.state.selectedOptions);
+
     for (const selectedOpt of previouslySelected) {
       const key = selectedOpt[this.props.valueKey] ?? selectedOpt;
       const option = addedOptions.find((term) => term[this.props.valueKey] === key);
       if (!option) continue;
       foundOptions.push(key);
       const optionParsed = parsedOptions.find((term) => term[this.props.valueKey] === key);
-      newSelected.push(optionParsed);
+
+      // prevent duplicates
+      if (!newSelected.some((term) => term[this.props.valueKey] === key)) {
+        newSelected = this.props.multi ? [...newSelected, optionParsed] : [optionParsed];
+      }
     }
     this._addSelectedOption(newSelected);
 
@@ -492,7 +502,11 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onChange(options) {
-    this._addSelectedOption(options);
+    let optionsArray = sanitizeArray(options);
+    if (!this.props.valueIsControlled) {
+      // updating internal state synchronously only when value is not controlled
+      this._addSelectedOption(optionsArray);
+    }
     if (this.props.onChange) {
       this.props.onChange(options);
     }
