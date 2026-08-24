@@ -111,6 +111,10 @@ class IntelligentTreeSelect extends Component {
     for (const valueElement of values) {
       const key = valueElement[props.valueKey] ?? valueElement;
       const opt = selectedOpt.find((term) => term[props.valueKey] === key);
+      // const opt =
+      //   (state.options && state.options.find((term) => term[props.valueKey] === key)) ||
+      //   selectedOpt.find((term) => term[props.valueKey] === key) ||
+      //   (typeof valueElement === "object" ? valueElement : undefined);
       if (opt) {
         modifiedSelectedOptions.push(opt);
       } else {
@@ -351,6 +355,9 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onOptionToggle(option) {
+    if (!option) {
+      return;
+    }
     if (!option.expanded) {
       let dataCached = this.toggledNodes[option[this.props.valueKey]] || false;
 
