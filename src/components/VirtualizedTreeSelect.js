@@ -23,6 +23,7 @@ class VirtualizedTreeSelect extends Component {
     this._onOptionClose = this._onOptionClose.bind(this);
     this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
     this.focus = this.focus.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     this.data = {};
@@ -373,6 +374,22 @@ class VirtualizedTreeSelect extends Component {
     }
   }
 
+  _onKeyDown(event) {
+    if (event.key === " " && !this.searchString) {
+      event.preventDefault();
+      const focusedOption = this.select.current && this.select.current.state.focusedOption;
+
+      if (focusedOption) {
+        this._onOptionToggle(focusedOption);
+      }
+    }
+
+    // Preserve any onKeyDown prop passed down from parent components
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
+  }
+
   render() {
     const props = this.props;
     const styles = this._prepareStyles();
@@ -401,6 +418,7 @@ class VirtualizedTreeSelect extends Component {
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._focusOption}
+        onKeyDown={this._onKeyDown}
         focus={this.focus}
       />
     );
