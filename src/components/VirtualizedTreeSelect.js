@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
-import {arraysAreEqual, getLabel} from "./utils/Utils";
+import {arraysAreEqual, getLabel, sanitizeArray} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
@@ -40,39 +40,35 @@ class VirtualizedTreeSelect extends Component {
       scrollTarget: null,
     };
     this.select = React.createRef();
-    this.userInteracted = false;
   }
 
   componentDidMount() {
-    this.userInteracted = false;
     this._processOptions();
     this._expandSelectedValues();
     this.setState({}, this._focusSelectedOption);
-    console.debug("did mount", this, this.props, this.state);
   }
 
   componentDidUpdate(prevProps) {
-    if (!Array.isArray(this.props.value) && this.props.value) {
-      console.error("object not allowed", this.props.value);
-    }
-    console.debug(
-      "did update",
-      "value equal",
-      arraysAreEqual(this.props.value, prevProps.value),
-      "update increased",
-      this.props.update > prevProps.update,
-      prevProps.value,
-      this.props.value
-    );
     if (!arraysAreEqual(this.props.value, prevProps.value)) {
-      this.userInteracted = false;
       this._processOptions();
       this._expandSelectedValues();
       this.setState({}, this._focusSelectedOption);
     } else if (this.props.update > prevProps.update) {
+      // capture the currently selected option
+      const prevFocused = this.select.current && this.select.current.state.focusedOption;
       this._processOptions();
       this._expandSelectedValues();
-      this.setState({}, this._focusSelectedOption);
+
+      this.setState({}, () => {
+        if (prevFocused) {
+          const optionToFocus = this._findOption(this.state.options, prevFocused);
+          if (optionToFocus) {
+            this._focusOption(optionToFocus);
+          }
+        } else {
+          this.setState({}, this._focusSelectedOption);
+        }
+      });
     }
   }
 
@@ -83,13 +79,11 @@ class VirtualizedTreeSelect extends Component {
    */
   _focusSelectedOption() {
     if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
-      console.debug("invalid value", this.props.value);
       return;
     }
 
     const targetValue = this.props.value[0];
     const option = this._findOption(this.state.options, targetValue);
-    console.debug("focusing option", option);
     if (option) {
       this._focusOption(option);
     }
@@ -163,12 +157,12 @@ class VirtualizedTreeSelect extends Component {
    * @private
    */
   _expandSelectedValues() {
-    if (!this.props.value || !Array.isArray(this.props.value)) {
+    if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
       return;
     }
 
     for (let option of this.props.value) {
-      const optionId = option[this.props.valueKey];
+      const optionId = option?.[this.props.valueKey] ?? option;
       let parentOption = this.data[optionId]?.parent;
 
       while (parentOption) {
@@ -180,9 +174,11 @@ class VirtualizedTreeSelect extends Component {
           existingOption = parentOption;
         }
 
-        // Trigger loading children of the expanded option
-        this.props.onOptionToggle(existingOption);
-        existingOption.expanded = true;
+        // Trigger loading children of the expanded option ONLY if closed
+        if (!existingOption.expanded) {
+          this.props.onOptionToggle(existingOption);
+          existingOption.expanded = true;
+        }
 
         // move to the next parent
         parentOption = existingOption.parent;
@@ -201,13 +197,13 @@ class VirtualizedTreeSelect extends Component {
    */
   _findOption(dataset, searchedOption) {
     if (!searchedOption || !dataset) return null;
-    let options = dataset.filter((el) => el[this.props.valueKey] === searchedOption[this.props.valueKey]);
-    for (const option of options) {
-      if (arraysAreEqual(option.path, searchedOption.path)) {
-        return option;
-      }
+    const targetKey = searchedOption[this.props.valueKey] ?? searchedOption;
+    let options = dataset.filter((el) => el[this.props.valueKey] === targetKey);
+    if (options.length === 0) return null;
+    if (searchedOption.path) {
+      return options.find((option) => arraysAreEqual(option.path, searchedOption.path)) || options[0];
     }
-    return null;
+    return options[0];
   }
 
   _findOptionWithParent(dataset, searchedOptionKey, parent) {
@@ -233,8 +229,7 @@ class VirtualizedTreeSelect extends Component {
     option.depth = depth;
     option.parent = parent;
     option.path = [...visited];
-    // option.expanded = !!this._findOption(this.toggledOptions, option);
-    option.expanded = false;
+    option.expanded = !!this._findOption(this.toggledOptions, option);
 
     //It can happen that the option is already loaded in the state
     //If so, set the correct expanded value from the state options
@@ -306,7 +301,6 @@ class VirtualizedTreeSelect extends Component {
     if (this.searchString === input) {
       return;
     }
-    this.userInteracted = true;
     if (input.length !== 0) {
       this.filterValues(input);
     }
@@ -333,7 +327,6 @@ class VirtualizedTreeSelect extends Component {
 
   _onOptionClose(option) {
     if (option === undefined) return;
-    this.userInteracted = true;
     option.expanded = false;
     this._focusOption(option);
     for (const subTermId of option[this.props.childrenKey]) {
@@ -343,7 +336,6 @@ class VirtualizedTreeSelect extends Component {
   }
 
   _onOptionToggle(option) {
-    this.userInteracted = true;
     // disables option expansion/collapse when search string is present
     if (this.searchString !== "") {
       return;
@@ -372,10 +364,6 @@ class VirtualizedTreeSelect extends Component {
   //Path is saved in toggledOptions
   _onOptionSelect(props) {
     props.selectOption(props.data);
-    this._expandSelectedValues();
-    this._focusOption(props.data);
-    this.forceUpdate();
-    console.debug("option selected", props);
   }
 
   //When using custom option, it is needed to set focusedOption manually
@@ -413,7 +401,6 @@ class VirtualizedTreeSelect extends Component {
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._focusOption}
-        userInteracted={this.userInteracted}
         focus={this.focus}
       />
     );
@@ -490,7 +477,7 @@ const Menu = (props) => {
 // Component for efficient rendering
 const MenuList = (props) => {
   const {children} = props;
-  const {optionHeight, maxHeight, valueKey, userInteracted} = props.selectProps;
+  const {optionHeight, maxHeight, valueKey} = props.selectProps;
 
   /// React-Window List reference
   const listRef = React.useRef(null);
@@ -503,12 +490,6 @@ const MenuList = (props) => {
    * This may change e.g. when new children are loaded, and we need to scroll again.
    */
   const lastScrolledIndexRef = React.useRef(null);
-
-  /// whether the internal select detected user scroll
-  const userScrolledRef = React.useRef(false);
-
-  /// the last value of user interaction from the outer element
-  const lastUserInteractedRef = React.useRef(false);
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
@@ -523,7 +504,7 @@ const MenuList = (props) => {
 
   /// Scroll to the currently selected option
   React.useLayoutEffect(() => {
-    if (!Array.isArray(children) || !listRef.current || userInteracted) {
+    if (!Array.isArray(children) || !listRef.current) {
       return;
     }
 
@@ -541,49 +522,26 @@ const MenuList = (props) => {
       return;
     }
 
-    const userInteractedIsSame = userInteracted === lastUserInteractedRef.current;
-    const userDidNotScroll = userScrolledRef.current === false;
     const lastScrolledKeyIsSame = lastScrolledKeyRef.current === targetKey;
     const lastScrolledIndexIsSame = lastScrolledIndexRef.current === targetIndex;
 
-    if (userInteractedIsSame && userDidNotScroll && lastScrolledKeyIsSame && lastScrolledIndexIsSame) {
+    if (lastScrolledKeyIsSame && lastScrolledIndexIsSame) {
       // no change, do not scroll
       return;
     }
 
-    console.debug("scrolling", userInteractedIsSame, userDidNotScroll, lastScrolledKeyIsSame, lastScrolledIndexIsSame);
-
-    lastUserInteractedRef.current = userInteracted;
     lastScrolledKeyRef.current = targetKey;
     lastScrolledIndexRef.current = targetIndex;
 
     try {
-      listRef.current.scrollToItem(targetIndex);
+      listRef.current.scrollToItem(targetIndex, "center");
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
   });
 
   return (
-    <List
-      ref={listRef}
-      height={height}
-      itemCount={values.length}
-      itemSize={optionHeight}
-      overscanCount={30}
-      onWheel={() => {
-        userScrolledRef.current = true;
-      }}
-      onTouchMove={() => {
-        userScrolledRef.current = true;
-      }}
-      onMouseDown={() => {
-        userScrolledRef.current = true;
-      }}
-      onKeyDown={() => {
-        userScrolledRef.current = true;
-      }}
-    >
+    <List ref={listRef} height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
       {({index, style}) => <div style={style}>{values[index]}</div>}
     </List>
   );
