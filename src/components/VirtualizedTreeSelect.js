@@ -12,7 +12,8 @@ class VirtualizedTreeSelect extends Component {
 
     this._processOptions = this._processOptions.bind(this);
     this._expandSelectedValues = this._expandSelectedValues.bind(this);
-    this._onOptionHover = this._onOptionHover.bind(this);
+    this._focusSelectedOption = this._focusSelectedOption.bind(this);
+    this._focusOption = this._focusOption.bind(this);
     this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this.filterValues = this.filterValues.bind(this);
@@ -46,17 +47,51 @@ class VirtualizedTreeSelect extends Component {
     this.userInteracted = false;
     this._processOptions();
     this._expandSelectedValues();
-    this.forceUpdate();
+    this.setState({}, this._focusSelectedOption);
+    console.debug("did mount", this, this.props, this.state);
   }
 
   componentDidUpdate(prevProps) {
+    if (!Array.isArray(this.props.value) && this.props.value) {
+      console.error("object not allowed", this.props.value);
+    }
+    console.debug(
+      "did update",
+      "value equal",
+      arraysAreEqual(this.props.value, prevProps.value),
+      "update increased",
+      this.props.update > prevProps.update,
+      prevProps.value,
+      this.props.value
+    );
     if (!arraysAreEqual(this.props.value, prevProps.value)) {
       this.userInteracted = false;
-    }
-    if (this.props.update > prevProps.update) {
       this._processOptions();
       this._expandSelectedValues();
-      this.forceUpdate();
+      this.setState({}, this._focusSelectedOption);
+    } else if (this.props.update > prevProps.update) {
+      this._processOptions();
+      this._expandSelectedValues();
+      this.setState({}, this._focusSelectedOption);
+    }
+  }
+
+  /**
+   * Focuses the first selected option from {@link #props.value}
+   *
+   * @private
+   */
+  _focusSelectedOption() {
+    if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
+      console.debug("invalid value", this.props.value);
+      return;
+    }
+
+    const targetValue = this.props.value[0];
+    const option = this._findOption(this.state.options, targetValue);
+    console.debug("focusing option", option);
+    if (option) {
+      this._focusOption(option);
     }
   }
 
@@ -128,7 +163,9 @@ class VirtualizedTreeSelect extends Component {
    * @private
    */
   _expandSelectedValues() {
-    if (!this.props.value || !Array.isArray(this.props.value)) return;
+    if (!this.props.value || !Array.isArray(this.props.value)) {
+      return;
+    }
 
     for (let option of this.props.value) {
       const optionId = option[this.props.valueKey];
@@ -196,6 +233,7 @@ class VirtualizedTreeSelect extends Component {
     option.depth = depth;
     option.parent = parent;
     option.path = [...visited];
+    // option.expanded = !!this._findOption(this.toggledOptions, option);
     option.expanded = false;
 
     //It can happen that the option is already loaded in the state
@@ -242,7 +280,7 @@ class VirtualizedTreeSelect extends Component {
         option.visible = true;
         matches.push(option);
         if (firstMatch) {
-          this._onOptionHover(option);
+          this._focusOption(option);
           firstMatch = false;
         }
       } else {
@@ -297,6 +335,7 @@ class VirtualizedTreeSelect extends Component {
     if (option === undefined) return;
     this.userInteracted = true;
     option.expanded = false;
+    this._focusOption(option);
     for (const subTermId of option[this.props.childrenKey]) {
       const subTerm = this._findOptionWithParent(this.state.options, subTermId, option);
       this._onOptionClose(subTerm);
@@ -325,22 +364,25 @@ class VirtualizedTreeSelect extends Component {
       this.toggledOptions = this.toggledOptions.filter((el) => el !== toggledItem);
       this._removeChildrenFromToggled(option);
     }
+
+    this._focusOption(option);
   }
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
   _onOptionSelect(props) {
     props.selectOption(props.data);
-
-    this.userInteracted = false;
     this._expandSelectedValues();
+    this._focusOption(props.data);
     this.forceUpdate();
+    console.debug("option selected", props);
   }
 
   //When using custom option, it is needed to set focusedOption manually
-  _onOptionHover(option) {
-    this.select.current.setState({focusedOption: option});
-    console.debug("onOptionHover", option);
+  _focusOption(option) {
+    if (this.select.current) {
+      this.select.current.setState({focusedOption: option});
+    }
   }
 
   render() {
@@ -370,7 +412,7 @@ class VirtualizedTreeSelect extends Component {
         options={this.state.options}
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
-        onOptionHover={this._onOptionHover}
+        onOptionHover={this._focusOption}
         userInteracted={this.userInteracted}
         focus={this.focus}
       />
@@ -481,13 +523,12 @@ const MenuList = (props) => {
 
   /// Scroll to the currently selected option
   React.useLayoutEffect(() => {
-    if (!Array.isArray(children) || !listRef.current) {
+    if (!Array.isArray(children) || !listRef.current || userInteracted) {
       return;
     }
 
     /// The children element to which we should scroll
-    let target = children.find((child) => child.props?.isSelected);
-    let usingFocused = false; // TODO scroll on focused
+    let target = children.find((child) => child.props?.isFocused);
     if (!target || !target.props?.data) {
       return;
     }
@@ -496,17 +537,16 @@ const MenuList = (props) => {
 
     const targetKey = optionData.path?.join(">") || optionData[valueKey];
     const targetIndex = values.indexOf(target);
-    console.debug("target key", targetKey);
     if (targetIndex === -1) {
       return;
     }
 
     const userInteractedIsSame = userInteracted === lastUserInteractedRef.current;
-    const userDidNotScroll = !userScrolledRef.current;
+    const userDidNotScroll = userScrolledRef.current === false;
     const lastScrolledKeyIsSame = lastScrolledKeyRef.current === targetKey;
     const lastScrolledIndexIsSame = lastScrolledIndexRef.current === targetIndex;
 
-    if (userInteractedIsSame && userDidNotScroll && lastScrolledKeyIsSame && lastScrolledIndexIsSame && !usingFocused) {
+    if (userInteractedIsSame && userDidNotScroll && lastScrolledKeyIsSame && lastScrolledIndexIsSame) {
       // no change, do not scroll
       return;
     }
@@ -518,7 +558,7 @@ const MenuList = (props) => {
     lastScrolledIndexRef.current = targetIndex;
 
     try {
-      listRef.current.scrollToItem(targetIndex, "smart");
+      listRef.current.scrollToItem(targetIndex);
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
