@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
-import {arraysAreEqual, getLabel, sanitizeArray} from "./utils/Utils";
+import {arraysAreEqual, getLabel, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
 
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
@@ -50,7 +50,7 @@ class VirtualizedTreeSelect extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!arraysAreEqual(this.props.value, prevProps.value)) {
+    if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
       this._processOptions();
       this._expandSelectedValues();
       this.setState({}, this._focusSelectedOption);
