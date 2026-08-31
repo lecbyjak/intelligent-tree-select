@@ -36,6 +36,14 @@ export function monotonicAssign(target, ...sources) {
   );
 }
 
+/**
+ * Compares lists of options by comparing the specified {@code valueKey}s
+ *
+ * @param a first option list
+ * @param b second option list
+ * @param valueKey the key in option objects to compare
+ * @returns {boolean} {@code true} if both lists contain options with matching values of {@code valueKey} in the same order
+ */
 export function optionListsAreEqual(a, b, valueKey) {
   if (a === b) return true;
   if (a == null || b == null) return false;
