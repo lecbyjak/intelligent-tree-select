@@ -6,6 +6,18 @@ import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
 import {arraysAreEqual, getLabel, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
 
+/**
+ * Gets stable identifier for a focused option.
+ *
+ * @private
+ */
+function getOptionScrollKey(option, valueKey) {
+  if (!option) {
+    return undefined;
+  }
+  return option.path?.join(">") || option[valueKey];
+}
+
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
     super(props, context);
@@ -29,16 +41,19 @@ class VirtualizedTreeSelect extends Component {
     this.data = {};
     this.searchString = "";
     /**
+     * State used to prevent repeating the same automatic scroll when the list is remounted.
+     */
+    this.focusedOptionScrollState = {
+      lastScrolledKey: null,
+      suppressScroll: false,
+    };
+    /**
      * List of expanded options
      */
     this.toggledOptions = [];
     this.state = {
       options: [],
       initialExpansion: false,
-      /**
-       * The element to which the menu should be scrolled
-       */
-      scrollTarget: null,
     };
     this.select = React.createRef();
   }
@@ -46,24 +61,28 @@ class VirtualizedTreeSelect extends Component {
   componentDidMount() {
     this._processOptions();
     this._expandSelectedValues();
-    this.setState({}, this._focusSelectedOption);
+    this.setState({}, () => this._focusSelectedOption(true));
   }
 
   componentDidUpdate(prevProps) {
     if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
       this._processOptions();
       this._expandSelectedValues();
-      this.setState({}, this._focusSelectedOption);
+      this.setState({}, () => this._focusSelectedOption(true));
     } else if (this.props.update > prevProps.update) {
-      // capture the currently selected option
+      // capture the currently focused option
       const prevFocused = this.select.current && this.select.current.state.focusedOption;
+      // Prevents scrolling while options are re-processed after a new page is loaded
+      this.focusedOptionScrollState.suppressScroll = true;
       this._processOptions();
       this._expandSelectedValues();
 
       this.setState({}, () => {
+        this.focusedOptionScrollState.suppressScroll = false;
         if (prevFocused) {
           const optionToFocus = this._findOption(this.state.options, prevFocused);
           if (optionToFocus) {
+            this.focusedOptionScrollState.lastScrolledKey = getOptionScrollKey(optionToFocus, this.props.valueKey);
             this._focusOption(optionToFocus);
           }
         } else {
@@ -78,7 +97,7 @@ class VirtualizedTreeSelect extends Component {
    *
    * @private
    */
-  _focusSelectedOption() {
+  _focusSelectedOption(forceScroll = false) {
     if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
       return;
     }
@@ -86,6 +105,10 @@ class VirtualizedTreeSelect extends Component {
     const targetValue = this.props.value[0];
     const option = this._findOption(this.state.options, targetValue);
     if (option) {
+      // Initial load and value change should always scroll to the selected option
+      if (forceScroll) {
+        this.focusedOptionScrollState.lastScrolledKey = null;
+      }
       this._focusOption(option);
     }
   }
@@ -415,6 +438,7 @@ class VirtualizedTreeSelect extends Component {
         isMulti={props.multi}
         blurInputOnSelect={false}
         options={this.state.options}
+        focusedOptionScrollState={this.focusedOptionScrollState}
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._focusOption}
@@ -495,19 +519,10 @@ const Menu = (props) => {
 // Component for efficient rendering
 const MenuList = (props) => {
   const {children} = props;
-  const {optionHeight, maxHeight, valueKey} = props.selectProps;
+  const {optionHeight, maxHeight, valueKey, focusedOptionScrollState} = props.selectProps;
 
   /// React-Window List reference
   const listRef = React.useRef(null);
-
-  // the unique key to which we scrolled last time
-  const lastScrolledKeyRef = React.useRef(null);
-
-  /**
-   * The index of the element to which we scrolled last time.
-   * This may change e.g. when new children are loaded, and we need to scroll again.
-   */
-  const lastScrolledIndexRef = React.useRef(null);
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
@@ -520,9 +535,9 @@ const MenuList = (props) => {
     height = 40;
   }
 
-  /// Scroll to the currently selected option
+  /// Scroll to the currently focused option
   React.useLayoutEffect(() => {
-    if (!Array.isArray(children) || !listRef.current) {
+    if (!Array.isArray(children) || !listRef.current || focusedOptionScrollState.suppressScroll) {
       return;
     }
 
@@ -534,25 +549,19 @@ const MenuList = (props) => {
 
     const optionData = target.props.data;
 
-    const targetKey = optionData.path?.join(">") || optionData[valueKey];
+    const targetKey = getOptionScrollKey(optionData, valueKey);
     const targetIndex = values.indexOf(target);
     if (targetIndex === -1) {
       return;
     }
 
-    const lastScrolledKeyIsSame = lastScrolledKeyRef.current === targetKey;
-    const lastScrolledIndexIsSame = lastScrolledIndexRef.current === targetIndex;
-
-    if (lastScrolledKeyIsSame && lastScrolledIndexIsSame) {
-      // no change, do not scroll
+    if (focusedOptionScrollState.lastScrolledKey === targetKey) {
       return;
     }
 
-    lastScrolledKeyRef.current = targetKey;
-    lastScrolledIndexRef.current = targetIndex;
-
     try {
       listRef.current.scrollToItem(targetIndex, "center");
+      focusedOptionScrollState.lastScrolledKey = targetKey;
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
