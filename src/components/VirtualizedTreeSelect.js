@@ -45,8 +45,10 @@ class VirtualizedTreeSelect extends Component {
      */
     this.focusedOptionScrollState = {
       lastScrolledKey: null,
+      lastScrolledIndex: null,
       suppressScroll: false,
     };
+    this.pendingSelectedScroll = false;
     /**
      * List of expanded options
      */
@@ -60,33 +62,42 @@ class VirtualizedTreeSelect extends Component {
 
   componentDidMount() {
     this._processOptions();
-    this._expandSelectedValues();
-    this.setState({}, () => this._focusSelectedOption(true));
+    const loadingSelectedPath = this._expandSelectedValues();
+    this.setState({}, () => {
+      const selectedFocused = this._focusSelectedOption(true);
+      this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
+    });
   }
 
   componentDidUpdate(prevProps) {
     if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
       this._processOptions();
-      this._expandSelectedValues();
-      this.setState({}, () => this._focusSelectedOption(true));
+      const loadingSelectedPath = this._expandSelectedValues();
+      this.setState({}, () => {
+        const selectedFocused = this._focusSelectedOption(true);
+        this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
+      });
     } else if (this.props.update > prevProps.update) {
       // capture the currently focused option
       const prevFocused = this.select.current && this.select.current.state.focusedOption;
       // Prevents scrolling while options are re-processed after a new page is loaded
       this.focusedOptionScrollState.suppressScroll = true;
       this._processOptions();
-      this._expandSelectedValues();
+      const loadingSelectedPath = this._expandSelectedValues();
 
       this.setState({}, () => {
         this.focusedOptionScrollState.suppressScroll = false;
+        if (this.pendingSelectedScroll || loadingSelectedPath) {
+          const selectedFocused = this._focusSelectedOption(true);
+          this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
+          return;
+        }
+        this.pendingSelectedScroll = loadingSelectedPath;
         if (prevFocused) {
           const optionToFocus = this._findOption(this.state.options, prevFocused);
           if (optionToFocus) {
-            this.focusedOptionScrollState.lastScrolledKey = getOptionScrollKey(optionToFocus, this.props.valueKey);
             this._focusOption(optionToFocus);
           }
-        } else {
-          this.setState({}, this._focusSelectedOption);
         }
       });
     }
@@ -95,11 +106,12 @@ class VirtualizedTreeSelect extends Component {
   /**
    * Focuses the first selected option from {@link #props.value}
    *
+   * @returns {boolean} whether the selected option was focused
    * @private
    */
   _focusSelectedOption(forceScroll = false) {
-    if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
-      return;
+    if (!this._hasSelectedValue()) {
+      return false;
     }
 
     const targetValue = this.props.value[0];
@@ -108,9 +120,22 @@ class VirtualizedTreeSelect extends Component {
       // Initial load and value change should always scroll to the selected option
       if (forceScroll) {
         this.focusedOptionScrollState.lastScrolledKey = null;
+        this.focusedOptionScrollState.lastScrolledIndex = null;
       }
       this._focusOption(option);
+      return true;
     }
+    return false;
+  }
+
+  /**
+   * Checks whether selected value is present.
+   *
+   * @returns {boolean}
+   * @private
+   */
+  _hasSelectedValue() {
+    return !!(this.props.value && Array.isArray(this.props.value) && this.props.value.length > 0);
   }
 
   focus() {
@@ -182,9 +207,10 @@ class VirtualizedTreeSelect extends Component {
    */
   _expandSelectedValues() {
     if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
-      return;
+      return false;
     }
 
+    let loadingSelectedPath = false;
     for (let option of this.props.value) {
       const optionId = option?.[this.props.valueKey] ?? option;
       let parentOption = this.data[optionId]?.parent;
@@ -200,6 +226,7 @@ class VirtualizedTreeSelect extends Component {
 
         // Trigger loading children of the expanded option ONLY if closed
         if (!existingOption.expanded) {
+          loadingSelectedPath = true;
           this.props.onOptionToggle(existingOption);
           existingOption.expanded = true;
         }
@@ -208,6 +235,7 @@ class VirtualizedTreeSelect extends Component {
         parentOption = existingOption.parent;
       }
     }
+    return loadingSelectedPath;
   }
 
   /**
@@ -555,13 +583,17 @@ const MenuList = (props) => {
       return;
     }
 
-    if (focusedOptionScrollState.lastScrolledKey === targetKey) {
+    if (
+      focusedOptionScrollState.lastScrolledKey === targetKey &&
+      focusedOptionScrollState.lastScrolledIndex === targetIndex
+    ) {
       return;
     }
 
     try {
       listRef.current.scrollToItem(targetIndex, "center");
       focusedOptionScrollState.lastScrolledKey = targetKey;
+      focusedOptionScrollState.lastScrolledIndex = targetIndex;
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
