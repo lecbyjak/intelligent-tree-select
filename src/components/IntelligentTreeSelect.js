@@ -15,6 +15,7 @@ class IntelligentTreeSelect extends Component {
     this.toggledNodes = {};
     this.searchString = "";
     this.searchPage = 0;
+    this.totalRequestedRootOptions = 0;
 
     this._valueRenderer = this._valueRenderer.bind(this);
     this._addSelectedOption = this._addSelectedOption.bind(this);
@@ -85,6 +86,9 @@ class IntelligentTreeSelect extends Component {
           data = response;
         }
         this.fetching = false;
+        if (!searchString && !optionId) {
+          this.totalRequestedRootOptions = offset + this.props.fetchLimit;
+        }
         this._addNewOptions(data);
         this.setState({isLoadingExternally: false});
         if (callback) {
@@ -137,6 +141,7 @@ class IntelligentTreeSelect extends Component {
    */
   resetOptions() {
     this.toggledNodes = {};
+    this.totalRequestedRootOptions = 0;
     this.setState({options: []}, () => {
       if (this.select.current) {
         this.select.current.resetOptions();
@@ -276,6 +281,7 @@ class IntelligentTreeSelect extends Component {
       } else {
         this.searchPage = 0;
         this.completedNodes = {};
+        this.totalRequestedRootOptions = 0;
         if (this.searchString) {
           this.setState({options: []});
         }
@@ -300,7 +306,7 @@ class IntelligentTreeSelect extends Component {
     const computedOffset = isSearch ? this.searchPage * this.props.fetchLimit : offset;
     this._fetchOptions(searchString, "", computedOffset, undefined, (data) => {
       if (isSearch) {
-        const pageIsFull = Array.isArray(data) && data.length === this.props.fetchLimit;
+        const pageIsFull = Array.isArray(data) && data.length >= this.props.fetchLimit;
         if (pageIsFull) {
           this.searchPage += 1;
         } else {
@@ -341,12 +347,12 @@ class IntelligentTreeSelect extends Component {
         ? parentOption[this.props.childrenKey].length
         : this.searchString
         ? this.searchPage * this.props.fetchLimit
-        : this._getRootNodesCount();
+        : this.totalRequestedRootOptions;
 
       if (!this.completedNodes[topOptionParentValue || "root"]) {
         this._fetchOptions(this.searchString || "", topOptionParentValue, offset, topOption, (fetchedData) => {
           if (!topOption.parent && this.searchString) {
-            if (Array.isArray(fetchedData) && fetchedData.length === this.props.fetchLimit) {
+            if (Array.isArray(fetchedData) && fetchedData.length >= this.props.fetchLimit) {
               this.searchPage += 1;
             }
           }
