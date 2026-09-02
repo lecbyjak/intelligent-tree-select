@@ -48,6 +48,9 @@ class VirtualizedTreeSelect extends Component {
       lastScrolledIndex: null,
       suppressScroll: false,
     };
+    /**
+     * Whether focusing and scrolling to the selected option must be retried after its path finishes loading.
+     */
     this.pendingSelectedScroll = false;
     /**
      * List of expanded options
@@ -106,6 +109,7 @@ class VirtualizedTreeSelect extends Component {
   /**
    * Focuses the first selected option from {@link #props.value}
    *
+   * @param forceScroll whether the {@link #focusedOptionScrollState} should be reset to initiate the scroll
    * @returns {boolean} whether the selected option was focused
    * @private
    */
@@ -131,7 +135,7 @@ class VirtualizedTreeSelect extends Component {
   /**
    * Checks whether selected value is present.
    *
-   * @returns {boolean}
+   * @returns {boolean} true when there is any selected option
    * @private
    */
   _hasSelectedValue() {
@@ -203,6 +207,7 @@ class VirtualizedTreeSelect extends Component {
    * Iterates all selected values
    * and expands all their ancestors.
    *
+   * @returns {boolean} whether expanding a selected value's path initiated loading
    * @private
    */
   _expandSelectedValues() {
@@ -587,6 +592,7 @@ const MenuList = (props) => {
       focusedOptionScrollState.lastScrolledKey === targetKey &&
       focusedOptionScrollState.lastScrolledIndex === targetIndex
     ) {
+      // no change, do not scroll
       return;
     }
 
