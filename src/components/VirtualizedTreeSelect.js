@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import Option from "./Option";
 import Constants from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
-import {arraysAreEqual, getLabel, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
+import {arraysAreEqual, getLabel, getOptionId, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
+import OptionsProcessor from "./OptionsProcessor";
+import memoizeOne from "memoize-one";
 
 /**
  * Gets stable identifier for a focused option.
@@ -18,119 +20,110 @@ function getOptionScrollKey(option, valueKey) {
   return option.path?.join(">") || option[valueKey];
 }
 
+const SCROLL_STATE = {
+  BLOCKED: "BLOCKED",
+  PENDING: "PENDING",
+  FINISHED: "FINISHED",
+};
+
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
     super(props, context);
-
-    this._processOptions = this._processOptions.bind(this);
-    this._expandSelectedValues = this._expandSelectedValues.bind(this);
-    this._focusSelectedOption = this._focusSelectedOption.bind(this);
     this._focusOption = this._focusOption.bind(this);
-    this.filterOption = this.filterOption.bind(this);
     this._onInputChange = this._onInputChange.bind(this);
     this.filterValues = this.filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._findOption = this._findOption.bind(this);
     this._findOptionWithParent = this._findOptionWithParent.bind(this);
-    this._onOptionClose = this._onOptionClose.bind(this);
-    this._removeChildrenFromToggled = this._removeChildrenFromToggled.bind(this);
     this._onOptionSelect = this._onOptionSelect.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
     this.focus = this.focus.bind(this);
+    this.resetOptions = this.resetOptions.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
-    this.data = {};
+
     this.searchString = "";
+
     /**
-     * State used to prevent repeating the same automatic scroll when the list is remounted.
+     * When {@link this.props.expanded} is enabled,
+     * this value indicates whether the options were already initially expanded
+     *
+     * @type {boolean}
      */
-    this.focusedOptionScrollState = {
-      lastScrolledKey: null,
-      lastScrolledIndex: null,
-      suppressScroll: false,
-    };
+    this.initialExpansion = false;
+
     /**
-     * Whether focusing and scrolling to the selected option must be retried after its path finishes loading.
+     * React component state
+     *
+     * @type {Readonly<Object>}
      */
-    this.pendingSelectedScroll = false;
-    /**
-     * List of expanded options
-     */
-    this.toggledOptions = [];
     this.state = {
-      options: [],
-      initialExpansion: false,
+      /**
+       * State of initial scroll to selected value
+       */
+      scrollToSelectedState: SCROLL_STATE.BLOCKED,
+
+      /**
+       * List of expanded option ids
+       *
+       * @type {Readonly<Set<string>>}
+       */
+      toggledOptionIds: Object.freeze(new Set()),
+
+      /**
+       * @type {Readonly<Object[]>}
+       */
+      processedOptions: Object.freeze([]),
     };
+
     this.select = React.createRef();
   }
 
   componentDidMount() {
     this._processOptions();
-    const loadingSelectedPath = this._expandSelectedValues();
-    this.setState({}, () => {
-      const selectedFocused = this._focusSelectedOption(true);
-      this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
-    });
   }
 
   componentDidUpdate(prevProps) {
-    if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
+    if (this.props.matchCheck !== prevProps.matchCheck) {
+      this.matchCheck = this.props.matchCheck || this.matchCheckFull;
+    }
+
+    const optionsChanged = !optionListsAreEqual(this.props.options, prevProps.options, this.props.valueKey);
+    const forceUpdate = this.props.update !== prevProps.update;
+    if (optionsChanged || forceUpdate) {
+      // if options were changed, reprocess them and discard all options from the current state
+      // console.debug("Options changed in didUpdate", optionsChanged, forceUpdate, this);
       this._processOptions();
-      const loadingSelectedPath = this._expandSelectedValues();
-      this.setState({}, () => {
-        const selectedFocused = this._focusSelectedOption(true);
-        this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
-      });
-    } else if (this.props.update > prevProps.update) {
-      // capture the currently focused option
-      const prevFocused = this.select.current && this.select.current.state.focusedOption;
-      // Prevents scrolling while options are re-processed after a new page is loaded
-      this.focusedOptionScrollState.suppressScroll = true;
-      this._processOptions();
-      const loadingSelectedPath = this._expandSelectedValues();
-
-      this.setState({}, () => {
-        this.focusedOptionScrollState.suppressScroll = false;
-        if (this.pendingSelectedScroll || loadingSelectedPath) {
-          const selectedFocused = this._focusSelectedOption(true);
-          this.pendingSelectedScroll = loadingSelectedPath || (this._hasSelectedValue() && !selectedFocused);
-          return;
-        }
-        this.pendingSelectedScroll = loadingSelectedPath;
-        if (prevFocused) {
-          const optionToFocus = this._findOption(this.state.options, prevFocused);
-          if (optionToFocus) {
-            this._focusOption(optionToFocus);
-          }
-        }
-      });
     }
+
+    this._expandSelectedValues(this.props.value, this.state.processedOptions);
+    this._scrollToSelectedValue();
   }
-
-  /**
-   * Focuses the first selected option from {@link #props.value}
-   *
-   * @param forceScroll whether the {@link #focusedOptionScrollState} should be reset to initiate the scroll
-   * @returns {boolean} whether the selected option was focused
-   * @private
-   */
-  _focusSelectedOption(forceScroll = false) {
-    if (!this._hasSelectedValue()) {
-      return false;
-    }
-
-    const targetValue = this.props.value[0];
-    const option = this._findOption(this.state.options, targetValue);
-    if (option) {
-      // Initial load and value change should always scroll to the selected option
-      if (forceScroll) {
-        this.focusedOptionScrollState.lastScrolledKey = null;
-        this.focusedOptionScrollState.lastScrolledIndex = null;
-      }
-      this._focusOption(option);
-      return true;
-    }
-    return false;
-  }
+  //
+  // /**
+  //  * Focuses the first selected option from {@link #props.value}
+  //  *
+  //  * @param forceScroll whether the {@link #focusedOptionScrollState} should be reset to initiate the scroll
+  //  * @returns {boolean} whether the selected option was focused
+  //  * @private
+  //  */
+  // _focusSelectedOption = (forceScroll = false) => {
+  //   if (!this._hasSelectedValue()) {
+  //     return false;
+  //   }
+  //
+  //   const targetValue = this.props.value[0];
+  //   const option = this._findOption(this.state.options, targetValue);
+  //   if (option) {
+  //     // Initial load and value change should always scroll to the selected option
+  //     if (forceScroll) {
+  //       this.focusedOptionScrollState.lastScrolledKey = null;
+  //       this.focusedOptionScrollState.lastScrolledIndex = null;
+  //     }
+  //     this._focusOption(option);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   /**
    * Checks whether selected value is present.
@@ -153,95 +146,129 @@ class VirtualizedTreeSelect extends Component {
   }
 
   resetOptions() {
-    this.setState({options: []});
-  }
-
-  _processOptions() {
-    this.data = {};
-    const keys = [];
-    this.props.options.forEach((option) => {
-      const optionID = option[this.props.valueKey];
-      // Value property is needed for correct rendering of selected options
-      option.value = optionID;
-      this.data[optionID] = option;
-      keys.push(optionID);
-    });
-
-    let options;
-
-    if (this.props.renderAsTree) {
-      // Utilize the fact that set has stable iteration order (~ insertion order)
-      const sortedArr = new Set();
-      keys.forEach((key) => {
-        let option = this.data[key];
-        if (!option.parent) {
-          this._calculateDepth(key, 0, null, new Set(), sortedArr);
-        }
-      });
-
-      options = [...sortedArr];
-
-      // Expands the whole tree on the initial render
-      if (this.props.expanded && !this.state.initialExpansion && options.length > 0) {
-        for (const option of options) {
-          this.toggledOptions.push(option);
-          option.expanded = true;
-        }
-        this.setState({initialExpansion: true});
-      }
-    } else {
-      // Flat list processing - just use all options without hierarchy
-      options = this.props.options.slice();
-      for (const option of options) {
-        option.depth = 0;
-        option.parent = null;
-        option.expanded = false;
-        option.visible = true;
-      }
-    }
-
-    this.setState({options});
+    // TODO: when is this called and what it needs to reset
+    this.setState({processedOptions: []});
   }
 
   /**
-   * Iterates all selected values
-   * and expands all their ancestors.
+   * Checks whether the option with the given option id is expanded
    *
-   * @returns {boolean} whether expanding a selected value's path initiated loading
-   * @private
+   * @param option the option or its id
+   * @returns {boolean} {@code true} when the option is expanded, false otherwise
    */
-  _expandSelectedValues() {
-    if (!this.props.value || !Array.isArray(this.props.value) || this.props.value.length === 0) {
+  isOptionExpanded = (option) => {
+    const optionId = this._getOptionId(option);
+    if (optionId == null) {
       return false;
     }
+    return this.state.toggledOptionIds.has(optionId);
+  };
 
-    let loadingSelectedPath = false;
-    for (let option of this.props.value) {
-      const optionId = option?.[this.props.valueKey] ?? option;
-      let parentOption = this.data[optionId]?.parent;
+  /**
+   * Processes options from properties into their copies and sets the processedOptions in the state
+   * @private
+   */
+  _processOptions = () => {
+    const {valueKey, childrenKey, options, renderAsTree, expanded} = this.props;
 
-      while (parentOption) {
-        // try to lookup an option already present in toggledOptions
-        let existingOption = this._findOption(this.toggledOptions, parentOption);
-        // add to toggledOptions if not found
-        if (existingOption == null) {
-          this.toggledOptions.push(parentOption);
-          existingOption = parentOption;
-        }
+    const processor = new OptionsProcessor(valueKey, childrenKey);
+    options.forEach(processor.register);
 
-        // Trigger loading children of the expanded option ONLY if closed
-        if (!existingOption.expanded) {
-          loadingSelectedPath = true;
-          this.props.onOptionToggle(existingOption);
-          existingOption.expanded = true;
-        }
-
-        // move to the next parent
-        parentOption = existingOption.parent;
-      }
+    if (renderAsTree) {
+      processor.processWithDepths();
+    } else {
+      processor.processFlat();
     }
-    return loadingSelectedPath;
-  }
+
+    const processedOptions = processor.getProcessedOptions();
+
+    // initial expansion of options
+    if (expanded && !this.initialExpansion) {
+      const toggledOptionIds = Object.freeze(processedOptions.map((o) => o[valueKey]));
+      this.setState({toggledOptionIds});
+      this.initialExpansion = true;
+    }
+
+    this.setState({processedOptions}, () => console.debug("options processed", this.state.processedOptions));
+  };
+
+  /**
+   * Explicitly accepts the current value to use memoization to cache the expansion.
+   * Expands all ancestors of every selected value.
+   *
+   * @param selectedValues
+   * @private
+   */
+  _expandSelectedValues = memoizeOne(
+    (selectedValues, processedOptions) => {
+      if (!Array.isArray(selectedValues) || !Array.isArray(processedOptions)) {
+        console.debug("not expanding invalid", selectedValues);
+        return;
+      }
+      // TODO: when option is expanded for the first time manually by click, and new options are loaded, the scroll is reset
+
+      console.debug("expanding selected values", selectedValues);
+
+      for (const option of selectedValues) {
+        const optionId = this._getOptionId(option);
+        if (optionId == null) {
+          console.error("no option id", option, this.props.valueKey);
+          continue;
+        }
+
+        const processedSelectedOption = processedOptions.find((o) => o[this.props.valueKey] === optionId);
+        if (processedSelectedOption != null) {
+          this._expandPathToOption(processedSelectedOption);
+        }
+      }
+    },
+    (a, b) => optionListsAreEqual(a, b, this.props.valueKey)
+  );
+
+  /**
+   * Expands every ancestor of the given processed option.
+   * The processed option and every ancestor is expected to have {@code parent} property with the respective
+   * parent (again processed option) set
+   *
+   * @param processedOption {Object} processed option with parent set to another processed option
+   * @private
+   */
+  _expandPathToOption = (processedOption) => {
+    if (typeof processedOption !== "object" || !Array.isArray(processedOption.path)) {
+      console.error("Invalid option value, not an object", processedOption);
+      return;
+    }
+
+    console.debug("expanding path to option", processedOption);
+
+    const toggledOptionIds = new Set(this.state.toggledOptionIds);
+
+    let processedParent = processedOption;
+    while (processedParent) {
+      const parentId = processedParent[this.props.valueKey];
+      if (!toggledOptionIds.has(parentId)) {
+        toggledOptionIds.add(parentId);
+        this.props.onOptionToggle(processedParent);
+      }
+
+      processedParent = this._findOption(this.state.processedOptions, processedParent.parent);
+    }
+    this.setState({toggledOptionIds});
+  };
+
+  _scrollToSelectedValue = () => {
+    if (this.state.scrollToSelectedState !== SCROLL_STATE.BLOCKED || this.props.isLoading) {
+      // do not scroll if there is pending request or there the initial scroll was already performed
+      return;
+    }
+    console.debug("scrolling now");
+
+    this.setState({scrollToSelectedState: SCROLL_STATE.PENDING});
+    const selectedOptions = sanitizeArray(this.props.value);
+    if (selectedOptions.length > 0) {
+      this._focusOption(selectedOptions[0]);
+    }
+  };
 
   /**
    * Finds the {@code searchedOption} in the given {@code dataset}
@@ -254,7 +281,7 @@ class VirtualizedTreeSelect extends Component {
    */
   _findOption(dataset, searchedOption) {
     if (!searchedOption || !dataset) return null;
-    const targetKey = searchedOption[this.props.valueKey] ?? searchedOption;
+    const targetKey = this._getOptionId(searchedOption);
     let options = dataset.filter((el) => el[this.props.valueKey] === targetKey);
     if (options.length === 0) return null;
     if (searchedOption.path) {
@@ -268,41 +295,15 @@ class VirtualizedTreeSelect extends Component {
     return options.find((el) => el?.parent === parent);
   }
 
-  _calculateDepth(key, depth, parent, visited, sortedArr) {
-    let option = this.data[key];
-    if (!option || visited.has(key)) {
-      return;
-    }
-    //Checks whether the array of items already contain an option with the same valueKey (ID)
-    if (sortedArr.has(option)) {
-      //Deep copy of option, needed to distinguish option for multiple subtrees
-      option = structuredClone(option);
-    }
-
-    sortedArr.add(option);
-    visited.add(key);
-
-    //Sets the idempotent properties
-    option.depth = depth;
-    option.parent = parent;
-    option.path = [...visited];
-    option.expanded = !!this._findOption(this.toggledOptions, option);
-
-    //It can happen that the option is already loaded in the state
-    //If so, set the correct expanded value from the state options
-    //It is needed to check its full path to determine whether it is the correct option
-    let existingOption = this._findOption(this.state.options, option);
-    if (existingOption) {
-      option.expanded = existingOption.expanded;
-    }
-
-    option[this.props.childrenKey].forEach((childID) => {
-      // Create a new set for each child to avoid modifying the parent's visited set - prevent only loops in one tree branch
-      this._calculateDepth(childID, depth + 1, option, new Set(visited), sortedArr);
-    });
-  }
-
-  filterOption(candidate, inputValue) {
+  /**
+   * Decides whether the candidate option from react-select should be displayed.
+   *
+   *
+   * @param candidate
+   * @param inputValue
+   * @returns {boolean|*}
+   */
+  filterOption = (candidate, inputValue) => {
     const option = candidate.data;
     inputValue = inputValue.trim().toLowerCase();
 
@@ -311,11 +312,12 @@ class VirtualizedTreeSelect extends Component {
     }
 
     if (inputValue.length === 0) {
-      return !option.parent || option.parent?.expanded;
+      return !option.parent || this.isOptionExpanded(option.parent);
     } else {
       return option.visible;
+      // TODO remove option visible tagging
     }
-  }
+  };
 
   filterValues(searchInput) {
     // when the fetch is delayed, it can cause incorrect filter render, this prevents it from happening
@@ -327,7 +329,7 @@ class VirtualizedTreeSelect extends Component {
 
     const matches = [];
     let firstMatch = true;
-    for (let option of this.state.options) {
+    for (let option of this.state.processedOptions) {
       if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
         option.visible = true;
         matches.push(option);
@@ -366,55 +368,62 @@ class VirtualizedTreeSelect extends Component {
     this.props.onInputChange(input);
     // Collapses items which were expanded by the search
     if (input.length === 0) {
-      for (let option of this.state.options) {
-        option.expanded = !!this._findOption(this.toggledOptions, option);
+      for (let option of this.state.processedOptions) {
+        option.expanded = !!this._findOption(this.state.toggledOptions, option);
       }
     }
   }
 
-  _removeChildrenFromToggled(option) {
-    if (option === undefined) return;
-    for (const subTermId of option[this.props.childrenKey]) {
-      const subTerm = this._findOptionWithParent(this.state.options, subTermId, option);
-      const toggledItem = this._findOption(this.toggledOptions, subTerm);
-      this.toggledOptions = this.toggledOptions.filter((term) => term !== toggledItem);
-      this._removeChildrenFromToggled(subTerm);
-    }
-  }
+  _getOptionId = (option) => {
+    return getOptionId(option, this.props.valueKey);
+  };
 
-  _onOptionClose(option) {
-    if (option === undefined) return;
-    option.expanded = false;
-    this._focusOption(option);
-    for (const subTermId of option[this.props.childrenKey]) {
-      const subTerm = this._findOptionWithParent(this.state.options, subTermId, option);
-      this._onOptionClose(subTerm);
+  /**
+   * Removes the processed option and all its children recursively from the given set of toggled option ids.
+   *
+   * @param processedOption the option to remove from toggledOptionIds along with all its children
+   * @param toggledOptionIds the set of toggled option ids
+   * @private
+   */
+  _removeFromToggled = (processedOption, toggledOptionIds) => {
+    if (processedOption == null) {
+      return;
     }
-  }
 
-  _onOptionToggle(option) {
+    const optionId = this._getOptionId(processedOption);
+    if (!toggledOptionIds.has(optionId)) {
+      // skip recursion for options that were not expanded
+      console.debug("option not expanded", optionId, toggledOptionIds);
+      return;
+    }
+
+    toggledOptionIds.delete(processedOption[this.props.valueKey]);
+
+    for (const child of sanitizeArray(processedOption[this.props.childrenKey])) {
+      const processedChild = this._findOption(this.state.processedOptions, child);
+      console.debug("removing child", child, processedChild);
+      this._removeFromToggled(processedChild, toggledOptionIds);
+    }
+  };
+
+  _onOptionToggle(processedOption) {
     // disables option expansion/collapse when search string is present
     if (this.searchString !== "") {
       return;
     }
-    this.props.onOptionToggle(option);
 
-    if (option.expanded) {
-      this._onOptionClose(option);
+    this.props.onOptionToggle(processedOption);
+    const toggledOptionIds = new Set(this.state.toggledOptionIds);
+    const optionId = processedOption[this.props.valueKey];
+
+    if (this.isOptionExpanded(optionId)) {
+      this._removeFromToggled(processedOption, toggledOptionIds);
     } else {
-      option.expanded = true;
+      toggledOptionIds.add(optionId);
     }
 
-    // Adds/removes references for toggled items
-    if (option.expanded) {
-      this.toggledOptions.push(option);
-    } else {
-      const toggledItem = this._findOption(this.toggledOptions, option);
-      this.toggledOptions = this.toggledOptions.filter((el) => el !== toggledItem);
-      this._removeChildrenFromToggled(option);
-    }
-
-    this._focusOption(option);
+    this.setState({toggledOptionIds});
+    this._focusOption(processedOption);
   }
 
   //When selecting an option, we want to ensure that the path to it is expanded
@@ -470,13 +479,15 @@ class VirtualizedTreeSelect extends Component {
         }}
         isMulti={props.multi}
         blurInputOnSelect={false}
-        options={this.state.options}
+        options={this.state.processedOptions}
         focusedOptionScrollState={this.focusedOptionScrollState}
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._focusOption}
         onKeyDown={this._onKeyDown}
         focus={this.focus}
+        // scrollToSelectedState={this.state.scrollToSelectedState}
+        isOptionExpanded={this.isOptionExpanded}
       />
     );
   }
@@ -552,10 +563,15 @@ const Menu = (props) => {
 // Component for efficient rendering
 const MenuList = (props) => {
   const {children} = props;
-  const {optionHeight, maxHeight, valueKey, focusedOptionScrollState} = props.selectProps;
+  const {optionHeight, maxHeight, valueKey} = props.selectProps;
 
   /// React-Window List reference
   const listRef = React.useRef(null);
+
+  const scrollStateRef = React.useRef({
+    lastKey: null,
+    lastIndex: null,
+  });
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
@@ -569,41 +585,40 @@ const MenuList = (props) => {
   }
 
   /// Scroll to the currently focused option
-  React.useLayoutEffect(() => {
-    if (!Array.isArray(children) || !listRef.current || focusedOptionScrollState.suppressScroll) {
-      return;
-    }
-
-    /// The children element to which we should scroll
-    let target = children.find((child) => child.props?.isFocused);
-    if (!target || !target.props?.data) {
-      return;
-    }
-
-    const optionData = target.props.data;
-
-    const targetKey = getOptionScrollKey(optionData, valueKey);
-    const targetIndex = values.indexOf(target);
-    if (targetIndex === -1) {
-      return;
-    }
-
-    if (
-      focusedOptionScrollState.lastScrolledKey === targetKey &&
-      focusedOptionScrollState.lastScrolledIndex === targetIndex
-    ) {
-      // no change, do not scroll
-      return;
-    }
-
-    try {
-      listRef.current.scrollToItem(targetIndex, "center");
-      focusedOptionScrollState.lastScrolledKey = targetKey;
-      focusedOptionScrollState.lastScrolledIndex = targetIndex;
-    } catch (e) {
-      // if scroll fails it doesn't matter much
-    }
-  });
+  // TODO fix scroll to selected option
+  // React.useLayoutEffect(() => {
+  //   if (!Array.isArray(children) || !listRef.current) {
+  //     return;
+  //   }
+  //
+  //   /// The children element to which we should scroll
+  //   let target = children.find((child) => child.props?.isFocused);
+  //   if (!target || !target.props?.data) {
+  //     return;
+  //   }
+  //
+  //   const optionData = target.props.data;
+  //
+  //   const targetKey = getOptionScrollKey(optionData, valueKey);
+  //   const targetIndex = values.indexOf(target);
+  //   if (targetIndex === -1) {
+  //     return;
+  //   }
+  //
+  //   if (scrollStateRef.current.lastKey === targetKey &&
+  //     scrollStateRef.current.lastIndex === targetIndex) {
+  //     // no change, do not scroll
+  //     return;
+  //   }
+  //
+  //   try {
+  //     listRef.current.scrollToItem(targetIndex, "center");
+  //     scrollStateRef.current.lastKey = targetKey;
+  //     scrollStateRef.current.lastIndex = targetIndex;
+  //   } catch (e) {
+  //     // if scroll fails it doesn't matter much
+  //   }
+  // });
 
   return (
     <List ref={listRef} height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>

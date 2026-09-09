@@ -3,7 +3,7 @@ import debounce from "lodash.debounce";
 
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
-import {isURL, monotonicAssign, sanitizeArray} from "./utils/Utils";
+import {getOptionId, isURL, monotonicAssign, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
 
 class IntelligentTreeSelect extends Component {
@@ -12,7 +12,7 @@ class IntelligentTreeSelect extends Component {
 
     this.fetching = false;
     this.completedNodes = {};
-    this.toggledNodes = {};
+
     this.searchString = "";
     this.searchPage = 0;
     this.totalRequestedRootOptions = 0;
@@ -26,6 +26,12 @@ class IntelligentTreeSelect extends Component {
     this._finalizeSelectedOptions = this._finalizeSelectedOptions.bind(this);
 
     this.state = {
+      /**
+       * Set of option ids for which there is a pending request fetching their children
+       *
+       * @type {Set<string>}
+       */
+      fetchingChild: new Set(),
       expanded: this.props.expanded,
       multi: this.props.multi,
       options: [],
@@ -74,6 +80,17 @@ class IntelligentTreeSelect extends Component {
       }
     }
   }
+
+  isFetchingChild = (option) => {
+    return this.state.fetchingChild.has(getOptionId(option, this.props.valueKey));
+  };
+
+  isOptionExpanded = (option) => {
+    if (this.select.current) {
+      return this.select.current.isOptionExpanded(option);
+    }
+    return false;
+  };
 
   _fetchOptions(searchString, optionId, offset, topOption, callback) {
     this.setState({isLoadingExternally: true});
@@ -365,43 +382,57 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
+  static addToFetchingChild(state, optionId) {
+    const fetchingChild = new Set(state.fetchingChild);
+    fetchingChild.add(optionId);
+    return {fetchingChild};
+  }
+
+  static removeFromFetchingChild(state, optionId) {
+    const fetchingChild = new Set(state.fetchingChild);
+    fetchingChild.delete(optionId);
+    return {fetchingChild};
+  }
+
   _onOptionToggle(option) {
-    if (!option) {
+    if (!option || !this.select.current) {
       return;
     }
-    if (!option.expanded) {
-      let dataCached = this.toggledNodes[option[this.props.valueKey]] || false;
-
-      if (!dataCached) {
-        this.setState({isLoadingExternally: true});
-        option.fetchingChild = true;
-        let data = [];
-
-        this._getResponse(this.searchString || "", option[this.props.valueKey], this.props.fetchLimit, 0, option).then(
-          (response) => {
-            if (!this.props.simpleTreeData) {
-              data = this._simplifyData(response);
-            } else {
-              data = response;
-            }
-
-            if (data.length < this.props.fetchLimit) {
-              this.completedNodes[option[this.props.valueKey]] = true;
-            }
-
-            this.toggledNodes[option[this.props.valueKey]] = true;
-
-            delete option.fetchingChild;
-
-            if (data.length > 0) {
-              this._addNewOptions(data);
-            }
-            this.setState({isLoadingExternally: false});
-          }
-        );
+    const isExpanded = this.isOptionExpanded(option);
+    if (!isExpanded) {
+      const dataCached = this.isOptionExpanded(option);
+      const activeFetch = this.isFetchingChild(option);
+      if (dataCached || activeFetch) {
+        return;
       }
+
+      this.setState({isLoadingExternally: true});
+      this.setState((state) => IntelligentTreeSelect.addToFetchingChild(state, option[this.props.valueKey]));
+
+      let data = [];
+
+      this._getResponse(this.searchString || "", option[this.props.valueKey], this.props.fetchLimit, 0, option).then(
+        (response) => {
+          if (!this.props.simpleTreeData) {
+            data = this._simplifyData(response);
+          } else {
+            data = response;
+          }
+
+          if (data.length < this.props.fetchLimit) {
+            this.completedNodes[option[this.props.valueKey]] = true;
+          }
+
+          this.setState((state) => IntelligentTreeSelect.removeFromFetchingChild(state, option[this.props.valueKey]));
+
+          if (data.length > 0) {
+            this._addNewOptions(data);
+          }
+          this.setState({isLoadingExternally: false});
+        }
+      );
+      this.forceUpdate();
     }
-    this.forceUpdate();
   }
 
   _valueRenderer({children, data}) {
@@ -555,6 +586,7 @@ class IntelligentTreeSelect extends Component {
           onOptionToggle={this._onOptionToggle}
           noOptionsMessage={() => this.props.noResultsText}
           loadingMessage={() => this.props.loadingText}
+          isOptionFetchingChild={this.isFetchingChild}
         />
       </div>
     );

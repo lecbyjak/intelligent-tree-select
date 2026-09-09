@@ -55,3 +55,32 @@ export function optionListsAreEqual(a, b, valueKey) {
   }
   return true;
 }
+
+/**
+ * Logs the given error message with additional objects and returns new error with the given message.
+ *
+ * @param message message to log and from which {@link Error} should be created
+ * @param toLog objects that should be logged
+ * @returns {Error} created error with the given message
+ */
+export function logAndError(message, ...toLog) {
+  console.error(message, ...toLog);
+  return new Error(message);
+}
+
+/**
+ * Tries to extract the value from the given option
+ *
+ * @param option {string|Object|null} The option, possibly the value itself
+ * @param valueKey {string} the key in the option object storing the value
+ * @return {string|null} the resolved value or null
+ */
+export function getOptionId(option, valueKey) {
+  if (option == null) {
+    return null;
+  }
+  if (typeof option === "string") {
+    return option;
+  }
+  return typeof option[valueKey] === "string" ? option[valueKey] : null;
+}

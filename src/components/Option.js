@@ -19,11 +19,13 @@ const Option = (props) => {
         },
       };
 
+  const value = props.data[props.selectProps.valueKey];
+  const isExpanded = props.selectProps.isOptionExpanded(value);
+
   let button = null;
   if (props.data[props.selectProps.childrenKey].length > 0) {
-    button = getExpandButton(props.selectProps.onOptionToggle, props.data);
+    button = getExpandButton(props.selectProps.onOptionToggle, props.data, isExpanded);
   }
-  const value = props.data[props.selectProps.valueKey];
 
   return (
     <div ref={props.innerRef} className={classes} style={{marginLeft: `${props.data.depth * 16}px`}}>
@@ -52,10 +54,10 @@ const Option = (props) => {
   );
 };
 
-function getExpandButton(onToggle, option) {
+function getExpandButton(onToggle, option, isExpanded) {
   return (
     <span onClick={() => onToggle(option)} className="toggleButton">
-      {option.expanded ? <ToggleMinusIcon /> : <TogglePlusIcon />}
+      {isExpanded ? <ToggleMinusIcon /> : <TogglePlusIcon />}
     </span>
   );
 }
