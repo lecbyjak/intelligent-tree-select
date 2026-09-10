@@ -274,7 +274,6 @@ class VirtualizedTreeSelect extends PureComponent {
       for (const option of selectedValues) {
         const optionId = this._getOptionId(option);
         if (optionId == null) {
-          console.error("no option id", option, this.props.valueKey);
           continue;
         }
 
@@ -312,7 +311,6 @@ class VirtualizedTreeSelect extends PureComponent {
    */
   _expandPathToOption = (processedOption, processedOptions, toggledOptionIds) => {
     if (typeof processedOption !== "object" || !Array.isArray(processedOption.path)) {
-      console.error("Invalid option value, not an object", processedOption);
       return false;
     }
 
@@ -469,7 +467,6 @@ class VirtualizedTreeSelect extends PureComponent {
     const optionId = this._getOptionId(processedOption);
     if (!toggledOptionIds.has(optionId)) {
       // skip recursion for options that were not expanded
-      console.debug("option not expanded", optionId, toggledOptionIds);
       return;
     }
 
