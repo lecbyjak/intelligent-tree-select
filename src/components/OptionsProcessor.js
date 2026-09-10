@@ -68,7 +68,7 @@ export default class OptionsProcessor {
       option.depth = 0;
       option.parent = null;
       option.path = Object.freeze([option[this.valueKey]]);
-      option.visible = true;
+      Object.freeze(option);
       this._visitedOptions.add(option);
     });
   };

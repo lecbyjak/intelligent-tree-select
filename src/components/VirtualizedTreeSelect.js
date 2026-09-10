@@ -201,13 +201,15 @@ class VirtualizedTreeSelect extends Component {
    */
   _expandSelectedValues = memoizeOne(
     (selectedValues, processedOptions) => {
-      if (!Array.isArray(selectedValues) || !Array.isArray(processedOptions)) {
-        console.debug("not expanding invalid", selectedValues);
+      if (!Array.isArray(selectedValues) || !Array.isArray(processedOptions) || selectedValues.length === 0) {
         return;
       }
       // TODO: when option is expanded for the first time manually by click, and new options are loaded, the scroll is reset
 
       console.debug("expanding selected values", selectedValues);
+
+      const toggledOptionIds = new Set(this.state.toggledOptionIds);
+      let updated = false;
 
       for (const option of selectedValues) {
         const optionId = this._getOptionId(option);
@@ -218,8 +220,13 @@ class VirtualizedTreeSelect extends Component {
 
         const processedSelectedOption = processedOptions.find((o) => o[this.props.valueKey] === optionId);
         if (processedSelectedOption != null) {
-          this._expandPathToOption(processedSelectedOption);
+          updated = true;
+          this._expandPathToOption(processedSelectedOption, processedOptions, toggledOptionIds);
         }
+      }
+
+      if (updated) {
+        this.setState({toggledOptionIds});
       }
     },
     (a, b) => optionListsAreEqual(a, b, this.props.valueKey)
@@ -231,17 +238,17 @@ class VirtualizedTreeSelect extends Component {
    * parent (again processed option) set
    *
    * @param processedOption {Object} processed option with parent set to another processed option
+   * @param processedOptions {Object[]} array of processed option in which children should be looked up
+   * @param toggledOptionIds {Set<string>} Set of toggled option ids to modify
    * @private
    */
-  _expandPathToOption = (processedOption) => {
+  _expandPathToOption = (processedOption, processedOptions, toggledOptionIds) => {
     if (typeof processedOption !== "object" || !Array.isArray(processedOption.path)) {
       console.error("Invalid option value, not an object", processedOption);
       return;
     }
 
     console.debug("expanding path to option", processedOption);
-
-    const toggledOptionIds = new Set(this.state.toggledOptionIds);
 
     let processedParent = processedOption;
     while (processedParent) {
@@ -251,9 +258,8 @@ class VirtualizedTreeSelect extends Component {
         this.props.onOptionToggle(processedParent);
       }
 
-      processedParent = this._findOption(this.state.processedOptions, processedParent.parent);
+      processedParent = this._findOption(processedOptions, processedParent.parent);
     }
-    this.setState({toggledOptionIds});
   };
 
   _scrollToSelectedValue = () => {
