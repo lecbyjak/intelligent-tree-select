@@ -47,6 +47,8 @@ export function monotonicAssign(target, ...sources) {
 export function optionListsAreEqual(a, b, valueKey) {
   if (a === b) return true;
   if (a == null || b == null) return false;
+  a = sanitizeArray(a);
+  b = sanitizeArray(b);
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; ++i) {
     const keyA = a[i]?.[valueKey] ?? a[i];

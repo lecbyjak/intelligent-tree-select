@@ -84,10 +84,8 @@ class VirtualizedTreeSelect extends Component {
     }
 
     const optionsChanged = !optionListsAreEqual(this.props.options, prevProps.options, this.props.valueKey);
-    const forceUpdate = this.props.update !== prevProps.update;
-    if (optionsChanged || forceUpdate) {
+    if (optionsChanged) {
       // if options were changed, reprocess them and discard all options from the current state
-      // console.debug("Options changed in didUpdate", optionsChanged, forceUpdate, this);
       this._processOptions();
       return;
     }
@@ -190,8 +188,7 @@ class VirtualizedTreeSelect extends Component {
 
         const processedSelectedOption = processedOptions.find((o) => o[this.props.valueKey] === optionId);
         if (processedSelectedOption != null) {
-          updated = true;
-          this._expandPathToOption(processedSelectedOption, processedOptions, toggledOptionIds);
+          updated = this._expandPathToOption(processedSelectedOption, processedOptions, toggledOptionIds) || updated;
         }
       }
 
@@ -199,7 +196,14 @@ class VirtualizedTreeSelect extends Component {
         this.setState({toggledOptionIds});
       }
     },
-    (a, b) => optionListsAreEqual(a, b, this.props.valueKey)
+    (aParams, bParams) => {
+      return (
+        // selectedValues
+        optionListsAreEqual(aParams[0], bParams[0], this.props.valueKey) &&
+        // processedOptions
+        optionListsAreEqual(aParams[1], bParams[1], this.props.valueKey)
+      );
+    }
   );
 
   /**
@@ -210,51 +214,67 @@ class VirtualizedTreeSelect extends Component {
    * @param processedOption {Object} processed option with parent set to another processed option
    * @param processedOptions {Object[]} array of processed option in which children should be looked up
    * @param toggledOptionIds {Set<string>} Set of toggled option ids to modify
+   * @returns {boolean} {@code true} when the {@code toggledOptionIds} set was modified, {@code false} otherwise
    * @private
    */
   _expandPathToOption = (processedOption, processedOptions, toggledOptionIds) => {
     if (typeof processedOption !== "object" || !Array.isArray(processedOption.path)) {
       console.error("Invalid option value, not an object", processedOption);
-      return;
+      return false;
     }
 
     console.debug("expanding path to option", processedOption);
 
+    let updated = false;
     let processedParent = processedOption;
     while (processedParent) {
       const parentId = processedParent[this.props.valueKey];
       if (!toggledOptionIds.has(parentId)) {
         toggledOptionIds.add(parentId);
         this.props.onOptionToggle(processedParent);
+        updated = true;
       }
 
       processedParent = this._findOption(processedOptions, processedParent.parent);
     }
+    return updated;
   };
 
-  _scrollToSelectedValue = memoizeOne((selectedOptions, isLoading, initialScrollFinished) => {
-    if (isLoading || initialScrollFinished) {
-      console.debug("skipping scroll", isLoading, initialScrollFinished);
-      return;
-    }
+  _scrollToSelectedValue = memoizeOne(
+    (selectedOptions, isLoading, initialScrollFinished) => {
+      if (isLoading || initialScrollFinished) {
+        console.debug("skipping scroll", isLoading, initialScrollFinished);
+        return;
+      }
 
-    const sanitizedSelected = sanitizeArray(selectedOptions);
-    if (sanitizedSelected.length === 0) {
-      console.debug("not scrolling, empty selected value");
+      const sanitizedSelected = sanitizeArray(selectedOptions);
+      if (sanitizedSelected.length === 0) {
+        console.debug("not scrolling, empty selected value");
+        this.initialScrollFinished = true;
+        return;
+      }
+
+      const processedSelectedOption = this._findOption(this.state.processedOptions, sanitizedSelected[0]);
+      if (!processedSelectedOption) {
+        return;
+      }
+
+      console.debug("scrolling now", processedSelectedOption);
+
+      this._focusOption(processedSelectedOption);
       this.initialScrollFinished = true;
-      return;
+    },
+    (aParams, bParams) => {
+      // selectedOptions
+      return (
+        optionListsAreEqual(aParams[0], bParams[0], this.props.valueKey) &&
+        // isLoading
+        aParams[1] === bParams[1] &&
+        // initialScrollFinished
+        aParams[2] === bParams[2]
+      );
     }
-
-    const processedSelectedOption = this._findOption(this.state.processedOptions, sanitizedSelected[0]);
-    if (!processedSelectedOption) {
-      return;
-    }
-
-    console.debug("scrolling now", processedSelectedOption);
-
-    this._focusOption(processedSelectedOption);
-    this.initialScrollFinished = true;
-  });
+  );
 
   /**
    * Finds the {@code searchedOption} in the given {@code dataset}
@@ -334,7 +354,7 @@ class VirtualizedTreeSelect extends Component {
         match.visible = true;
       }
     }
-    this.forceUpdate();
+    // this.forceUpdate();
   }
 
   matchCheckFull(searchInput, optionLabel) {

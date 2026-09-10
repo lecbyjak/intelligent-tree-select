@@ -436,7 +436,6 @@ class IntelligentTreeSelect extends Component {
           this.setState({isLoadingExternally: false});
         }
       );
-      this.forceUpdate();
     }
   }
 
