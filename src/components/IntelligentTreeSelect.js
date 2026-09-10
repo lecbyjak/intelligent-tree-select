@@ -18,14 +18,6 @@ class IntelligentTreeSelect extends PureComponent {
     this.searchPage = 0;
     this.totalRequestedRootOptions = 0;
 
-    this._valueRenderer = this._valueRenderer.bind(this);
-    this._addSelectedOption = this._addSelectedOption.bind(this);
-    this._onInputChange = this._onInputChange.bind(this);
-    this._onChange = this._onChange.bind(this);
-    this._onScroll = this._onScroll.bind(this);
-    this._onOptionToggle = this._onOptionToggle.bind(this);
-    this._finalizeSelectedOptions = this._finalizeSelectedOptions.bind(this);
-
     this.state = {
       /**
        * Set of option ids for which there is a pending request fetching their children
@@ -72,21 +64,21 @@ class IntelligentTreeSelect extends PureComponent {
     this._loadOptions();
   }
 
-  _retrieveCachedData() {
+  _retrieveCachedData = () => {
     let cachedData = window.localStorage.getItem(this.props.name);
     if (cachedData) {
       cachedData = JSON.parse(cachedData);
       return cachedData.validTo > Date.now() ? cachedData.data : [];
     }
-  }
+  };
 
-  _loadOptions() {
+  _loadOptions = () => {
     if (this.state.options.length === 0 && this.props.fetchOptions) {
       if (!this.fetching) {
         this._fetchOptions("", "", 0);
       }
     }
-  }
+  };
 
   /**
    * Checks whether there is a pending request for children of the given option.
@@ -111,7 +103,7 @@ class IntelligentTreeSelect extends PureComponent {
     return false;
   };
 
-  _fetchOptions(searchString, optionId, offset, topOption, callback) {
+  _fetchOptions = (searchString, optionId, offset, topOption, callback) => {
     this.setState({isLoadingExternally: true});
     this.fetching = this._getResponse(searchString, optionId, this.props.fetchLimit, offset, topOption).then(
       (response) => {
@@ -132,7 +124,7 @@ class IntelligentTreeSelect extends PureComponent {
         }
       }
     );
-  }
+  };
 
   // If the values are controlled from the outside, it is needed to map them properly to options which Select knows
   static getDerivedStateFromProps(props, state) {
@@ -194,7 +186,7 @@ class IntelligentTreeSelect extends PureComponent {
   /**
    * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
-  resetOptions() {
+  resetOptions = () => {
     this.totalRequestedRootOptions = 0;
     this.setState({options: []}, () => {
       if (this.select.current) {
@@ -206,32 +198,32 @@ class IntelligentTreeSelect extends PureComponent {
         this._addNewOptions(this.props.options);
       }
     });
-  }
+  };
 
   /**
    * Focuses the select input.
    */
-  focus() {
+  focus = () => {
     if (this.select.current) {
       this.select.current.focus();
     }
-  }
+  };
 
   /**
    * Blurs the select input.
    */
-  blurInput() {
+  blurInput = () => {
     if (this.select.current) {
       this.select.current.blurInput();
     }
-  }
+  };
 
   /**
    * Gets the current options provided by this component.
    */
-  getOptions() {
+  getOptions = () => {
     return this.state.options.slice();
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (!this.props.fetchOptions && prevProps.options !== this.props.options) {
@@ -242,7 +234,7 @@ class IntelligentTreeSelect extends PureComponent {
     }
   }
 
-  _simplifyData(responseData) {
+  _simplifyData = (responseData) => {
     let result = [];
     const {valueKey, childrenKey} = this.props;
 
@@ -260,9 +252,9 @@ class IntelligentTreeSelect extends PureComponent {
     }
 
     return result;
-  }
+  };
 
-  _parseOptionLifetime(value) {
+  _parseOptionLifetime = (value) => {
     let optionLifetime = {
       days: 0,
       hours: 0,
@@ -281,9 +273,9 @@ class IntelligentTreeSelect extends PureComponent {
       throw new Error("Invalid optionLifetime. Expecting format: e.g. 1d10h5m6s ");
     }
     return optionLifetime;
-  }
+  };
 
-  _getValidForInSec(optionLifetime) {
+  _getValidForInSec = (optionLifetime) => {
     optionLifetime = this._parseOptionLifetime(optionLifetime);
     let res = 0;
     res += isNaN(optionLifetime.seconds) ? 0 : optionLifetime.seconds;
@@ -291,13 +283,13 @@ class IntelligentTreeSelect extends PureComponent {
     res += isNaN(optionLifetime.hours) ? 0 : optionLifetime.hours * 60 * 60;
     res += isNaN(optionLifetime.days) ? 0 : optionLifetime.days * 60 * 60 * 24;
     return res * 1000;
-  }
+  };
 
   hasActiveFetch = () => {
     return this.state.isLoadingExternally || this.state.fetchingChild.size > 0;
   };
 
-  async _getResponse(searchString, optionID, limit, offset, option) {
+  _getResponse = async (searchString, optionID, limit, offset, option) => {
     return this.props.fetchOptions
       ? await this.props.fetchOptions({
           searchString,
@@ -307,9 +299,9 @@ class IntelligentTreeSelect extends PureComponent {
           option,
         })
       : [];
-  }
+  };
 
-  _onInputChange(searchString) {
+  _onInputChange = (searchString) => {
     if (this.props.fetchOptions) {
       if (searchString) {
         if (!this.fetching) {
@@ -349,9 +341,9 @@ class IntelligentTreeSelect extends PureComponent {
     if (this.props.onInputChange !== undefined) {
       this.props.onInputChange(searchString);
     }
-  }
+  };
 
-  _invokeSearch(searchString, offset) {
+  _invokeSearch = (searchString, offset) => {
     const isSearch = !!searchString;
     const computedOffset = isSearch ? this.searchPage * this.props.fetchLimit : offset;
     this._fetchOptions(searchString, "", computedOffset, undefined, (data) => {
@@ -367,9 +359,9 @@ class IntelligentTreeSelect extends PureComponent {
         this.select.current.filterValues(searchString);
       }
     });
-  }
+  };
 
-  _onScroll(data) {
+  _onScroll = (data) => {
     const {clientHeight, scrollHeight, scrollTop} = data;
 
     if (!this.state.options.length) return;
@@ -413,7 +405,7 @@ class IntelligentTreeSelect extends PureComponent {
         });
       }
     }
-  }
+  };
 
   static addToFetchingChild(state, optionId) {
     const fetchingChild = new Set(state.fetchingChild);
@@ -429,7 +421,7 @@ class IntelligentTreeSelect extends PureComponent {
     return {fetchingChild};
   }
 
-  _onOptionToggle(option) {
+  _onOptionToggle = (option) => {
     if (!option || !this.select.current || !this.props.fetchOptions) {
       return;
     }
@@ -464,9 +456,9 @@ class IntelligentTreeSelect extends PureComponent {
         }
       );
     }
-  }
+  };
 
-  _valueRenderer({children, data}) {
+  _valueRenderer = ({children, data}) => {
     if (this.props.valueRenderer) {
       // On initial render, there can be empty options
       if (!children) return null;
@@ -482,9 +474,9 @@ class IntelligentTreeSelect extends PureComponent {
       );
     }
     return children;
-  }
+  };
 
-  _addNewOptions(newOptions) {
+  _addNewOptions = (newOptions) => {
     const {childrenKey, fetchOptions, name, optionLifetime} = this.props;
 
     let mergedArr;
@@ -511,9 +503,9 @@ class IntelligentTreeSelect extends PureComponent {
 
     Object.freeze(mergedArr);
     this.setState({options: mergedArr});
-  }
+  };
 
-  _mergeOptionArrays(originalOptions, newOptions) {
+  _mergeOptionArrays = (originalOptions, newOptions) => {
     const {valueKey, childrenKey} = this.props;
     let options = originalOptions.concat(newOptions);
     let mergedArr = [];
@@ -538,10 +530,10 @@ class IntelligentTreeSelect extends PureComponent {
       options = optionsToReplace;
     }
     return mergedArr;
-  }
+  };
 
   //Check if new options contain selected value
-  _finalizeSelectedOptions(addedOptions, parsedOptions) {
+  _finalizeSelectedOptions = (addedOptions, parsedOptions) => {
     const foundOptions = [];
     let previouslySelected = sanitizeArray(this.state.passedValue);
     let newSelected = sanitizeArray(this.state.selectedOptions);
@@ -569,9 +561,9 @@ class IntelligentTreeSelect extends PureComponent {
 
     Object.freeze(previouslySelected);
     this.setState({passedValue: previouslySelected});
-  }
+  };
 
-  _onChange(options) {
+  _onChange = (options) => {
     let optionsArray = sanitizeArray(options);
     if (!this.props.valueIsControlled) {
       // updating internal state synchronously only when value is not controlled
@@ -580,12 +572,12 @@ class IntelligentTreeSelect extends PureComponent {
     if (this.props.onChange) {
       this.props.onChange(options);
     }
-  }
+  };
 
-  _addSelectedOption(selectedOptions) {
+  _addSelectedOption = (selectedOptions) => {
     Object.freeze(selectedOptions);
     this.setState({selectedOptions});
-  }
+  };
 
   _makeListProps = memoizeOne((onScroll, ref) => {
     return {

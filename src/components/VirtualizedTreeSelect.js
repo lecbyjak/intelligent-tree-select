@@ -23,14 +23,7 @@ function getOptionScrollKey(option, valueKey) {
 class VirtualizedTreeSelect extends PureComponent {
   constructor(props, context) {
     super(props, context);
-    this._focusOption = this._focusOption.bind(this);
-    this._onOptionToggle = this._onOptionToggle.bind(this);
-    this._findOption = this._findOption.bind(this);
-    this._findOptionWithParent = this._findOptionWithParent.bind(this);
-    this._onOptionSelect = this._onOptionSelect.bind(this);
-    this._onKeyDown = this._onKeyDown.bind(this);
-    this.focus = this.focus.bind(this);
-    this.resetOptions = this.resetOptions.bind(this);
+
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
 
     /**
@@ -112,17 +105,17 @@ class VirtualizedTreeSelect extends PureComponent {
     this._scrollToSelectedValue();
   }
 
-  focus() {
+  focus = () => {
     this.select.current.focus();
-  }
+  };
 
-  blurInput() {
+  blurInput = () => {
     if (this.select.current) {
       this.select.current.blur();
     }
-  }
+  };
 
-  resetOptions() {
+  resetOptions = () => {
     this.initialExpansion = false;
     this.lastScrolledSelectedOptions = null;
     this._expandSelectedValues.clear();
@@ -130,7 +123,7 @@ class VirtualizedTreeSelect extends PureComponent {
       processedOptions: EMPTY_ARRAY,
       toggledOptionIds: EMPTY_SET,
     });
-  }
+  };
 
   /**
    * Checks whether the option with the given option id is expanded, either by the user or temporarily because it is
@@ -358,7 +351,7 @@ class VirtualizedTreeSelect extends PureComponent {
    * @returns {any|null} the found option or null
    * @private
    */
-  _findOption(dataset, searchedOption) {
+  _findOption = (dataset, searchedOption) => {
     if (!searchedOption || !dataset) return null;
     const targetKey = this._getOptionId(searchedOption);
     let options = dataset.filter((el) => el[this.props.valueKey] === targetKey);
@@ -367,12 +360,7 @@ class VirtualizedTreeSelect extends PureComponent {
       return options.find((option) => arraysAreEqual(option.path, searchedOption.path)) || options[0];
     }
     return options[0];
-  }
-
-  _findOptionWithParent(dataset, searchedOptionKey, parent) {
-    let options = dataset.filter((el) => el[this.props.valueKey] === searchedOptionKey);
-    return options.find((el) => el?.parent === parent);
-  }
+  };
 
   /**
    * Decides whether the candidate option from react-select should be displayed.
@@ -434,9 +422,9 @@ class VirtualizedTreeSelect extends PureComponent {
     this._setSearchInput(currentInput ?? searchInput);
   };
 
-  matchCheckFull(searchInput, optionLabel) {
+  matchCheckFull = (searchInput, optionLabel) => {
     return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-  }
+  };
 
   /**
    * Handles a new react-select input value.
@@ -478,7 +466,7 @@ class VirtualizedTreeSelect extends PureComponent {
     }
   };
 
-  _onOptionToggle(processedOption) {
+  _onOptionToggle = (processedOption) => {
     // disables option expansion/collapse when search input is present
     if (this.state.searchInput.trim().length > 0) {
       return;
@@ -497,16 +485,16 @@ class VirtualizedTreeSelect extends PureComponent {
     Object.freeze(toggledOptionIds);
     this.setState({toggledOptionIds});
     this._focusOption(processedOption);
-  }
+  };
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
-  _onOptionSelect(props) {
+  _onOptionSelect = (props) => {
     props.selectOption(props.data);
-  }
+  };
 
   //When using custom option, it is needed to set focusedOption manually
-  _focusOption(option) {
+  _focusOption = (option) => {
     if (this.select.current) {
       this.scrollState.lastKey = null;
       this.scrollState.lastIndex = null;
@@ -514,9 +502,9 @@ class VirtualizedTreeSelect extends PureComponent {
       const processedOption = this._findOption(this.state.processedOptions, option) || option;
       this.select.current.setState({focusedOption: processedOption});
     }
-  }
+  };
 
-  _onKeyDown(event) {
+  _onKeyDown = (event) => {
     if (event.key === " ") {
       event.preventDefault();
       const focusedOption = this.select.current && this.select.current.state.focusedOption;
@@ -530,7 +518,7 @@ class VirtualizedTreeSelect extends PureComponent {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event);
     }
-  }
+  };
 
   render() {
     const props = this.props;

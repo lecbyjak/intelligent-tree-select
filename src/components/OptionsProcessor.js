@@ -1,4 +1,4 @@
-import {getOptionId, hashCode, logAndError} from "./utils/Utils";
+import {getOptionId, logAndError} from "./utils/Utils";
 
 /**
  * Processes registered options, creating their structured copy and allows calculating their depth, parents and path
@@ -132,9 +132,9 @@ export default class OptionsProcessor {
    *
    * @returns {Object[]}
    */
-  getProcessedOptions() {
+  getProcessedOptions = () => {
     return Object.freeze([...this._visitedOptions]);
-  }
+  };
 
   /**
    * The key of option object where the value for selection is stored
