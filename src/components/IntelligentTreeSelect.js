@@ -5,6 +5,7 @@ import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
 import {getOptionId, isURL, monotonicAssign, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
+import memoizeOne from "memoize-one";
 
 class IntelligentTreeSelect extends Component {
   constructor(props, context) {
@@ -121,23 +122,27 @@ class IntelligentTreeSelect extends Component {
       return null;
     }
 
-    if (!props.value) {
+    return IntelligentTreeSelect.deriveControlledValue(props.value, state.options, props.valueKey, props.multi);
+  }
+
+  static deriveControlledValue = memoizeOne((value, options, valueKey, multi) => {
+    if (!value) {
       return {
         passedValue: [],
         selectedOptions: [],
       };
     }
 
-    const values = sanitizeArray(props.value);
-    const existingOptions = sanitizeArray(state.options);
+    const values = sanitizeArray(value);
+    const existingOptions = sanitizeArray(options);
     const modifiedPassedValue = [];
     const modifiedSelectedOptions = [];
 
     for (const valueElement of values) {
-      const key = valueElement[props.valueKey] ?? valueElement;
+      const key = valueElement[valueKey] ?? valueElement;
       const opt =
-        existingOptions.find((term) => term[props.valueKey] === key) ||
-        (typeof valueElement === "object" && valueElement[props.valueKey] ? valueElement : null);
+        existingOptions.find((term) => term[valueKey] === key) ||
+        (typeof valueElement === "object" && valueElement[valueKey] ? valueElement : null);
 
       if (opt) {
         modifiedSelectedOptions.push(opt);
@@ -147,11 +152,11 @@ class IntelligentTreeSelect extends Component {
     }
 
     return {
-      passedValue: !props.multi && modifiedPassedValue.length > 0 ? [modifiedPassedValue[0]] : modifiedPassedValue,
+      passedValue: !multi && modifiedPassedValue.length > 0 ? [modifiedPassedValue[0]] : modifiedPassedValue,
       selectedOptions:
-        !props.multi && modifiedSelectedOptions.length > 0 ? [modifiedSelectedOptions[0]] : modifiedSelectedOptions,
+        !multi && modifiedSelectedOptions.length > 0 ? [modifiedSelectedOptions[0]] : modifiedSelectedOptions,
     };
-  }
+  });
 
   /**
    * Resets the option, forcing the component to reload them from the server/reload them from props.
