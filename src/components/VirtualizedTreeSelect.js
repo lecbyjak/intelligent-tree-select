@@ -20,12 +20,6 @@ function getOptionScrollKey(option, valueKey) {
   return option.path?.join(">") || option[valueKey];
 }
 
-const SCROLL_STATE = {
-  BLOCKED: "BLOCKED",
-  PENDING: "PENDING",
-  FINISHED: "FINISHED",
-};
-
 class VirtualizedTreeSelect extends Component {
   constructor(props, context) {
     super(props, context);
@@ -51,17 +45,19 @@ class VirtualizedTreeSelect extends Component {
      */
     this.initialExpansion = false;
 
+    this.scrollState = {
+      lastKey: null,
+      lastIndex: null,
+    };
+
+    this.initialScrollFinished = false;
+
     /**
      * React component state
      *
      * @type {Readonly<Object>}
      */
     this.state = {
-      /**
-       * State of initial scroll to selected value
-       */
-      scrollToSelectedState: SCROLL_STATE.BLOCKED,
-
       /**
        * List of expanded option ids
        *
@@ -97,43 +93,7 @@ class VirtualizedTreeSelect extends Component {
     }
 
     this._expandSelectedValues(this.props.value, this.state.processedOptions);
-    this._scrollToSelectedValue();
-  }
-  //
-  // /**
-  //  * Focuses the first selected option from {@link #props.value}
-  //  *
-  //  * @param forceScroll whether the {@link #focusedOptionScrollState} should be reset to initiate the scroll
-  //  * @returns {boolean} whether the selected option was focused
-  //  * @private
-  //  */
-  // _focusSelectedOption = (forceScroll = false) => {
-  //   if (!this._hasSelectedValue()) {
-  //     return false;
-  //   }
-  //
-  //   const targetValue = this.props.value[0];
-  //   const option = this._findOption(this.state.options, targetValue);
-  //   if (option) {
-  //     // Initial load and value change should always scroll to the selected option
-  //     if (forceScroll) {
-  //       this.focusedOptionScrollState.lastScrolledKey = null;
-  //       this.focusedOptionScrollState.lastScrolledIndex = null;
-  //     }
-  //     this._focusOption(option);
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  /**
-   * Checks whether selected value is present.
-   *
-   * @returns {boolean} true when there is any selected option
-   * @private
-   */
-  _hasSelectedValue() {
-    return !!(this.props.value && Array.isArray(this.props.value) && this.props.value.length > 0);
+    this._scrollToSelectedValue(this.props.value, this.props.isLoading, this.initialScrollFinished);
   }
 
   focus() {
@@ -147,6 +107,8 @@ class VirtualizedTreeSelect extends Component {
   }
 
   resetOptions() {
+    this.initialExpansion = false;
+    this.initialScrollFinished = false;
     this._expandSelectedValues.clear();
     this.setState({
       processedOptions: [],
@@ -270,19 +232,29 @@ class VirtualizedTreeSelect extends Component {
     }
   };
 
-  _scrollToSelectedValue = () => {
-    if (this.state.scrollToSelectedState !== SCROLL_STATE.BLOCKED || this.props.isLoading) {
-      // do not scroll if there is pending request or there the initial scroll was already performed
+  _scrollToSelectedValue = memoizeOne((selectedOptions, isLoading, initialScrollFinished) => {
+    if (isLoading || initialScrollFinished) {
+      console.debug("skipping scroll", isLoading, initialScrollFinished);
       return;
     }
-    console.debug("scrolling now");
 
-    this.setState({scrollToSelectedState: SCROLL_STATE.PENDING});
-    const selectedOptions = sanitizeArray(this.props.value);
-    if (selectedOptions.length > 0) {
-      this._focusOption(selectedOptions[0]);
+    const sanitizedSelected = sanitizeArray(selectedOptions);
+    if (sanitizedSelected.length === 0) {
+      console.debug("not scrolling, empty selected value");
+      this.initialScrollFinished = true;
+      return;
     }
-  };
+
+    const processedSelectedOption = this._findOption(this.state.processedOptions, sanitizedSelected[0]);
+    if (!processedSelectedOption) {
+      return;
+    }
+
+    console.debug("scrolling now", processedSelectedOption);
+
+    this._focusOption(processedSelectedOption);
+    this.initialScrollFinished = true;
+  });
 
   /**
    * Finds the {@code searchedOption} in the given {@code dataset}
@@ -415,7 +387,6 @@ class VirtualizedTreeSelect extends Component {
 
     for (const child of sanitizeArray(processedOption[this.props.childrenKey])) {
       const processedChild = this._findOption(this.state.processedOptions, child);
-      console.debug("removing child", child, processedChild);
       this._removeFromToggled(processedChild, toggledOptionIds);
     }
   };
@@ -449,7 +420,8 @@ class VirtualizedTreeSelect extends Component {
   //When using custom option, it is needed to set focusedOption manually
   _focusOption(option) {
     if (this.select.current) {
-      this.select.current.setState({focusedOption: option});
+      const processedOption = this._findOption(this.state.processedOptions, option) || option;
+      this.select.current.setState({focusedOption: processedOption});
     }
   }
 
@@ -494,14 +466,13 @@ class VirtualizedTreeSelect extends Component {
         isMulti={props.multi}
         blurInputOnSelect={false}
         options={this.state.processedOptions}
-        focusedOptionScrollState={this.focusedOptionScrollState}
         onOptionToggle={this._onOptionToggle}
         onOptionSelect={this._onOptionSelect}
         onOptionHover={this._focusOption}
         onKeyDown={this._onKeyDown}
         focus={this.focus}
-        // scrollToSelectedState={this.state.scrollToSelectedState}
         isOptionExpanded={this.isOptionExpanded}
+        scrollState={this.scrollState}
       />
     );
   }
@@ -577,15 +548,10 @@ const Menu = (props) => {
 // Component for efficient rendering
 const MenuList = (props) => {
   const {children} = props;
-  const {optionHeight, maxHeight, valueKey} = props.selectProps;
+  const {optionHeight, maxHeight, valueKey, scrollState} = props.selectProps;
 
   /// React-Window List reference
   const listRef = React.useRef(null);
-
-  const scrollStateRef = React.useRef({
-    lastKey: null,
-    lastIndex: null,
-  });
 
   // We need to check whether the passed object contains items or loading/empty message
   let values;
@@ -598,41 +564,38 @@ const MenuList = (props) => {
     height = 40;
   }
 
-  /// Scroll to the currently focused option
-  // TODO fix scroll to selected option
-  // React.useLayoutEffect(() => {
-  //   if (!Array.isArray(children) || !listRef.current) {
-  //     return;
-  //   }
-  //
-  //   /// The children element to which we should scroll
-  //   let target = children.find((child) => child.props?.isFocused);
-  //   if (!target || !target.props?.data) {
-  //     return;
-  //   }
-  //
-  //   const optionData = target.props.data;
-  //
-  //   const targetKey = getOptionScrollKey(optionData, valueKey);
-  //   const targetIndex = values.indexOf(target);
-  //   if (targetIndex === -1) {
-  //     return;
-  //   }
-  //
-  //   if (scrollStateRef.current.lastKey === targetKey &&
-  //     scrollStateRef.current.lastIndex === targetIndex) {
-  //     // no change, do not scroll
-  //     return;
-  //   }
-  //
-  //   try {
-  //     listRef.current.scrollToItem(targetIndex, "center");
-  //     scrollStateRef.current.lastKey = targetKey;
-  //     scrollStateRef.current.lastIndex = targetIndex;
-  //   } catch (e) {
-  //     // if scroll fails it doesn't matter much
-  //   }
-  // });
+  // Scroll to the currently focused option
+  React.useLayoutEffect(() => {
+    if (!Array.isArray(children) || !listRef.current) {
+      return;
+    }
+
+    /// The children element to which we should scroll
+    let target = children.find((child) => child.props?.isFocused);
+    if (!target || !target.props?.data) {
+      return;
+    }
+
+    const optionData = target.props.data;
+
+    const targetKey = getOptionScrollKey(optionData, valueKey);
+    const targetIndex = values.indexOf(target);
+    if (targetIndex === -1) {
+      return;
+    }
+
+    if (scrollState.lastKey === targetKey && scrollState.lastIndex === targetIndex) {
+      return;
+    }
+
+    try {
+      listRef.current.scrollToItem(targetIndex, "auto");
+      scrollState.lastKey = targetKey;
+      scrollState.lastIndex = targetIndex;
+    } catch (e) {
+      // if scroll fails it doesn't matter much
+    }
+  });
 
   return (
     <List ref={listRef} height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
