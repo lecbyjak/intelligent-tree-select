@@ -3,7 +3,7 @@ import debounce from "lodash.debounce";
 
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
-import {getOptionId, isURL, monotonicAssign, sanitizeArray} from "./utils/Utils";
+import {getOptionId, isURL, monotonicAssign, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
 import Constants from "./utils/Constants";
 import memoizeOne from "memoize-one";
 
@@ -125,38 +125,53 @@ class IntelligentTreeSelect extends Component {
     return IntelligentTreeSelect.deriveControlledValue(props.value, state.options, props.valueKey, props.multi);
   }
 
-  static deriveControlledValue = memoizeOne((value, options, valueKey, multi) => {
-    if (!value) {
-      return {
-        passedValue: [],
-        selectedOptions: [],
-      };
-    }
-
-    const values = sanitizeArray(value);
-    const existingOptions = sanitizeArray(options);
-    const modifiedPassedValue = [];
-    const modifiedSelectedOptions = [];
-
-    for (const valueElement of values) {
-      const key = valueElement[valueKey] ?? valueElement;
-      const opt =
-        existingOptions.find((term) => term[valueKey] === key) ||
-        (typeof valueElement === "object" && valueElement[valueKey] ? valueElement : null);
-
-      if (opt) {
-        modifiedSelectedOptions.push(opt);
-      } else {
-        modifiedPassedValue.push(key);
+  static deriveControlledValue = memoizeOne(
+    (value, options, valueKey, multi) => {
+      if (!value) {
+        return {
+          passedValue: [],
+          selectedOptions: [],
+        };
       }
-    }
 
-    return {
-      passedValue: !multi && modifiedPassedValue.length > 0 ? [modifiedPassedValue[0]] : modifiedPassedValue,
-      selectedOptions:
-        !multi && modifiedSelectedOptions.length > 0 ? [modifiedSelectedOptions[0]] : modifiedSelectedOptions,
-    };
-  });
+      const values = sanitizeArray(value);
+      const existingOptions = sanitizeArray(options);
+      const modifiedPassedValue = [];
+      const modifiedSelectedOptions = [];
+
+      for (const valueElement of values) {
+        const key = valueElement[valueKey] ?? valueElement;
+        const opt =
+          existingOptions.find((term) => term[valueKey] === key) ||
+          (typeof valueElement === "object" && valueElement[valueKey] ? valueElement : null);
+
+        if (opt) {
+          modifiedSelectedOptions.push(opt);
+        } else {
+          modifiedPassedValue.push(key);
+        }
+      }
+
+      return {
+        passedValue: !multi && modifiedPassedValue.length > 0 ? [modifiedPassedValue[0]] : modifiedPassedValue,
+        selectedOptions:
+          !multi && modifiedSelectedOptions.length > 0 ? [modifiedSelectedOptions[0]] : modifiedSelectedOptions,
+      };
+    },
+    (aParams, bParams) => {
+      const bValueKey = bParams[1];
+      // value
+      return (
+        optionListsAreEqual(aParams[0], bParams[0], bValueKey) &&
+        // options
+        optionListsAreEqual(aParams[1], bParams[1], bValueKey) &&
+        // valueKey
+        aParams[2] === bParams[2] &&
+        // multi
+        aParams[3] === bParams[3]
+      );
+    }
+  );
 
   /**
    * Resets the option, forcing the component to reload them from the server/reload them from props.
@@ -400,7 +415,7 @@ class IntelligentTreeSelect extends Component {
   }
 
   _onOptionToggle(option) {
-    if (!option || !this.select.current) {
+    if (!option || !this.select.current || !this.props.fetchOptions) {
       return;
     }
     const isExpanded = this.isOptionExpanded(option);
@@ -557,10 +572,15 @@ class IntelligentTreeSelect extends Component {
     this.setState({selectedOptions});
   }
 
+  _makeListProps = memoizeOne((onScroll, ref) => {
+    return {
+      onScroll,
+      ref,
+    };
+  });
+
   render() {
-    let listProps = {};
-    listProps.onScroll = this.props.onScroll || this._onScroll;
-    listProps.ref = this.select;
+    let listProps = this._makeListProps(this.props.onScroll || this._onScroll, this.select);
     const valueRenderer = this._valueRenderer;
     const propsToPass = Object.assign({}, this.props);
     delete propsToPass.valueRenderer;
