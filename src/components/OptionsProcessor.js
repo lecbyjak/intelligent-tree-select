@@ -53,8 +53,24 @@ export default class OptionsProcessor {
    * Processes the options for tree structure, calculating their depths and parents
    */
   processWithDepths = () => {
+    const childOptionIds = new Set();
+
+    this._knownOptionsMap.forEach((option) => {
+      const children = option[this.childrenKey];
+      if (Array.isArray(children)) {
+        children.forEach((child) => childOptionIds.add(getOptionId(child, this.valueKey)));
+      }
+    });
+
     this._knownOptionsMap.forEach((option, optionId) => {
-      if (!option.parent) {
+      if (!childOptionIds.has(optionId)) {
+        this._calculateInternal(optionId, 0, null, new Set());
+      }
+    });
+
+    // Process components without a root as well, e.g. cyclic or otherwise malformed subtrees.
+    this._knownOptionsMap.forEach((option, optionId) => {
+      if (!this._visitedOptions.has(option)) {
         this._calculateInternal(optionId, 0, null, new Set());
       }
     });
