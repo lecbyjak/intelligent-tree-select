@@ -93,6 +93,7 @@ class VirtualizedTreeSelect extends Component {
       // if options were changed, reprocess them and discard all options from the current state
       // console.debug("Options changed in didUpdate", optionsChanged, forceUpdate, this);
       this._processOptions();
+      return;
     }
 
     this._expandSelectedValues(this.props.value, this.state.processedOptions);
@@ -146,8 +147,11 @@ class VirtualizedTreeSelect extends Component {
   }
 
   resetOptions() {
-    // TODO: when is this called and what it needs to reset
-    this.setState({processedOptions: []});
+    this._expandSelectedValues.clear();
+    this.setState({
+      processedOptions: [],
+      toggledOptionIds: Object.freeze(new Set()),
+    });
   }
 
   /**
@@ -189,7 +193,11 @@ class VirtualizedTreeSelect extends Component {
       this.initialExpansion = true;
     }
 
-    this.setState({processedOptions}, () => console.debug("options processed", this.state.processedOptions));
+    if (processedOptions.length === 0) {
+      this.resetOptions();
+    } else {
+      this.setState({processedOptions});
+    }
   };
 
   /**
