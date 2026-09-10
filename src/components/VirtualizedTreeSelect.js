@@ -1,4 +1,4 @@
-import React, {Component, useCallback} from "react";
+import React, {PureComponent, useCallback} from "react";
 import Select, {components} from "react-select";
 import PropTypes from "prop-types";
 import Option from "./Option";
@@ -20,7 +20,7 @@ function getOptionScrollKey(option, valueKey) {
   return option.path?.join(">") || option[valueKey];
 }
 
-class VirtualizedTreeSelect extends Component {
+class VirtualizedTreeSelect extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this._focusOption = this._focusOption.bind(this);

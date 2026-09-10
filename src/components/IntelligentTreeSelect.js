@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PureComponent} from "react";
 import debounce from "lodash.debounce";
 
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
@@ -7,7 +7,7 @@ import {getOptionId, isURL, monotonicAssign, optionListsAreEqual, sanitizeArray}
 import Constants from "./utils/Constants";
 import memoizeOne from "memoize-one";
 
-class IntelligentTreeSelect extends Component {
+class IntelligentTreeSelect extends PureComponent {
   constructor(props, context) {
     super(props, context);
 
