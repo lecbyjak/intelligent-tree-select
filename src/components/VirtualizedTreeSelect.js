@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useCallback} from "react";
 import Select, {components} from "react-select";
 import PropTypes from "prop-types";
 import Option from "./Option";
@@ -463,7 +463,7 @@ class VirtualizedTreeSelect extends Component {
 
   render() {
     const props = this.props;
-    const styles = this._prepareStyles();
+    const styles = VirtualizedTreeSelect._prepareStyles(this.props.styles);
     const filterOptions = props.filterOption || this.filterOption;
     const optionRenderer = this.props.optionRenderer || Option;
     return (
@@ -497,7 +497,7 @@ class VirtualizedTreeSelect extends Component {
     );
   }
 
-  _prepareStyles() {
+  static _prepareStyles = memoizeOne((propStyles) => {
     return {
       dropdownIndicator: (provided, state) => ({
         ...provided,
@@ -543,21 +543,25 @@ class VirtualizedTreeSelect extends Component {
           opacity: "1 !important",
         },
       }),
-      ...this.props.styles,
+      ...propStyles,
     };
-  }
+  });
 }
 
 // Wrapper for MenuList, it doesn't do anything, it is only needed for correct passing of the onScroll prop
 const Menu = (props) => {
+  const onScrollCapture = useCallback(
+    (e) => {
+      props.selectProps.listProps.onScroll(e.target);
+    },
+    [props.selectProps.listProps.onScroll]
+  );
   return (
     <components.Menu
       {...props}
       innerProps={{
         ...props.innerProps,
-        onScrollCapture: (e) => {
-          props.selectProps.listProps.onScroll(e.target);
-        },
+        onScrollCapture,
       }}
     >
       {props.children}
@@ -584,6 +588,9 @@ const MenuList = (props) => {
     height = 40;
   }
 
+  const scrollTarget =
+    Array.isArray(children) && listRef.current ? children.findLast((child) => child.props?.isFocused) : null;
+
   // Scroll to the currently focused option
   React.useLayoutEffect(() => {
     if (!Array.isArray(children) || !listRef.current) {
@@ -591,15 +598,14 @@ const MenuList = (props) => {
     }
 
     /// The children element to which we should scroll
-    let target = children.find((child) => child.props?.isFocused);
-    if (!target || !target.props?.data) {
+    if (!scrollTarget || !scrollTarget.props?.data) {
       return;
     }
 
-    const optionData = target.props.data;
+    const optionData = scrollTarget.props.data;
 
     const targetKey = getOptionScrollKey(optionData, valueKey);
-    const targetIndex = values.indexOf(target);
+    const targetIndex = values.indexOf(scrollTarget);
     if (targetIndex === -1) {
       return;
     }
@@ -615,7 +621,7 @@ const MenuList = (props) => {
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
-  });
+  }, [scrollTarget, scrollState]);
 
   return (
     <List ref={listRef} height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
