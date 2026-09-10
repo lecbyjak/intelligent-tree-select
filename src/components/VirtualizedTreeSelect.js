@@ -50,7 +50,13 @@ class VirtualizedTreeSelect extends Component {
       lastIndex: null,
     };
 
-    this.initialScrollFinished = false;
+    /**
+     * Snapshot of {@link this.props.value}
+     * from moment when the scroll to a selected option was performed
+     *
+     * @type {null | string[] | Object[]}
+     */
+    this.lastScrolledSelectedOptions = null;
 
     /**
      * React component state
@@ -83,15 +89,18 @@ class VirtualizedTreeSelect extends Component {
       this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     }
 
-    const optionsChanged = !optionListsAreEqual(this.props.options, prevProps.options, this.props.valueKey);
-    if (optionsChanged) {
+    if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
+      this.lastScrolledSelectedOptions = null;
+    }
+
+    if (!optionListsAreEqual(this.props.options, prevProps.options, this.props.valueKey)) {
       // if options were changed, reprocess them and discard all options from the current state
       this._processOptions();
       return;
     }
 
     this._expandSelectedValues(this.props.value, this.state.processedOptions);
-    this._scrollToSelectedValue(this.props.value, this.props.isLoading, this.initialScrollFinished);
+    this._scrollToSelectedValue();
   }
 
   focus() {
@@ -106,7 +115,7 @@ class VirtualizedTreeSelect extends Component {
 
   resetOptions() {
     this.initialExpansion = false;
-    this.initialScrollFinished = false;
+    this.lastScrolledSelectedOptions = null;
     this._expandSelectedValues.clear();
     this.setState({
       processedOptions: [],
@@ -156,8 +165,33 @@ class VirtualizedTreeSelect extends Component {
     if (processedOptions.length === 0) {
       this.resetOptions();
     } else {
-      this.setState({processedOptions});
+      this.setState({processedOptions}, this._getRestoreFocusedOptionCallback(processedOptions));
     }
+  };
+
+  /**
+   * Captures snapshot of currently focused option and returns callback that updates the focused option
+   * if it changed since capturing the snapshot.
+   * Prevents the react-select from scrollig to the first option when the options array changes.
+   *
+   * @returns {(function(): void)}
+   * @private
+   */
+  _getRestoreFocusedOptionCallback = (processedOptions) => {
+    const focusedOption = this.select.current?.state.focusedOption;
+    const completedValue = this.lastScrolledSelectedOptions;
+    return () => {
+      // react-select compares options by reference and otherwise falls back to the first row.
+      const restoredOption = this._findOption(processedOptions, focusedOption);
+      if (
+        completedValue &&
+        this.lastScrolledSelectedOptions === completedValue &&
+        restoredOption &&
+        this.select.current?.state.focusedOption !== restoredOption
+      ) {
+        this._focusOption(restoredOption);
+      }
+    };
   };
 
   /**
@@ -172,10 +206,6 @@ class VirtualizedTreeSelect extends Component {
       if (!Array.isArray(selectedValues) || !Array.isArray(processedOptions) || selectedValues.length === 0) {
         return;
       }
-      // TODO: when option is expanded for the first time manually by click, and new options are loaded, the scroll is reset
-
-      console.debug("expanding selected values", selectedValues);
-
       const toggledOptionIds = new Set(this.state.toggledOptionIds);
       let updated = false;
 
@@ -201,7 +231,7 @@ class VirtualizedTreeSelect extends Component {
         // selectedValues
         optionListsAreEqual(aParams[0], bParams[0], this.props.valueKey) &&
         // processedOptions
-        optionListsAreEqual(aParams[1], bParams[1], this.props.valueKey)
+        aParams[1] === bParams[1]
       );
     }
   );
@@ -223,8 +253,6 @@ class VirtualizedTreeSelect extends Component {
       return false;
     }
 
-    console.debug("expanding path to option", processedOption);
-
     let updated = false;
     let processedParent = processedOption;
     while (processedParent) {
@@ -240,41 +268,25 @@ class VirtualizedTreeSelect extends Component {
     return updated;
   };
 
-  _scrollToSelectedValue = memoizeOne(
-    (selectedOptions, isLoading, initialScrollFinished) => {
-      if (isLoading || initialScrollFinished) {
-        console.debug("skipping scroll", isLoading, initialScrollFinished);
-        return;
-      }
-
-      const sanitizedSelected = sanitizeArray(selectedOptions);
-      if (sanitizedSelected.length === 0) {
-        console.debug("not scrolling, empty selected value");
-        this.initialScrollFinished = true;
-        return;
-      }
-
-      const processedSelectedOption = this._findOption(this.state.processedOptions, sanitizedSelected[0]);
-      if (!processedSelectedOption) {
-        return;
-      }
-
-      console.debug("scrolling now", processedSelectedOption);
-
-      this._focusOption(processedSelectedOption);
-      this.initialScrollFinished = true;
-    },
-    (aParams, bParams) => {
-      // selectedOptions
-      return (
-        optionListsAreEqual(aParams[0], bParams[0], this.props.valueKey) &&
-        // isLoading
-        aParams[1] === bParams[1] &&
-        // initialScrollFinished
-        aParams[2] === bParams[2]
-      );
+  _scrollToSelectedValue = () => {
+    const selectedOptions = sanitizeArray(this.props.value);
+    if (
+      this.props.isLoading ||
+      selectedOptions.length === 0 ||
+      !this.select.current ||
+      optionListsAreEqual(selectedOptions, this.lastScrolledSelectedOptions, this.props.valueKey)
+    ) {
+      return;
     }
-  );
+
+    const processedOption = this._findOption(this.state.processedOptions, selectedOptions[0]);
+    if (!processedOption) {
+      return;
+    }
+
+    this._focusOption(processedOption);
+    this.lastScrolledSelectedOptions = [...selectedOptions];
+  };
 
   /**
    * Finds the {@code searchedOption} in the given {@code dataset}
@@ -440,6 +452,9 @@ class VirtualizedTreeSelect extends Component {
   //When using custom option, it is needed to set focusedOption manually
   _focusOption(option) {
     if (this.select.current) {
+      this.scrollState.lastKey = null;
+      this.scrollState.lastIndex = null;
+
       const processedOption = this._findOption(this.state.processedOptions, option) || option;
       this.select.current.setState({focusedOption: processedOption});
     }
@@ -572,7 +587,7 @@ const Menu = (props) => {
 // Component for efficient rendering
 const MenuList = (props) => {
   const {children} = props;
-  const {optionHeight, maxHeight, valueKey, scrollState} = props.selectProps;
+  const {optionHeight, maxHeight, valueKey, scrollState, isLoading} = props.selectProps;
 
   /// React-Window List reference
   const listRef = React.useRef(null);
@@ -588,12 +603,11 @@ const MenuList = (props) => {
     height = 40;
   }
 
-  const scrollTarget =
-    Array.isArray(children) && listRef.current ? children.findLast((child) => child.props?.isFocused) : null;
+  const scrollTarget = Array.isArray(children) ? children.findLast((child) => child.props?.isFocused) : null;
 
   // Scroll to the currently focused option
   React.useLayoutEffect(() => {
-    if (!Array.isArray(children) || !listRef.current) {
+    if (!Array.isArray(children) || !listRef.current || isLoading) {
       return;
     }
 
@@ -621,7 +635,7 @@ const MenuList = (props) => {
     } catch (e) {
       // if scroll fails it doesn't matter much
     }
-  }, [scrollTarget, scrollState]);
+  }, [scrollTarget, scrollState, isLoading]);
 
   return (
     <List ref={listRef} height={height} itemCount={values.length} itemSize={optionHeight} overscanCount={30}>
