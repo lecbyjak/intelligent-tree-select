@@ -114,7 +114,7 @@ export default class OptionsProcessor {
     option.depth = depth;
     option.parent = parent;
     option.path = Object.freeze([...visitedKeys]);
-    Object.freeze(option); // TODO: remove options modification (expanded, isFetchingChild, visible) and freeze them
+    Object.freeze(option);
 
     const children = option[this.childrenKey];
     if (!Array.isArray(children)) {

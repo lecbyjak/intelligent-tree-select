@@ -24,8 +24,6 @@ class VirtualizedTreeSelect extends PureComponent {
   constructor(props, context) {
     super(props, context);
     this._focusOption = this._focusOption.bind(this);
-    this._onInputChange = this._onInputChange.bind(this);
-    this.filterValues = this.filterValues.bind(this);
     this._onOptionToggle = this._onOptionToggle.bind(this);
     this._findOption = this._findOption.bind(this);
     this._findOptionWithParent = this._findOptionWithParent.bind(this);
@@ -35,8 +33,6 @@ class VirtualizedTreeSelect extends PureComponent {
     this.resetOptions = this.resetOptions.bind(this);
     this.matchCheck = this.props.matchCheck || this.matchCheckFull;
 
-    this.searchString = "";
-
     /**
      * When {@link this.props.expanded} is enabled,
      * this value indicates whether the options were already initially expanded
@@ -45,6 +41,11 @@ class VirtualizedTreeSelect extends PureComponent {
      */
     this.initialExpansion = false;
 
+    /**
+     * Object reference for keeping persistent scroll state for the {@link MenuList}
+     *
+     * @type {{lastKey: null|string, lastIndex: null|number}}
+     */
     this.scrollState = {
       lastKey: null,
       lastIndex: null,
@@ -69,12 +70,20 @@ class VirtualizedTreeSelect extends PureComponent {
        *
        * @type {Readonly<Set<string>>}
        */
-      toggledOptionIds: Object.freeze(new Set()),
+      toggledOptionIds: EMPTY_SET,
 
       /**
        * @type {Readonly<Object[]>}
        */
-      processedOptions: Object.freeze([]),
+      processedOptions: EMPTY_ARRAY,
+
+      /**
+       * Current search input.
+       * Controls filtering, temporary expansion of matching paths and whether manual option toggling is enabled.
+       *
+       * @type {string}
+       */
+      searchInput: "",
     };
 
     this.select = React.createRef();
@@ -124,7 +133,8 @@ class VirtualizedTreeSelect extends PureComponent {
   }
 
   /**
-   * Checks whether the option with the given option id is expanded
+   * Checks whether the option with the given option id is expanded, either by the user or temporarily because it is
+   * an ancestor of a search result.
    *
    * @param option the option or its id
    * @returns {boolean} {@code true} when the option is expanded, false otherwise
@@ -134,8 +144,59 @@ class VirtualizedTreeSelect extends PureComponent {
     if (optionId == null) {
       return false;
     }
-    return this.state.toggledOptionIds.has(optionId);
+    const {expandedOptionIds} = this._getSearchMetadata(
+      this.state.processedOptions,
+      this.state.searchInput,
+      this.props.valueKey,
+      this.props.labelKey,
+      this.props.getOptionLabel,
+      this.matchCheck
+    );
+    return this.state.toggledOptionIds.has(optionId) || expandedOptionIds.has(optionId);
   };
+
+  /**
+   * Derives all display data needed for the current search.
+   * Matching options and their ancestors are visible,
+   * and ancestors are temporarily expanded so every matching path can be rendered.
+   *
+   * @param processedOptions {Object[]} processed options to search
+   * @param searchInput {string} effective search input
+   * @param valueKey {string} property containing the option id
+   * @param labelKey {string} property containing the default option label
+   * @param getOptionLabel {Function|undefined} optional custom label resolver
+   * @param matchCheck {Function} function deciding whether an option label matches the input
+   * @return {{visibleOptions: Set<Object>, expandedOptionIds: Set<string>, firstMatch: Object|null}}
+   *          search-specific display data and the first direct match to focus
+   * @private
+   */
+  _getSearchMetadata = memoizeOne((processedOptions, searchInput, valueKey, labelKey, getOptionLabel, matchCheck) => {
+    const visibleOptions = new Set();
+    const expandedOptionIds = new Set();
+    let firstMatch = null;
+    if (searchInput.trim().length > 0) {
+      for (const option of processedOptions) {
+        if (!matchCheck(searchInput, getLabel(option, labelKey, getOptionLabel))) {
+          continue;
+        }
+        if (firstMatch === null) {
+          firstMatch = option;
+        }
+        visibleOptions.add(option);
+
+        let parent = option.parent;
+        while (parent) {
+          visibleOptions.add(parent);
+          expandedOptionIds.add(getOptionId(parent, valueKey));
+          parent = parent.parent;
+        }
+      }
+    }
+    Object.freeze(visibleOptions);
+    Object.freeze(expandedOptionIds);
+    Object.freeze(firstMatch);
+    return {visibleOptions, expandedOptionIds, firstMatch};
+  });
 
   /**
    * Processes options from properties into their copies and sets the processedOptions in the state
@@ -157,7 +218,7 @@ class VirtualizedTreeSelect extends PureComponent {
 
     // initial expansion of options
     if (expanded && !this.initialExpansion) {
-      const toggledOptionIds = processedOptions.map((o) => o[valueKey]);
+      const toggledOptionIds = new Set(processedOptions.map((o) => o[valueKey]));
       Object.freeze(toggledOptionIds);
       this.setState({toggledOptionIds});
       this.initialExpansion = true;
@@ -317,82 +378,77 @@ class VirtualizedTreeSelect extends PureComponent {
 
   /**
    * Decides whether the candidate option from react-select should be displayed.
+   * With no search, tree visibility follows the persisted expansion state.
+   * During a search, visibility comes from {@link _getSearchMetadata}.
    *
-   *
-   * @param candidate
-   * @param inputValue
-   * @returns {boolean|*}
+   * @param candidate {{data: Object}} react-select candidate containing the processed option
+   * @param inputValue {string} current input supplied by react-select
+   * @returns {boolean} whether the candidate should be rendered
    */
   filterOption = (candidate, inputValue) => {
-    const option = candidate.data;
-    inputValue = inputValue.trim().toLowerCase();
-
-    if (!this.props.renderAsTree) {
-      return inputValue.length === 0 || option.visible !== false;
+    const processedOption = candidate.data;
+    if (inputValue.trim().length === 0) {
+      return !this.props.renderAsTree || !processedOption.parent || this.isOptionExpanded(processedOption.parent);
     }
 
-    if (inputValue.length === 0) {
-      return !option.parent || this.isOptionExpanded(option.parent);
-    } else {
-      return option.visible;
-      // TODO remove option visible tagging
-    }
+    const {visibleOptions} = this._getSearchMetadata(
+      this.state.processedOptions,
+      inputValue,
+      this.props.valueKey,
+      this.props.labelKey,
+      this.props.getOptionLabel,
+      this.matchCheck
+    );
+    return visibleOptions.has(processedOption);
   };
 
-  filterValues(searchInput) {
+  /**
+   * Updates the search input and focuses its first match.
+   *
+   * @param searchInput {string} current search input
+   * @private
+   */
+  _setSearchInput = (searchInput) => {
+    this.setState({searchInput}, () => {
+      const {firstMatch} = this._getSearchMetadata(
+        this.state.processedOptions,
+        this.state.searchInput,
+        this.props.valueKey,
+        this.props.labelKey,
+        this.props.getOptionLabel,
+        this.matchCheck
+      );
+      if (firstMatch) {
+        this._focusOption(firstMatch);
+      }
+    });
+  };
+
+  /**
+   * Sets the search string to the given value and filters the displayed options.
+   * React-select's current input takes precedence over the requested value.
+   *
+   * @param searchInput {string} search input to set
+   */
+  filterValues = (searchInput) => {
     // when the fetch is delayed, it can cause incorrect filter render, this prevents it from happening
-    if (this.select.current.inputRef.value !== searchInput) {
-      searchInput = this.select.current.inputRef.value;
-    }
-
-    if (searchInput === "") return;
-
-    const matches = [];
-    let firstMatch = true;
-    for (let option of this.state.processedOptions) {
-      if (this.matchCheck(searchInput, getLabel(option, this.props.labelKey, this.props.getOptionLabel))) {
-        option.visible = true;
-        matches.push(option);
-        if (firstMatch) {
-          this._focusOption(option);
-          firstMatch = false;
-        }
-      } else {
-        option.visible = false;
-      }
-    }
-    for (let match of matches) {
-      while (match.parent !== null) {
-        match = match.parent;
-        match.expanded = true;
-        match.visible = true;
-      }
-    }
-    // this.forceUpdate();
-  }
+    const currentInput = this.select.current?.inputRef?.value;
+    this._setSearchInput(currentInput ?? searchInput);
+  };
 
   matchCheckFull(searchInput, optionLabel) {
     return optionLabel.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
   }
 
-  _onInputChange(input) {
-    // Make the expensive calculation only when input has been really changed
-    if (this.searchString === input) {
-      return;
-    }
-    if (input.length !== 0) {
-      this.filterValues(input);
-    }
-
-    this.searchString = input;
+  /**
+   * Handles a new react-select input value.
+   *
+   * @param input {string} current react-select input value
+   */
+  _onInputChange = memoizeOne((input) => {
+    this._setSearchInput(input);
     this.props.onInputChange(input);
-    // Collapses items which were expanded by the search
-    if (input.length === 0) {
-      for (let option of this.state.processedOptions) {
-        option.expanded = !!this._findOption(this.state.toggledOptions, option);
-      }
-    }
-  }
+  });
 
   _getOptionId = (option) => {
     return getOptionId(option, this.props.valueKey);
@@ -426,8 +482,8 @@ class VirtualizedTreeSelect extends PureComponent {
   };
 
   _onOptionToggle(processedOption) {
-    // disables option expansion/collapse when search string is present
-    if (this.searchString !== "") {
+    // disables option expansion/collapse when search input is present
+    if (this.state.searchInput.trim().length > 0) {
       return;
     }
 
@@ -464,7 +520,7 @@ class VirtualizedTreeSelect extends PureComponent {
   }
 
   _onKeyDown(event) {
-    if (event.key === " " && !this.searchString) {
+    if (event.key === " ") {
       event.preventDefault();
       const focusedOption = this.select.current && this.select.current.state.focusedOption;
 
