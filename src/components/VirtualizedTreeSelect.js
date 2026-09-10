@@ -2,7 +2,7 @@ import React, {PureComponent, useCallback} from "react";
 import Select, {components} from "react-select";
 import PropTypes from "prop-types";
 import Option from "./Option";
-import Constants from "./utils/Constants";
+import Constants, {EMPTY_ARRAY, EMPTY_SET} from "./utils/Constants";
 import {FixedSizeList as List} from "react-window";
 import {arraysAreEqual, getLabel, getOptionId, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
 import OptionsProcessor from "./OptionsProcessor";
@@ -118,8 +118,8 @@ class VirtualizedTreeSelect extends PureComponent {
     this.lastScrolledSelectedOptions = null;
     this._expandSelectedValues.clear();
     this.setState({
-      processedOptions: [],
-      toggledOptionIds: Object.freeze(new Set()),
+      processedOptions: EMPTY_ARRAY,
+      toggledOptionIds: EMPTY_SET,
     });
   }
 
@@ -157,7 +157,8 @@ class VirtualizedTreeSelect extends PureComponent {
 
     // initial expansion of options
     if (expanded && !this.initialExpansion) {
-      const toggledOptionIds = Object.freeze(processedOptions.map((o) => o[valueKey]));
+      const toggledOptionIds = processedOptions.map((o) => o[valueKey]);
+      Object.freeze(toggledOptionIds);
       this.setState({toggledOptionIds});
       this.initialExpansion = true;
     }
@@ -223,6 +224,7 @@ class VirtualizedTreeSelect extends PureComponent {
       }
 
       if (updated) {
+        Object.freeze(toggledOptionIds);
         this.setState({toggledOptionIds});
       }
     },
@@ -439,6 +441,7 @@ class VirtualizedTreeSelect extends PureComponent {
       toggledOptionIds.add(optionId);
     }
 
+    Object.freeze(toggledOptionIds);
     this.setState({toggledOptionIds});
     this._focusOption(processedOption);
   }

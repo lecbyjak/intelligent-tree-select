@@ -4,3 +4,6 @@ export default {
   CHILDREN_KEY: "children",
   VALUE_MARGIN_X: "0.25rem",
 };
+
+export const EMPTY_ARRAY = Object.freeze([]);
+export const EMPTY_SET = Object.freeze(new Set());

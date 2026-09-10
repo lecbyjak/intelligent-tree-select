@@ -133,7 +133,7 @@ export default class OptionsProcessor {
    * @returns {Object[]}
    */
   getProcessedOptions() {
-    return [...this._visitedOptions];
+    return Object.freeze([...this._visitedOptions]);
   }
 
   /**

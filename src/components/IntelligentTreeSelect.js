@@ -4,7 +4,7 @@ import debounce from "lodash.debounce";
 import {VirtualizedTreeSelect} from "./VirtualizedTreeSelect";
 import PropTypes from "prop-types";
 import {getOptionId, isURL, monotonicAssign, optionListsAreEqual, sanitizeArray} from "./utils/Utils";
-import Constants from "./utils/Constants";
+import Constants, {EMPTY_ARRAY} from "./utils/Constants";
 import memoizeOne from "memoize-one";
 
 class IntelligentTreeSelect extends PureComponent {
@@ -195,7 +195,6 @@ class IntelligentTreeSelect extends PureComponent {
    * Resets the option, forcing the component to reload them from the server/reload them from props.
    */
   resetOptions() {
-    this.toggledNodes = {};
     this.totalRequestedRootOptions = 0;
     this.setState({options: []}, () => {
       if (this.select.current) {
@@ -236,7 +235,7 @@ class IntelligentTreeSelect extends PureComponent {
 
   componentDidUpdate(prevProps) {
     if (!this.props.fetchOptions && prevProps.options !== this.props.options) {
-      this.setState({options: []}, () => {
+      this.setState({options: EMPTY_ARRAY}, () => {
         // Reset options from props
         this._addNewOptions(this.props.options);
       });
@@ -318,7 +317,7 @@ class IntelligentTreeSelect extends PureComponent {
             this.searchPage = 0;
             this.completedNodes = {};
             if (this.state.options.length > 0) {
-              this.setState({options: []});
+              this.setState({options: EMPTY_ARRAY});
             }
           }
           const offset = 0;
@@ -334,7 +333,7 @@ class IntelligentTreeSelect extends PureComponent {
         this.completedNodes = {};
         this.totalRequestedRootOptions = 0;
         if (this.searchString) {
-          this.setState({options: []});
+          this.setState({options: EMPTY_ARRAY});
         }
         if (!this.fetching) {
           this.debouncedSearch.cancel();
@@ -419,12 +418,14 @@ class IntelligentTreeSelect extends PureComponent {
   static addToFetchingChild(state, optionId) {
     const fetchingChild = new Set(state.fetchingChild);
     fetchingChild.add(optionId);
+    Object.freeze(fetchingChild);
     return {fetchingChild};
   }
 
   static removeFromFetchingChild(state, optionId) {
     const fetchingChild = new Set(state.fetchingChild);
     fetchingChild.delete(optionId);
+    Object.freeze(fetchingChild);
     return {fetchingChild};
   }
 
@@ -508,7 +509,8 @@ class IntelligentTreeSelect extends PureComponent {
       this._finalizeSelectedOptions(newOptions, mergedArr);
     }
 
-    this.setState({options: mergedArr, update: ++this.state.update});
+    Object.freeze(mergedArr);
+    this.setState({options: mergedArr});
   }
 
   _mergeOptionArrays(originalOptions, newOptions) {
@@ -565,6 +567,7 @@ class IntelligentTreeSelect extends PureComponent {
       });
     }
 
+    Object.freeze(previouslySelected);
     this.setState({passedValue: previouslySelected});
   }
 
@@ -580,6 +583,7 @@ class IntelligentTreeSelect extends PureComponent {
   }
 
   _addSelectedOption(selectedOptions) {
+    Object.freeze(selectedOptions);
     this.setState({selectedOptions});
   }
 
