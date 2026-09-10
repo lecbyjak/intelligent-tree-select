@@ -41,6 +41,12 @@ class IntelligentTreeSelect extends Component {
       isLoadingExternally: false,
       update: 0,
     };
+
+    /**
+     * Reference to {@link VirtualizedTreeSelect}
+     *
+     * @type {React.RefObject<VirtualizedTreeSelect>}
+     */
     this.select = React.createRef();
     this.debouncedSearch = debounce(
       (searchString, offset) => this._invokeSearch(searchString, offset),
@@ -82,10 +88,22 @@ class IntelligentTreeSelect extends Component {
     }
   }
 
+  /**
+   * Checks whether there is a pending request for children of the given option.
+   *
+   * @param option the option to check
+   * @returns {boolean} {@code true} when there is an active request for children of {@code option}
+   */
   isFetchingChild = (option) => {
     return this.state.fetchingChild.has(getOptionId(option, this.props.valueKey));
   };
 
+  /**
+   * Checks whether the option with the given option id is expanded
+   *
+   * @param option the option or its id
+   * @returns {boolean} {@code true} when the option is expanded, false otherwise
+   */
   isOptionExpanded = (option) => {
     if (this.select.current) {
       return this.select.current.isOptionExpanded(option);
@@ -276,13 +294,9 @@ class IntelligentTreeSelect extends Component {
     return res * 1000;
   }
 
-  _getRootNodesCount() {
-    let count = 0;
-    this.state.options.forEach((option) => {
-      if (option.depth === 0) count++;
-    });
-    return count;
-  }
+  hasActiveFetch = () => {
+    return this.state.isLoadingExternally || this.state.fetchingChild.size > 0;
+  };
 
   async _getResponse(searchString, optionID, limit, offset, option) {
     return this.props.fetchOptions
@@ -426,7 +440,6 @@ class IntelligentTreeSelect extends Component {
         return;
       }
 
-      this.setState({isLoadingExternally: true});
       this.setState((state) => IntelligentTreeSelect.addToFetchingChild(state, option[this.props.valueKey]));
 
       let data = [];
@@ -443,12 +456,10 @@ class IntelligentTreeSelect extends Component {
             this.completedNodes[option[this.props.valueKey]] = true;
           }
 
-          this.setState((state) => IntelligentTreeSelect.removeFromFetchingChild(state, option[this.props.valueKey]));
-
           if (data.length > 0) {
             this._addNewOptions(data);
           }
-          this.setState({isLoadingExternally: false});
+          this.setState((state) => IntelligentTreeSelect.removeFromFetchingChild(state, option[this.props.valueKey]));
         }
       );
     }
@@ -602,7 +613,7 @@ class IntelligentTreeSelect extends Component {
           expanded={this.state.expanded}
           renderAsTree={this.props.renderAsTree}
           multi={this.state.multi}
-          isLoading={this.state.isLoadingExternally}
+          isLoading={this.hasActiveFetch()}
           onInputChange={this._onInputChange}
           options={this.state.options}
           listProps={listProps}
