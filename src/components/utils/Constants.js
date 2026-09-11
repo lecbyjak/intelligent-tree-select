@@ -7,3 +7,4 @@ export default {
 
 export const EMPTY_ARRAY = Object.freeze([]);
 export const EMPTY_SET = Object.freeze(new Set());
+export const ALLOWED_ID_TYPES = ["string", "number", "boolean", "bigint"];

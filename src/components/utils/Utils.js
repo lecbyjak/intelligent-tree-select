@@ -1,3 +1,5 @@
+import {ALLOWED_ID_TYPES} from "./Constants";
+
 export function getLabel(option, labelKey, getOptionLabel) {
   return getOptionLabel ? getOptionLabel(option) : option[labelKey];
 }
@@ -75,14 +77,14 @@ export function logAndError(message, ...toLog) {
  *
  * @param option {string|Object|null} The option, possibly the value itself
  * @param valueKey {string} the key in the option object storing the value
- * @return {string|null} the resolved value or null
+ * @return {string|number|boolean|bigint|null} the resolved value or null
  */
 export function getOptionId(option, valueKey) {
   if (option == null) {
     return null;
   }
-  if (typeof option === "string") {
+  if (ALLOWED_ID_TYPES.includes(typeof option)) {
     return option;
   }
-  return typeof option[valueKey] === "string" ? option[valueKey] : null;
+  return ALLOWED_ID_TYPES.includes(typeof option[valueKey]) ? option[valueKey] : null;
 }
