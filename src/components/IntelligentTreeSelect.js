@@ -531,7 +531,7 @@ class IntelligentTreeSelect extends PureComponent {
     let mergedArr;
     if (this.state.options.length === 0) {
       newOptions.forEach((no) => (no[childrenKey] = sanitizeArray(no[childrenKey])));
-      mergedArr = newOptions;
+      mergedArr = [...sanitizeArray(newOptions)];
     } else {
       mergedArr = this._mergeOptionArrays(this.state.options, newOptions);
     }
