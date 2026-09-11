@@ -1,4 +1,4 @@
-import {getOptionId, logAndError} from "./utils/Utils";
+import {arraysAreEqual, getOptionId, logAndError} from "./utils/Utils";
 
 /**
  * Processes registered options, creating their structured copy and allows calculating their depth, parents and path
@@ -19,6 +19,14 @@ export default class OptionsProcessor {
    * @private
    */
   _knownOptionsMap = new Map();
+
+  /**
+   * Set of known paths.
+   *
+   * @type {Set<string[]>}
+   * @private
+   */
+  _knownPaths = new Set();
 
   constructor(valueKey, childrenKey) {
     this._valueKey = valueKey;
@@ -75,6 +83,17 @@ export default class OptionsProcessor {
     });
   };
 
+  _makePath = (path) => {
+    for (const existingPath of this._knownPaths) {
+      if (arraysAreEqual(existingPath, path)) {
+        return existingPath;
+      }
+    }
+    this._knownPaths.add(path);
+    Object.freeze(path);
+    return path;
+  };
+
   /**
    * Processes the options for flat structure, setting all depths to 0 and parents to {@code null}.
    */
@@ -82,7 +101,7 @@ export default class OptionsProcessor {
     this._knownOptionsMap.forEach((option) => {
       option.depth = 0;
       option.parent = null;
-      option.path = Object.freeze([option[this.valueKey]]);
+      option.path = this._makePath([option[this.valueKey]]);
       Object.freeze(option);
       this._visitedOptions.add(option);
     });
@@ -112,7 +131,7 @@ export default class OptionsProcessor {
 
     option.depth = depth;
     option.parent = parent;
-    option.path = Object.freeze([...visitedKeys]);
+    option.path = this._makePath([...visitedKeys]);
     Object.freeze(option);
 
     const children = option[this.childrenKey];
@@ -134,6 +153,15 @@ export default class OptionsProcessor {
   getProcessedOptions = () => {
     return Object.freeze([...this._visitedOptions]);
   };
+
+  /**
+   * All path instances that were used during the option processing.
+   *
+   * @return {Set<string[]>}
+   */
+  get knownPaths() {
+    return this._knownPaths;
+  }
 
   /**
    * The key of option object where the value for selection is stored

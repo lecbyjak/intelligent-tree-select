@@ -59,11 +59,11 @@ class VirtualizedTreeSelect extends PureComponent {
      */
     this.state = {
       /**
-       * List of expanded option ids
+       * List of expanded option paths
        *
-       * @type {Readonly<Set<string>>}
+       * @type {Readonly<Set<string[]>>}
        */
-      toggledOptionIds: EMPTY_SET,
+      toggledOptionPaths: EMPTY_SET,
 
       /**
        * @type {Readonly<Object[]>}
@@ -101,6 +101,8 @@ class VirtualizedTreeSelect extends PureComponent {
       return;
     }
 
+    console.debug(this.state.toggledOptionPaths);
+
     this._expandSelectedValues(this.props.value, this.state.processedOptions);
     this._scrollToSelectedValue();
   }
@@ -121,7 +123,7 @@ class VirtualizedTreeSelect extends PureComponent {
     this._expandSelectedValues.clear();
     this.setState({
       processedOptions: EMPTY_ARRAY,
-      toggledOptionIds: EMPTY_SET,
+      toggledOptionPaths: EMPTY_SET,
     });
   };
 
@@ -133,11 +135,11 @@ class VirtualizedTreeSelect extends PureComponent {
    * @returns {boolean} {@code true} when the option is expanded, false otherwise
    */
   isOptionExpanded = (option) => {
-    const optionId = this._getOptionId(option);
-    if (optionId == null) {
+    const processedOption = this._findOption(this.state.processedOptions, option);
+    if (processedOption == null) {
       return false;
     }
-    const {expandedOptionIds} = this._getSearchMetadata(
+    const {expandedOptionPaths} = this._getSearchMetadata(
       this.state.processedOptions,
       this.state.searchInput,
       this.props.valueKey,
@@ -145,7 +147,7 @@ class VirtualizedTreeSelect extends PureComponent {
       this.props.getOptionLabel,
       this.matchCheck
     );
-    return this.state.toggledOptionIds.has(optionId) || expandedOptionIds.has(optionId);
+    return this.state.toggledOptionPaths.has(processedOption.path) || expandedOptionPaths.has(processedOption.path);
   };
 
   /**
@@ -159,13 +161,13 @@ class VirtualizedTreeSelect extends PureComponent {
    * @param labelKey {string} property containing the default option label
    * @param getOptionLabel {Function|undefined} optional custom label resolver
    * @param matchCheck {Function} function deciding whether an option label matches the input
-   * @return {{visibleOptions: Set<Object>, expandedOptionIds: Set<string>, firstMatch: Object|null}}
+   * @return {{visibleOptions: Set<Object>, expandedOptionPaths: Set<string>, firstMatch: Object|null}}
    *          search-specific display data and the first direct match to focus
    * @private
    */
   _getSearchMetadata = memoizeOne((processedOptions, searchInput, valueKey, labelKey, getOptionLabel, matchCheck) => {
     const visibleOptions = new Set();
-    const expandedOptionIds = new Set();
+    const expandedOptionPaths = new Set();
     let firstMatch = null;
     if (searchInput.trim().length > 0) {
       for (const option of processedOptions) {
@@ -177,18 +179,18 @@ class VirtualizedTreeSelect extends PureComponent {
         }
         visibleOptions.add(option);
 
-        let parent = option.parent;
-        while (parent) {
-          visibleOptions.add(parent);
-          expandedOptionIds.add(getOptionId(parent, valueKey));
-          parent = parent.parent;
+        let processedParent = option.parent;
+        while (processedParent) {
+          visibleOptions.add(processedParent);
+          expandedOptionPaths.add(processedParent.path);
+          processedParent = processedParent.parent;
         }
       }
     }
     Object.freeze(visibleOptions);
-    Object.freeze(expandedOptionIds);
+    Object.freeze(expandedOptionPaths);
     Object.freeze(firstMatch);
-    return {visibleOptions, expandedOptionIds, firstMatch};
+    return {visibleOptions, expandedOptionPaths, firstMatch};
   });
 
   /**
@@ -209,11 +211,13 @@ class VirtualizedTreeSelect extends PureComponent {
 
     const processedOptions = processor.getProcessedOptions();
 
+    this._replaceToggledOptionPaths(processor.knownPaths);
+
     // initial expansion of options
     if (expanded && !this.initialExpansion) {
-      const toggledOptionIds = new Set(processedOptions.map((o) => o[valueKey]));
-      Object.freeze(toggledOptionIds);
-      this.setState({toggledOptionIds});
+      const toggledOptionPaths = new Set(processedOptions.map((o) => o.path));
+      Object.freeze(toggledOptionPaths);
+      this.setState({toggledOptionPaths});
       this.initialExpansion = true;
     }
 
@@ -222,6 +226,25 @@ class VirtualizedTreeSelect extends PureComponent {
     } else {
       this.setState({processedOptions}, this._getRestoreFocusedOptionCallback(processedOptions));
     }
+  };
+
+  /**
+   * Replaces the {@code toggledOptionPaths} state array with matching paths from {@code newPaths}
+   *
+   * @param newPaths {Set<string[]>}
+   * @private
+   */
+  _replaceToggledOptionPaths = (newPaths) => {
+    const newToggledPaths = new Set();
+    this.state.toggledOptionPaths.forEach((oldPath) => {
+      for (const newPath of newPaths) {
+        if (arraysAreEqual(oldPath, newPath)) {
+          newToggledPaths.add(newPath);
+          break;
+        }
+      }
+    });
+    this.setState({toggledOptionPaths: newToggledPaths});
   };
 
   /**
@@ -261,7 +284,7 @@ class VirtualizedTreeSelect extends PureComponent {
       if (!Array.isArray(selectedValues) || !Array.isArray(processedOptions) || selectedValues.length === 0) {
         return;
       }
-      const toggledOptionIds = new Set(this.state.toggledOptionIds);
+      const toggledOptionPaths = new Set(this.state.toggledOptionPaths);
       let updated = false;
 
       for (const option of selectedValues) {
@@ -272,13 +295,13 @@ class VirtualizedTreeSelect extends PureComponent {
 
         const processedSelectedOption = processedOptions.find((o) => o[this.props.valueKey] === optionId);
         if (processedSelectedOption != null) {
-          updated = this._expandPathToOption(processedSelectedOption, processedOptions, toggledOptionIds) || updated;
+          updated = this._expandPathToOption(processedSelectedOption, processedOptions, toggledOptionPaths) || updated;
         }
       }
 
       if (updated) {
-        Object.freeze(toggledOptionIds);
-        this.setState({toggledOptionIds});
+        Object.freeze(toggledOptionPaths);
+        this.setState({toggledOptionPaths});
       }
     },
     (aParams, bParams) => {
@@ -298,11 +321,11 @@ class VirtualizedTreeSelect extends PureComponent {
    *
    * @param processedOption {Object} processed option with parent set to another processed option
    * @param processedOptions {Object[]} array of processed option in which children should be looked up
-   * @param toggledOptionIds {Set<string>} Set of toggled option ids to modify
-   * @returns {boolean} {@code true} when the {@code toggledOptionIds} set was modified, {@code false} otherwise
+   * @param toggledOptionPaths {Set<string[]>} Set of toggled option paths to modify
+   * @returns {boolean} {@code true} when the {@code toggledOptionPaths} set was modified, {@code false} otherwise
    * @private
    */
-  _expandPathToOption = (processedOption, processedOptions, toggledOptionIds) => {
+  _expandPathToOption = (processedOption, processedOptions, toggledOptionPaths) => {
     if (typeof processedOption !== "object" || !Array.isArray(processedOption.path)) {
       return false;
     }
@@ -310,9 +333,9 @@ class VirtualizedTreeSelect extends PureComponent {
     let updated = false;
     let processedParent = processedOption;
     while (processedParent) {
-      const parentId = processedParent[this.props.valueKey];
-      if (!toggledOptionIds.has(parentId)) {
-        toggledOptionIds.add(parentId);
+      const parentPath = processedParent.path;
+      if (!toggledOptionPaths.has(parentPath)) {
+        toggledOptionPaths.add(parentPath);
         this.props.onOptionToggle(processedParent);
         updated = true;
       }
@@ -447,26 +470,26 @@ class VirtualizedTreeSelect extends PureComponent {
   /**
    * Removes the processed option and all its children recursively from the given set of toggled option ids.
    *
-   * @param processedOption the option to remove from toggledOptionIds along with all its children
-   * @param toggledOptionIds the set of toggled option ids
+   * @param processedOption {Object} the option to remove from {@code toggledOptionPaths} along with all its children
+   * @param toggledOptionPaths {Set<string[]>} the set of toggled option paths
    * @private
    */
-  _removeFromToggled = (processedOption, toggledOptionIds) => {
+  _removeFromToggled = (processedOption, toggledOptionPaths) => {
     if (processedOption == null) {
       return;
     }
 
-    const optionId = this._getOptionId(processedOption);
-    if (!toggledOptionIds.has(optionId)) {
+    const optionPath = processedOption.path;
+    if (!toggledOptionPaths.has(optionPath)) {
       // skip recursion for options that were not expanded
       return;
     }
 
-    toggledOptionIds.delete(processedOption[this.props.valueKey]);
+    toggledOptionPaths.delete(optionPath);
 
     for (const child of sanitizeArray(processedOption[this.props.childrenKey])) {
       const processedChild = this._findOption(this.state.processedOptions, child);
-      this._removeFromToggled(processedChild, toggledOptionIds);
+      this._removeFromToggled(processedChild, toggledOptionPaths);
     }
   };
 
@@ -477,17 +500,16 @@ class VirtualizedTreeSelect extends PureComponent {
     }
 
     this.props.onOptionToggle(processedOption);
-    const toggledOptionIds = new Set(this.state.toggledOptionIds);
-    const optionId = processedOption[this.props.valueKey];
+    const toggledOptionPaths = new Set(this.state.toggledOptionPaths);
 
-    if (this.isOptionExpanded(optionId)) {
-      this._removeFromToggled(processedOption, toggledOptionIds);
+    if (this.isOptionExpanded(processedOption)) {
+      this._removeFromToggled(processedOption, toggledOptionPaths);
     } else {
-      toggledOptionIds.add(optionId);
+      toggledOptionPaths.add(processedOption.path);
     }
 
-    Object.freeze(toggledOptionIds);
-    this.setState({toggledOptionIds});
+    Object.freeze(toggledOptionPaths);
+    this.setState({toggledOptionPaths});
     this._focusOption(processedOption);
   };
 
