@@ -107,7 +107,7 @@ class IntelligentTreeSelect extends PureComponent {
    * @param option the option to check
    * @returns {boolean} {@code true} when there is an active request for children of {@code option}
    */
-  isFetchingChild = (option) => {
+  isOptionFetchingChild = (option) => {
     return this.state.fetchingChild.has(getOptionId(option, this.props.valueKey));
   };
 
@@ -470,7 +470,7 @@ class IntelligentTreeSelect extends PureComponent {
     const isExpanded = this.isOptionExpanded(option);
     if (!isExpanded) {
       const dataCached = this.toggledNodes[option[this.props.valueKey]] || false;
-      const activeFetch = this.isFetchingChild(option);
+      const activeFetch = this.isOptionFetchingChild(option);
       if (dataCached || activeFetch) {
         return;
       }
@@ -692,7 +692,7 @@ class IntelligentTreeSelect extends PureComponent {
           onOptionToggle={this._onOptionToggle}
           noOptionsMessage={() => this.props.noResultsText}
           loadingMessage={() => this.props.loadingText}
-          isOptionFetchingChild={this.isFetchingChild}
+          isOptionFetchingChild={this.isOptionFetchingChild}
         />
       </div>
     );

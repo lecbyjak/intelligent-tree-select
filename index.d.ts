@@ -172,7 +172,7 @@ export class IntelligentTreeSelect<
    *
    * @param option The option object or its ID
    */
-  isFetchingChild(option: T | string | number): boolean;
+  isOptionFetchingChild(option: T | string | number): boolean;
 
   /**
    * Whether the specified option is currently expanded.

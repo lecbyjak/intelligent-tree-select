@@ -20,7 +20,8 @@ const Option = (props) => {
       };
 
   const value = props.data[props.selectProps.valueKey];
-  const isExpanded = props.selectProps.isOptionExpanded(value);
+  const isExpanded = props.selectProps.isOptionExpanded(props.data);
+  const isFetchingChild = props.selectProps.isOptionFetchingChild(props.data);
 
   let button = null;
   if (props.data[props.selectProps.childrenKey].length > 0) {
@@ -45,7 +46,7 @@ const Option = (props) => {
         />
       </div>
 
-      {props.data.fetchingChild && (
+      {isFetchingChild && (
         <span className="Select-loading-zone" aria-hidden="true" style={{paddingLeft: "5px"}}>
           <span className="Select-loading" />
         </span>
