@@ -262,7 +262,6 @@ class VirtualizedTreeSelect extends PureComponent {
       // react-select compares options by reference and otherwise falls back to the first row.
       const restoredOption = this._findOption(processedOptions, focusedOption);
       if (
-        completedValue &&
         this.lastScrolledSelectedOptions === completedValue &&
         restoredOption &&
         this.select.current?.state.focusedOption !== restoredOption
