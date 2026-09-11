@@ -13,6 +13,12 @@ class IntelligentTreeSelect extends PureComponent {
 
     this.fetching = false;
     this.completedNodes = {};
+    /**
+     * Allows to discard async response processing if the component was unmounted
+     *
+     * @type {number}
+     */
+    this.requestGeneration = 0;
 
     this.searchString = "";
     this.searchPage = 0;
@@ -72,6 +78,11 @@ class IntelligentTreeSelect extends PureComponent {
     this._loadOptions();
   }
 
+  componentWillUnmount() {
+    this.requestGeneration += 1;
+    this.debouncedSearch.cancel();
+  }
+
   _retrieveCachedData = () => {
     let cachedData = window.localStorage.getItem(this.props.name);
     if (cachedData) {
@@ -112,9 +123,14 @@ class IntelligentTreeSelect extends PureComponent {
   };
 
   _fetchOptions = (searchString, optionId, offset, topOption, callback) => {
+    const requestGeneration = this.requestGeneration;
     this.setState({isLoadingExternally: true});
     this.fetching = this._getResponse(searchString, optionId, this.props.fetchLimit, offset, topOption).then(
       (response) => {
+        if (requestGeneration !== this.requestGeneration) {
+          return;
+        }
+
         let data;
         if (!this.props.simpleTreeData) {
           data = this._simplifyData(response);
@@ -459,9 +475,14 @@ class IntelligentTreeSelect extends PureComponent {
       this.setState((state) => IntelligentTreeSelect.addToFetchingChild(state, option[this.props.valueKey]));
 
       let data = [];
+      const requestGeneration = this.requestGeneration;
 
       this._getResponse(this.searchString || "", option[this.props.valueKey], this.props.fetchLimit, 0, option).then(
         (response) => {
+          if (requestGeneration !== this.requestGeneration) {
+            return;
+          }
+
           if (!this.props.simpleTreeData) {
             data = this._simplifyData(response);
           } else {
