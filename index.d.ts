@@ -166,6 +166,23 @@ export class IntelligentTreeSelect<
 
   /** Current flattened (processed) option list */
   getOptions(): T[];
+
+  /**
+   * Whether children are currently being fetched for the specified option.
+   *
+   * @param option The option object or its ID
+   */
+  isFetchingChild(option: T | string | number): boolean;
+
+  /**
+   * Whether the specified option is currently expanded.
+   *   *
+   *    * @param option The option object or its ID
+   *    */
+  isOptionExpanded(option: T | string | number): boolean;
+
+  /** Whether the component has an active options or child-options request. */
+  hasActiveFetch(): boolean;
 }
 
 export class VirtualizedTreeSelect<T extends BaseOption = unknown> extends React.Component<
@@ -179,6 +196,13 @@ export class VirtualizedTreeSelect<T extends BaseOption = unknown> extends React
 
   /** Force reloading of options when fetchOptions property is used to specify how to load options. If options are specified in props, this reloads them from the current props. */
   resetOptions(): void;
+
+  /**
+   * Whether the specified option is currently expanded.
+   *
+   * @param option The option object or its ID
+   */
+  isOptionExpanded(option: T | string | number): boolean;
 }
 
 /** Minus icon used in tree expand/collapse UI */
