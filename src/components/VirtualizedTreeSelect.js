@@ -134,6 +134,17 @@ class VirtualizedTreeSelect extends PureComponent {
    */
   isOptionExpanded = (option) => {
     const processedOption = this._findOption(this.state.processedOptions, option);
+    return this._isProcessedOptionExpanded(processedOption);
+  };
+
+  /**
+   * Checks expansion state for an option that already belongs to {@link this.state.processedOptions}.
+   *
+   * @param processedOption {Object|null} processed option whose path can be checked directly
+   * @returns {boolean} whether the processed option is expanded
+   * @private
+   */
+  _isProcessedOptionExpanded = (processedOption) => {
     if (processedOption == null) {
       return false;
     }
@@ -412,7 +423,9 @@ class VirtualizedTreeSelect extends PureComponent {
   filterOption = (candidate, inputValue) => {
     const processedOption = candidate.data;
     if (inputValue.trim().length === 0) {
-      return !this.props.renderAsTree || !processedOption.parent || this.isOptionExpanded(processedOption.parent);
+      return (
+        !this.props.renderAsTree || !processedOption.parent || this._isProcessedOptionExpanded(processedOption.parent)
+      );
     }
 
     const {visibleOptions} = this._getSearchMetadata(
@@ -516,7 +529,7 @@ class VirtualizedTreeSelect extends PureComponent {
     this.props.onOptionToggle(processedOption);
     const toggledOptionPaths = new Set(this.state.toggledOptionPaths);
 
-    if (this.isOptionExpanded(processedOption)) {
+    if (this._isProcessedOptionExpanded(processedOption)) {
       this._removeFromToggled(processedOption, toggledOptionPaths);
     } else {
       toggledOptionPaths.add(processedOption.path);
