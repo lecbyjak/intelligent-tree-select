@@ -17,7 +17,7 @@ export function isURL(str) {
 }
 
 export function sanitizeArray(arr) {
-  return arr ? (Array.isArray(arr) ? arr : [arr]) : [];
+  return arr != null ? (Array.isArray(arr) ? arr : [arr]) : [];
 }
 
 export function arraysAreEqual(a, b) {
@@ -77,7 +77,7 @@ export function logAndError(message, ...toLog) {
  *
  * @param option {string|Object|null} The option, possibly the value itself
  * @param valueKey {string} the key in the option object storing the value
- * @return {string|number|boolean|bigint|null} the resolved value or null
+ * @return {string|number|boolean|null} the resolved value or null
  */
 export function getOptionId(option, valueKey) {
   if (option == null) {

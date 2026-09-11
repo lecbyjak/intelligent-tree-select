@@ -353,8 +353,8 @@ class VirtualizedTreeSelect extends PureComponent {
    * @private
    */
   _findOption = (dataset, searchedOption) => {
-    if (!searchedOption || !dataset) return null;
     const targetKey = this._getOptionId(searchedOption);
+    if (targetKey == null || searchedOption == null || !dataset) return null;
     let options = dataset.filter((el) => el[this.props.valueKey] === targetKey);
     if (options.length === 0) return null;
     if (searchedOption.path) {

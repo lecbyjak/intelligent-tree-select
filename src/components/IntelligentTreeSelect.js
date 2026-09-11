@@ -174,7 +174,7 @@ class IntelligentTreeSelect extends PureComponent {
    */
   static deriveControlledValue = memoizeOne(
     (value, options, valueKey, multi, selectedOptions = EMPTY_ARRAY, changedOptions = EMPTY_ARRAY) => {
-      if (!value) {
+      if (value == null) {
         return {
           passedValue: [],
           selectedOptions: [],
