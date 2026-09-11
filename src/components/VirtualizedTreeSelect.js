@@ -292,7 +292,7 @@ class VirtualizedTreeSelect extends PureComponent {
   );
 
   /**
-   * Expands every ancestor of the given processed option.
+   * Expands the {@code processedOption} and every ancestor.
    * The processed option and every ancestor is expected to have {@code parent} property with the respective
    * parent (again processed option) set
    *
