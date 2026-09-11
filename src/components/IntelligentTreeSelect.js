@@ -29,6 +29,14 @@ class IntelligentTreeSelect extends PureComponent {
       multi: this.props.multi,
       options: [],
       selectedOptions: [],
+
+      /**
+       * Options emitted by the latest controlled change.
+       * Used to resolve selected values while search results replace the loaded options.
+       *
+       * @type {Object[]}
+       */
+      changedOptions: [],
       passedValue: this.props.value || [],
       isLoadingExternally: false,
       update: 0,
@@ -132,11 +140,22 @@ class IntelligentTreeSelect extends PureComponent {
       return null;
     }
 
-    return IntelligentTreeSelect.deriveControlledValue(props.value, state.options, props.valueKey, props.multi);
+    return IntelligentTreeSelect.deriveControlledValue(
+      props.value,
+      state.options,
+      props.valueKey,
+      props.multi,
+      state.selectedOptions,
+      state.changedOptions
+    );
   }
 
+  /**
+   * Maps controlled values to loaded options, retaining options from the latest change
+   * while search results replace the loaded options.
+   */
   static deriveControlledValue = memoizeOne(
-    (value, options, valueKey, multi) => {
+    (value, options, valueKey, multi, selectedOptions = EMPTY_ARRAY, changedOptions = EMPTY_ARRAY) => {
       if (!value) {
         return {
           passedValue: [],
@@ -153,7 +172,10 @@ class IntelligentTreeSelect extends PureComponent {
         const key = valueElement[valueKey] ?? valueElement;
         const opt =
           existingOptions.find((term) => term[valueKey] === key) ||
-          (typeof valueElement === "object" && valueElement[valueKey] ? valueElement : null);
+          (typeof valueElement === "object" && valueElement[valueKey] ? valueElement : null) ||
+          // Search results can replace the option list without changing the selected values.
+          changedOptions.find((term) => term[valueKey] === key) ||
+          selectedOptions.find((term) => term[valueKey] === key);
 
         if (opt) {
           modifiedSelectedOptions.push(opt);
@@ -169,7 +191,7 @@ class IntelligentTreeSelect extends PureComponent {
       };
     },
     (aParams, bParams) => {
-      const bValueKey = bParams[1];
+      const bValueKey = bParams[2];
       // value
       return (
         optionListsAreEqual(aParams[0], bParams[0], bValueKey) &&
@@ -178,7 +200,9 @@ class IntelligentTreeSelect extends PureComponent {
         // valueKey
         aParams[2] === bParams[2] &&
         // multi
-        aParams[3] === bParams[3]
+        aParams[3] === bParams[3] &&
+        aParams[4] === bParams[4] &&
+        aParams[5] === bParams[5]
       );
     }
   );
@@ -590,6 +614,9 @@ class IntelligentTreeSelect extends PureComponent {
     if (!this.props.valueIsControlled) {
       // updating internal state synchronously only when value is not controlled
       this._addSelectedOption(optionsArray);
+    } else {
+      // Retain options that may be removed when search results replace the loaded options.
+      this.setState({changedOptions: optionsArray});
     }
     if (this.props.onChange) {
       this.props.onChange(options);
