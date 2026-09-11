@@ -338,7 +338,7 @@ class VirtualizedTreeSelect extends PureComponent {
       return;
     }
 
-    this._focusOption(processedOption);
+    this._focusOption(processedOption, true);
     this.lastScrolledSelectedOptions = [...selectedOptions];
   };
 
@@ -497,10 +497,12 @@ class VirtualizedTreeSelect extends PureComponent {
   };
 
   //When using custom option, it is needed to set focusedOption manually
-  _focusOption = (option) => {
+  _focusOption = (option, clearLastScroll = false) => {
     if (this.select.current) {
-      this.scrollState.lastKey = null;
-      this.scrollState.lastIndex = null;
+      if (clearLastScroll) {
+        this.scrollState.lastKey = null;
+        this.scrollState.lastIndex = null;
+      }
 
       const processedOption = this._findOption(this.state.processedOptions, option) || option;
       this.select.current.setState({focusedOption: processedOption});
