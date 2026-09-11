@@ -21,12 +21,11 @@ export default class OptionsProcessor {
   _knownOptionsMap = new Map();
 
   /**
-   * Set of known paths.
+   * Map of JSON path serializations to the path objects
    *
-   * @type {Set<string[]>}
-   * @private
+   * @type {Map<string, string[]>}
    */
-  _knownPaths = new Set();
+  knownPaths = new Map();
 
   constructor(valueKey, childrenKey) {
     this._valueKey = valueKey;
@@ -84,12 +83,11 @@ export default class OptionsProcessor {
   };
 
   _makePath = (path) => {
-    for (const existingPath of this._knownPaths) {
-      if (arraysAreEqual(existingPath, path)) {
-        return existingPath;
-      }
+    const json = JSON.stringify(path);
+    if (this.knownPaths.has(json)) {
+      return this.knownPaths.get(json);
     }
-    this._knownPaths.add(path);
+    this.knownPaths.set(json, path);
     Object.freeze(path);
     return path;
   };
@@ -153,15 +151,6 @@ export default class OptionsProcessor {
   getProcessedOptions = () => {
     return Object.freeze([...this._visitedOptions]);
   };
-
-  /**
-   * All path instances that were used during the option processing.
-   *
-   * @return {Set<string[]>}
-   */
-  get knownPaths() {
-    return this._knownPaths;
-  }
 
   /**
    * The key of option object where the value for selection is stored

@@ -229,17 +229,15 @@ class VirtualizedTreeSelect extends PureComponent {
   /**
    * Replaces the {@code toggledOptionPaths} state array with matching paths from {@code newPaths}
    *
-   * @param newPaths {Set<string[]>}
+   * @param newPaths {Map<string, string[]>}
    * @private
    */
   _replaceToggledOptionPaths = (newPaths) => {
     const newToggledPaths = new Set();
     this.state.toggledOptionPaths.forEach((oldPath) => {
-      for (const newPath of newPaths) {
-        if (arraysAreEqual(oldPath, newPath)) {
-          newToggledPaths.add(newPath);
-          break;
-        }
+      const json = JSON.stringify(oldPath);
+      if (newPaths.has(json)) {
+        newToggledPaths.add(newPaths.get(json));
       }
     });
     this.setState({toggledOptionPaths: newToggledPaths});
@@ -388,31 +386,18 @@ class VirtualizedTreeSelect extends PureComponent {
   };
 
   _findChildOption = (dataset, searchedChild, processedParent) => {
-    const options = this._findOptionsMatchingValue(dataset, searchedChild);
-    if (options.length === 0) return null;
-    // search for an option with largest common path prefix
-    // searching in array of options that are matching the searched child value (id)
-    return this._findOptionWithLargestCommonPathPrefix(options, processedParent);
-  };
+    if (!Array.isArray(processedParent?.path)) {
+      return null;
+    }
 
-  _findOptionWithLargestCommonPathPrefix = (dataset, searchedOption) => {
-    let bestMatch = dataset[0];
-    let longestCommonPrefix = 0;
-    dataset.forEach((option) => {
-      let commonPrefix = 0;
-      while (
-        commonPrefix < searchedOption.path.length &&
-        commonPrefix < (option.path?.length || 0) &&
-        searchedOption.path[commonPrefix] === option.path[commonPrefix]
-      ) {
-        commonPrefix += 1;
-      }
-      if (commonPrefix > longestCommonPrefix) {
-        bestMatch = option;
-        longestCommonPrefix = commonPrefix;
-      }
-    });
-    return bestMatch;
+    const childId = this._getOptionId(searchedChild);
+    if (childId == null) {
+      return null;
+    }
+
+    const childPath = [...processedParent.path, childId];
+    const options = this._findOptionsMatchingValue(dataset, searchedChild);
+    return options.find((option) => arraysAreEqual(option.path, childPath)) || null;
   };
 
   /**
