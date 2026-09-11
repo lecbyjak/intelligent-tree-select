@@ -547,7 +547,7 @@ class VirtualizedTreeSelect extends PureComponent {
   };
 
   _onKeyDown = (event) => {
-    if (event.key === " ") {
+    if (event.key === " " && !this.state.searchInput) {
       event.preventDefault();
       const focusedOption = this.select.current && this.select.current.state.focusedOption;
 
