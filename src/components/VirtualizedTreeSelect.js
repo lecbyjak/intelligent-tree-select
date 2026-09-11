@@ -101,8 +101,6 @@ class VirtualizedTreeSelect extends PureComponent {
       return;
     }
 
-    console.debug(this.state.toggledOptionPaths);
-
     this._expandSelectedValues(this.props.value, this.state.processedOptions);
     this._scrollToSelectedValue();
   }
@@ -375,14 +373,46 @@ class VirtualizedTreeSelect extends PureComponent {
    * @private
    */
   _findOption = (dataset, searchedOption) => {
-    const targetKey = this._getOptionId(searchedOption);
-    if (targetKey == null || searchedOption == null || !dataset) return null;
-    let options = dataset.filter((el) => el[this.props.valueKey] === targetKey);
+    const options = this._findOptionsMatchingValue(dataset, searchedOption);
     if (options.length === 0) return null;
     if (searchedOption.path) {
       return options.find((option) => arraysAreEqual(option.path, searchedOption.path)) || options[0];
     }
     return options[0];
+  };
+
+  _findOptionsMatchingValue = (dataset, searchedOption) => {
+    const targetKey = this._getOptionId(searchedOption);
+    if (targetKey == null || searchedOption == null || !dataset) return [];
+    return dataset.filter((el) => el[this.props.valueKey] === targetKey);
+  };
+
+  _findChildOption = (dataset, searchedChild, processedParent) => {
+    const options = this._findOptionsMatchingValue(dataset, searchedChild);
+    if (options.length === 0) return null;
+    // search for an option with largest common path prefix
+    // searching in array of options that are matching the searched child value (id)
+    return this._findOptionWithLargestCommonPathPrefix(options, processedParent);
+  };
+
+  _findOptionWithLargestCommonPathPrefix = (dataset, searchedOption) => {
+    let bestMatch = dataset[0];
+    let longestCommonPrefix = 0;
+    dataset.forEach((option) => {
+      let commonPrefix = 0;
+      while (
+        commonPrefix < searchedOption.path.length &&
+        commonPrefix < (option.path?.length || 0) &&
+        searchedOption.path[commonPrefix] === option.path[commonPrefix]
+      ) {
+        commonPrefix += 1;
+      }
+      if (commonPrefix > longestCommonPrefix) {
+        bestMatch = option;
+        longestCommonPrefix = commonPrefix;
+      }
+    });
+    return bestMatch;
   };
 
   /**
@@ -487,7 +517,7 @@ class VirtualizedTreeSelect extends PureComponent {
     toggledOptionPaths.delete(optionPath);
 
     for (const child of sanitizeArray(processedOption[this.props.childrenKey])) {
-      const processedChild = this._findOption(this.state.processedOptions, child);
+      const processedChild = this._findChildOption(this.state.processedOptions, child, processedOption);
       this._removeFromToggled(processedChild, toggledOptionPaths);
     }
   };
