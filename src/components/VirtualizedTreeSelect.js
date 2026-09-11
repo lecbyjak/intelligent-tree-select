@@ -675,8 +675,11 @@ const MenuList = (props) => {
       return;
     }
 
+    // perform new scroll to center, otherwise use auto
+    const scrollType = scrollState.lastIndex > 0 ? "auto" : "center";
+
     try {
-      listRef.current.scrollToItem(targetIndex, "auto");
+      listRef.current.scrollToItem(targetIndex, scrollType);
       scrollState.lastKey = targetKey;
       scrollState.lastIndex = targetIndex;
     } catch (e) {
