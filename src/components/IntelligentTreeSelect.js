@@ -504,31 +504,54 @@ class IntelligentTreeSelect extends PureComponent {
     this.setState({options: mergedArr});
   };
 
+  /**
+   * Combines the currently available options with a newly loaded set of options.
+   *
+   * Options that have the same {@code valueKey} are treated as different versions of one option.
+   * Defined fields from the new version override the old version while fields omitted from the new version are retained.
+   * Every {@code childrenKey} field is also normalized to an array.
+   *
+   * The position of a merged option is determined by its last occurrence in the combined input.
+   *
+   * @param {Object[]} originalOptions options already held by the component
+   * @param {Object[]} newOptions options from the newly loaded page
+   * @returns {Object[]} merged options ordered by the last occurrence of each option
+   */
   _mergeOptionArrays = (originalOptions, newOptions) => {
     const {valueKey, childrenKey} = this.props;
     let options = originalOptions.concat(newOptions);
-    let mergedArr = [];
+    const mergedArr = [];
 
-    //merge options
     while (options.length > 0) {
-      let currOption = options.shift();
+      const latestOption = options.pop();
+      const matchingOptions = [];
+      const nonMatchingOptions = [];
 
-      currOption[childrenKey] = sanitizeArray(currOption[childrenKey]);
-
-      const conflicts = [];
-      const optionsToReplace = [];
-      options.forEach((object) => {
-        if (object[valueKey] === currOption[valueKey]) {
-          object[childrenKey] = sanitizeArray(object[childrenKey]);
-          conflicts.push(object);
+      // Remove earlier occurrences of this option from the remaining work and collect them in their original order.
+      options.forEach((option) => {
+        if (option[valueKey] === latestOption[valueKey]) {
+          matchingOptions.push(option);
         } else {
-          optionsToReplace.push(object);
+          nonMatchingOptions.push(option);
         }
       });
-      mergedArr.push(monotonicAssign({}, currOption, ...conflicts.reverse()));
-      options = optionsToReplace;
+
+      // Adding the latest occurrence reconstructs the complete group in its original loading order.
+      matchingOptions.push(latestOption);
+      matchingOptions.forEach((option) => {
+        option[childrenKey] = sanitizeArray(option[childrenKey]);
+      });
+
+      const firstOption = matchingOptions[0];
+      // Keep the original precedence when an input contains more than two occurrences of the same option.
+      const duplicateOptions = matchingOptions.slice(1).reverse();
+      const mergedOption = monotonicAssign({}, firstOption, ...duplicateOptions);
+      mergedArr.push(mergedOption);
+      options = nonMatchingOptions;
     }
-    return mergedArr;
+
+    // Groups were discovered from right to left, so restore their loading order before returning them.
+    return mergedArr.reverse();
   };
 
   //Check if new options contain selected value

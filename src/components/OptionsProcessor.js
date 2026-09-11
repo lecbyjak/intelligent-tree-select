@@ -37,8 +37,7 @@ export default class OptionsProcessor {
 
     const optionId = option[this.valueKey];
     if (this._knownOptionsMap.has(optionId)) {
-      console.error("Duplicated option value", optionId, option);
-      return;
+      this._knownOptionsMap.delete(optionId);
     }
 
     const processedOption = Object.assign({}, option, {
