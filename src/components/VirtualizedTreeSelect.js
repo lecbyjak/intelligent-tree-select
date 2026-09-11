@@ -333,7 +333,8 @@ class VirtualizedTreeSelect extends PureComponent {
       return;
     }
 
-    const processedOption = this._findOption(this.state.processedOptions, selectedOptions[0]);
+    const lastSelectedOption = selectedOptions[selectedOptions.length - 1];
+    const processedOption = this._findOption(this.state.processedOptions, lastSelectedOption);
     if (!processedOption) {
       return;
     }
