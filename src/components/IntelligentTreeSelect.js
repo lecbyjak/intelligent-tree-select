@@ -13,6 +13,8 @@ class IntelligentTreeSelect extends PureComponent {
 
     this.fetching = false;
     this.completedNodes = {};
+    this.toggledNodes = {};
+
     /**
      * Allows to discard async response processing if the component was unmounted
      *
@@ -228,6 +230,7 @@ class IntelligentTreeSelect extends PureComponent {
    */
   resetOptions = () => {
     this.totalRequestedRootOptions = 0;
+    this.toggledNodes = {};
     this.setState({options: []}, () => {
       if (this.select.current) {
         this.select.current.resetOptions();
@@ -466,7 +469,7 @@ class IntelligentTreeSelect extends PureComponent {
     }
     const isExpanded = this.isOptionExpanded(option);
     if (!isExpanded) {
-      const dataCached = this.isOptionExpanded(option);
+      const dataCached = this.toggledNodes[option[this.props.valueKey]] || false;
       const activeFetch = this.isFetchingChild(option);
       if (dataCached || activeFetch) {
         return;
@@ -492,6 +495,8 @@ class IntelligentTreeSelect extends PureComponent {
           if (data.length < this.props.fetchLimit) {
             this.completedNodes[option[this.props.valueKey]] = true;
           }
+
+          this.toggledNodes[option[this.props.valueKey]] = true;
 
           if (data.length > 0) {
             this._addNewOptions(data);
