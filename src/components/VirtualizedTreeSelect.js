@@ -431,10 +431,13 @@ class VirtualizedTreeSelect extends PureComponent {
    *
    * @param input {string} current react-select input value
    */
-  _onInputChange = memoizeOne((input) => {
+  _onInputChange = (input) => {
+    if (this.state.searchInput === input) {
+      return;
+    }
     this._setSearchInput(input);
     this.props.onInputChange(input);
-  });
+  };
 
   _getOptionId = (option) => {
     return getOptionId(option, this.props.valueKey);
