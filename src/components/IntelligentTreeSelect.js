@@ -406,6 +406,10 @@ class IntelligentTreeSelect extends PureComponent {
 
   _onScroll = (data) => {
     const {clientHeight, scrollHeight, scrollTop} = data;
+    // TODO: Fix loading additional child option pages
+    // This implementation is currently not working and the component does not load additional pages of child options
+    //    Once fixing, note that .parent on option objects is no longer available from VirtualizedTreeSelect
+    //    also consider moving such logic to VirtualizedTreeSelect
 
     if (!this.state.options.length) return;
 
