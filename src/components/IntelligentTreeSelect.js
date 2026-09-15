@@ -484,30 +484,29 @@ class IntelligentTreeSelect extends PureComponent {
       let data = [];
       const requestGeneration = this.requestGeneration;
 
-      this._getResponse(this.searchString || "", option[this.props.valueKey], this.props.fetchLimit, 0, option).then(
-        (response) => {
-          if (requestGeneration !== this.requestGeneration) {
-            return;
-          }
-
-          if (!this.props.simpleTreeData) {
-            data = this._simplifyData(response);
-          } else {
-            data = response;
-          }
-
-          if (data.length < this.props.fetchLimit) {
-            this.completedNodes[option[this.props.valueKey]] = true;
-          }
-
-          this.toggledNodes[option[this.props.valueKey]] = true;
-
-          if (data.length > 0) {
-            this._addNewOptions(data);
-          }
-          this.setState((state) => IntelligentTreeSelect.removeFromFetchingChild(state, option[this.props.valueKey]));
+      // TODO: once child option paging is fixed, specify fetchLimit
+      this._getResponse(this.searchString || "", option[this.props.valueKey], undefined, 0, option).then((response) => {
+        if (requestGeneration !== this.requestGeneration) {
+          return;
         }
-      );
+
+        if (!this.props.simpleTreeData) {
+          data = this._simplifyData(response);
+        } else {
+          data = response;
+        }
+
+        if (data.length < this.props.fetchLimit) {
+          this.completedNodes[option[this.props.valueKey]] = true;
+        }
+
+        this.toggledNodes[option[this.props.valueKey]] = true;
+
+        if (data.length > 0) {
+          this._addNewOptions(data);
+        }
+        this.setState((state) => IntelligentTreeSelect.removeFromFetchingChild(state, option[this.props.valueKey]));
+      });
     }
   };
 
