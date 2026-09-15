@@ -16,7 +16,7 @@ class IntelligentTreeSelect extends PureComponent {
     this.toggledNodes = {};
 
     /**
-     * Allows to discard async response processing if the component was unmounted
+     * Discards async responses from previous searches or after the component was unmounted.
      *
      * @type {number}
      */
@@ -346,6 +346,15 @@ class IntelligentTreeSelect extends PureComponent {
 
   _onInputChange = (searchString) => {
     if (this.props.fetchOptions) {
+      if (searchString !== this.searchString) {
+        // Invalidate root and child responses before resetting the query or waiting for the debounce.
+        // Old responses must not alter the new search's options, paging, or loading state.
+        this.requestGeneration += 1;
+        this.debouncedSearch.cancel();
+        this.fetching = false;
+        this.setState({fetchingChild: new Set(), isLoadingExternally: false});
+      }
+
       if (searchString) {
         if (!this.fetching) {
           if (searchString !== this.searchString) {
