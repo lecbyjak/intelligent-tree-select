@@ -244,6 +244,13 @@ class IntelligentTreeSelect extends PureComponent {
   };
 
   /**
+   * Resets the auto-scroll state allowing the component to automatically scroll to the selected value again.
+   */
+  resetScrollState = () => {
+    this.select.current?.resetScrollState();
+  };
+
+  /**
    * Focuses the select input.
    */
   focus = () => {

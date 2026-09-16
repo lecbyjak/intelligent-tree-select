@@ -164,6 +164,9 @@ export class IntelligentTreeSelect<
   /** Force reloading of options when fetchOptions property is used to specify how to load options. If options are specified in props, this reloads them from the current props. */
   resetOptions(): void;
 
+  /** Resets the auto-scroll state allowing the component to automatically scroll to the selected value again. */
+  resetScrollState(): void;
+
   /** Current flattened (processed) option list */
   getOptions(): T[];
 

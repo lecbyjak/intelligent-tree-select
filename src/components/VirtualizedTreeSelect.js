@@ -20,6 +20,25 @@ function getOptionScrollKey(option, valueKey) {
   return option.path?.join(">") || option[valueKey];
 }
 
+const SCROLL_STATUS = {
+  /**
+   * The option list is being initialized and auto-scroll is suppressed
+   */
+  INITIALIZING: 1,
+  /**
+   * The component should scroll to the focused option
+   */
+  PENDING: 2,
+  /**
+   * The initial scroll was finished
+   */
+  FINISHED: 3,
+  /**
+   * User interacted with the element, auto-scroll is suppressed
+   */
+  USER_BLOCKED: 4,
+};
+
 class VirtualizedTreeSelect extends PureComponent {
   constructor(props, context) {
     super(props, context);
@@ -34,23 +53,11 @@ class VirtualizedTreeSelect extends PureComponent {
      */
     this.initialExpansion = false;
 
-    /**
-     * Object reference for keeping persistent scroll state for the {@link MenuList}
-     *
-     * @type {{lastKey: null|string, lastIndex: null|number}}
-     */
     this.scrollState = {
       lastKey: null,
       lastIndex: null,
+      status: SCROLL_STATUS.INITIALIZING,
     };
-
-    /**
-     * Snapshot of {@link this.props.value}
-     * from moment when the scroll to a selected option was performed
-     *
-     * @type {null | string[] | Object[]}
-     */
-    this.lastScrolledSelectedOptions = null;
 
     /**
      * React component state
@@ -91,10 +98,6 @@ class VirtualizedTreeSelect extends PureComponent {
       this.matchCheck = this.props.matchCheck || this.matchCheckFull;
     }
 
-    if (!optionListsAreEqual(this.props.value, prevProps.value, this.props.valueKey)) {
-      this.lastScrolledSelectedOptions = null;
-    }
-
     if (!optionListsAreEqual(this.props.options, prevProps.options, this.props.valueKey)) {
       // if options were changed, reprocess them and discard all options from the current state
       this._processOptions();
@@ -117,12 +120,20 @@ class VirtualizedTreeSelect extends PureComponent {
 
   resetOptions = () => {
     this.initialExpansion = false;
-    this.lastScrolledSelectedOptions = null;
+    this.resetScrollState();
     this._expandSelectedValues.clear();
     this.setState({
       processedOptions: EMPTY_ARRAY,
       toggledOptionPaths: EMPTY_SET,
     });
+  };
+
+  resetScrollState = () => {
+    this.scrollState = {
+      lastKey: null,
+      lastIndex: null,
+      status: SCROLL_STATUS.INITIALIZING,
+    };
   };
 
   /**
@@ -264,15 +275,10 @@ class VirtualizedTreeSelect extends PureComponent {
    */
   _getRestoreFocusedOptionCallback = (processedOptions) => {
     const focusedOption = this.select.current?.state.focusedOption;
-    const completedValue = this.lastScrolledSelectedOptions;
     return () => {
       // react-select compares options by reference and otherwise falls back to the first row.
       const restoredOption = this._findOption(processedOptions, focusedOption);
-      if (
-        this.lastScrolledSelectedOptions === completedValue &&
-        restoredOption &&
-        this.select.current?.state.focusedOption !== restoredOption
-      ) {
+      if (restoredOption && this.select.current?.state.focusedOption !== restoredOption) {
         this._focusOption(restoredOption);
       }
     };
@@ -353,12 +359,11 @@ class VirtualizedTreeSelect extends PureComponent {
 
   _scrollToSelectedValue = () => {
     const selectedOptions = sanitizeArray(this.props.value);
-    if (
-      this.props.isLoading ||
-      selectedOptions.length === 0 ||
-      !this.select.current ||
-      optionListsAreEqual(selectedOptions, this.lastScrolledSelectedOptions, this.props.valueKey)
-    ) {
+    if (this.props.isLoading && this.scrollState.status < SCROLL_STATUS.FINISHED) {
+      this.scrollState.status = SCROLL_STATUS.INITIALIZING;
+      return;
+    }
+    if (this.scrollState.status >= SCROLL_STATUS.FINISHED || selectedOptions.length === 0 || !this.select.current) {
       return;
     }
 
@@ -368,8 +373,8 @@ class VirtualizedTreeSelect extends PureComponent {
       return;
     }
 
-    this._focusOption(processedOption, true);
-    this.lastScrolledSelectedOptions = [...selectedOptions];
+    this.scrollState.status = SCROLL_STATUS.PENDING;
+    this._focusOption(processedOption);
   };
 
   /**
@@ -525,6 +530,7 @@ class VirtualizedTreeSelect extends PureComponent {
     if (this.state.searchInput.trim().length > 0) {
       return;
     }
+    this.scrollState.status = SCROLL_STATUS.USER_BLOCKED;
 
     this.props.onOptionToggle(processedOption);
     const toggledOptionPaths = new Set(this.state.toggledOptionPaths);
@@ -537,29 +543,25 @@ class VirtualizedTreeSelect extends PureComponent {
 
     Object.freeze(toggledOptionPaths);
     this.setState({toggledOptionPaths});
-    this._focusOption(processedOption);
   };
 
   //When selecting an option, we want to ensure that the path to it is expanded
   //Path is saved in toggledOptions
   _onOptionSelect = (props) => {
+    this.scrollState.status = SCROLL_STATUS.USER_BLOCKED;
     props.selectOption(props.data);
   };
 
   //When using custom option, it is needed to set focusedOption manually
-  _focusOption = (option, clearLastScroll = false) => {
+  _focusOption = (option) => {
     if (this.select.current) {
-      if (clearLastScroll) {
-        this.scrollState.lastKey = null;
-        this.scrollState.lastIndex = null;
-      }
-
       const processedOption = this._findOption(this.state.processedOptions, option) || option;
       this.select.current.setState({focusedOption: processedOption});
     }
   };
 
   _onKeyDown = (event) => {
+    this.scrollState.status = SCROLL_STATUS.USER_BLOCKED;
     if (event.key === " " && !this.state.searchInput) {
       event.preventDefault();
       const focusedOption = this.select.current && this.select.current.state.focusedOption;
@@ -662,20 +664,32 @@ class VirtualizedTreeSelect extends PureComponent {
   });
 }
 
-// Wrapper for MenuList, it doesn't do anything, it is only needed for correct passing of the onScroll prop
+// Wrapper for MenuList for correct passing of the onScroll prop and blocking auto-scrolling on user-scroll
 const Menu = (props) => {
   const onScrollCapture = useCallback(
     (e) => {
+      // pass the event
       props.selectProps.listProps.onScroll(e.target);
     },
     [props.selectProps.listProps.onScroll]
   );
+  // ignore auto-scroll and handle only real user-interactions
+  const onUserScroll = useCallback(
+    (e) => {
+      // block any further auto-scroll
+      props.selectProps.scrollState.status = SCROLL_STATUS.USER_BLOCKED;
+    },
+    [props.selectProps.scrollState]
+  );
+
   return (
     <components.Menu
       {...props}
       innerProps={{
         ...props.innerProps,
         onScrollCapture,
+        onWheelCapture: onUserScroll,
+        onTouchStart: onUserScroll,
       }}
     >
       {props.children}
@@ -710,11 +724,11 @@ const MenuList = (props) => {
       return;
     }
 
-    /// The children element to which we should scroll
-    if (!scrollTarget || !scrollTarget.props?.data) {
+    if (!scrollTarget || !scrollTarget.props?.data || scrollState.status === SCROLL_STATUS.INITIALIZING) {
       return;
     }
 
+    /// The children element to which we should scroll
     const optionData = scrollTarget.props.data;
 
     const targetKey = getOptionScrollKey(optionData, valueKey);
@@ -723,9 +737,15 @@ const MenuList = (props) => {
       return;
     }
 
-    if (scrollState.lastKey === targetKey && scrollState.lastIndex === targetIndex) {
+    if (
+      scrollState.lastKey === targetKey &&
+      // index is allowed to change as long as the scroll wasnt finished by auto-scroll
+      (scrollState.lastIndex === targetIndex || scrollState.status !== SCROLL_STATUS.FINISHED)
+    ) {
       return;
     }
+
+    scrollState.status = SCROLL_STATUS.FINISHED;
 
     // perform new scroll to center, otherwise use auto
     const scrollType = scrollState.lastIndex > 0 ? "auto" : "center";
