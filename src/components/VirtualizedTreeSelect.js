@@ -582,12 +582,18 @@ class VirtualizedTreeSelect extends PureComponent {
     const styles = VirtualizedTreeSelect._prepareStyles(this.props.styles);
     const filterOptions = props.filterOption || this.filterOption;
     const optionRenderer = this.props.optionRenderer || Option;
+
+    // When the menu is forced open, prevent its click handler from focusing the first option.
+    const menuIsOpen = props.isMenuOpen || undefined;
+    const openMenuOnClick = !props.isMenuOpen;
+
     return (
       <Select
         ref={this.select}
         {...props}
         styles={styles}
-        menuIsOpen={this.props.isMenuOpen ? this.props.isMenuOpen : undefined}
+        menuIsOpen={menuIsOpen}
+        openMenuOnClick={openMenuOnClick}
         filterOption={filterOptions}
         onInputChange={this._onInputChange}
         getOptionLabel={(option) => getLabel(option, props.labelKey, props.getOptionLabel)}
