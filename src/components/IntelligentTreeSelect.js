@@ -359,6 +359,8 @@ class IntelligentTreeSelect extends PureComponent {
         this.requestGeneration += 1;
         this.debouncedSearch.cancel();
         this.fetching = false;
+        // Search replaces the loaded options, so previously fetched children are no longer cached.
+        this.toggledNodes = {};
         this.setState({fetchingChild: new Set(), isLoadingExternally: false});
       }
 
