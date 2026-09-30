@@ -603,7 +603,7 @@ class VirtualizedTreeSelect extends PureComponent {
           Menu: Menu,
           MenuList: MenuList,
           MultiValueLabel: this.props.valueRenderer,
-          SingleValue: this.props.valueRenderer,
+          SingleValue: SingleValue,
         }}
         isMulti={props.multi}
         blurInputOnSelect={false}
@@ -655,20 +655,26 @@ class VirtualizedTreeSelect extends PureComponent {
         ...provided,
         position: state.selectProps.menuIsFloating ? "absolute" : "relative",
       }),
-      valueContainer: (provided, state) => ({
+      singleValue: (provided) => ({
         ...provided,
-        display: state.hasValue ? "flex" : "inline-grid",
-      }),
-      input: (provided) => ({
-        ...provided,
-        input: {
-          opacity: "1 !important",
-        },
+        zIndex: 0, // ensures that rendered value can be interacted with (e.g. link clicked)
       }),
       ...propStyles,
     };
   });
 }
+
+/**
+ * Component using the result of value renderer in the SingleValue component from React-Select
+ */
+const SingleValue = (props) => {
+  const ValueRenderer = props.selectProps.valueRenderer;
+  return (
+    <components.SingleValue {...props}>
+      {ValueRenderer ? <ValueRenderer {...props} /> : props.children}
+    </components.SingleValue>
+  );
+};
 
 // Wrapper for MenuList for correct passing of the onScroll prop and blocking auto-scrolling on user-scroll
 const Menu = (props) => {
